@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      * {
+        text-decoration: none;
+        font-size: 100%;
+        font-family: Helvetica, sans-serif, monospaced;
+        font-size:18px;
+      }
+    </style>
+  </head>
+  <body onload="getTournamentIDs();">
+    <div id="form">
+    <form id="tournamentForm"> 
+      <div>
+        <label for="tournament">Select the tournament #</label>
+        <select id="tournaments" name="tournament"> 
+          <option>Loading...</option> 
+        </select>
+      </div>
+      <br> 
+      <input type="button" value="Submit" onclick="submitForm();">
+      <br>
+    </form> 
+    </div>
+  </body>
+  <script>
+      /**
+       * Send the selection from the form back to google sheet
+       */
+      function submitForm() {
+        google.script.run.tournamentByNumber(document.getElementById("tournaments").value);
+    
+        // Clear form and show exit message
+        document.getElementById("tournamentForm").style.display = "none";
+        google.script.host.close();
+      }
+
+      /**
+       * Get the tournament numbers from the google sheet for the <options> for <select> tag
+       */
+      function getTournamentIDs() {
+        google.script.run.withSuccessHandler(addToSelect)
+          .getTournamentNumbers();
+      }
+
+      /**
+       * Take the passed array of tournament numbers, create <option>
+       * elements and add them to the <select> tag as children
+       * 
+       * @param {array} nums - array with the valid torunament numbers
+       */
+      function addToSelect(nums) {
+        let elem;
+        let select = document.getElementById("tournaments");
+        select.replaceChildren();
+        nums.forEach( n => {
+          elem = document.createElement('option');
+          elem.innerHTML = n;
+          select.appendChild(elem);
+        });
+      }
+    </script>
+</html>
