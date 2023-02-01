@@ -275,7 +275,7 @@ class Leaderboard {
           sheet.getRange(this._dataRow+i, this._dataCol+j+1, 1 ,1).clear();
           // If a totally missed round we clear totals formula
           if (j+1<=tournament.definedRounds) {
-            sheet.getRange(this._dataRow+i, this._scoreToParCol, 1, 1).clear();
+            //sheet.getRange(this._dataRow+i, this._scoreToParCol, 1, 1).clear();
           }
         }
       });

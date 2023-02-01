@@ -1,4 +1,49 @@
 /**
+ * Test the iterator in PlaerRounds
+ */
+function test_iteratorPR() {
+  const prs = new PlayerRounds();
+  for (let pr of prs) {
+    console.log(pr.getName());
+  }
+}
+
+/**
+ * Test the filter function of the PlayerRounds class 
+ */
+function test_playerRounds() {
+  const prs = new PlayerRounds();
+  console.log(`getNumRounds() ${prs.getNumRounds()}`);
+  //console.log(`getField(NAME) ${prs[0].getField(4)}`);
+  let fpr = [];
+  fpr = prs.filter(PlayerRound.PLAYER, "Chuck Grieshaber");
+  console.log(`Number of rounds = ${fpr.getNumRounds()}`);
+  for (let r of fpr) {
+    console.log(`${r.getName()} ${r.getScore()} ${r.getRound()}`);
+  }
+}
+
+/**
+ * Get player rounds by number
+ */
+function test_getRoundsById() {
+  let rounds = [];
+  let leaderboard = [];
+  let found = false;
+  let playerName;
+  let playerScores = new Array(4);
+  const pr = new PlayerRounds();
+  const players = new Players();  
+  rounds = [...pr.getRoundsByNumber(23.01)];
+  rounds.forEach(r => console.log(`${r.getName()} ${r.getRound()} ${r.getScore()}`));
+  // Get the records for each of the tournament rounds and the course data for the footer
+  //currTourny.rounds.forEach((r) => {
+    //rounds = [...rounds, ...pr.getRoundsByDate(r.date)];
+    //rounds = [...rounds, ...pr.getRoundsByNumber(23.02)];
+  //});
+}
+
+/**
  * get col widths
  */
 function test_getColWidth() {

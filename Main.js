@@ -12,7 +12,6 @@ function onOpen() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const menuEntries = [ 
     {name: "Create Leaderboard by Tournament Number", functionName: "selectTournament"},
-    {name: "Create/Update Weekly Leaderboard", functionName: "weeklyLeaderBoard"},
     {name: "Create/Update Form", functionName: "updateForm"},
     {name: "Recreate All Leaderboards", functionName: "allLeaderBoards"}
   ];
@@ -116,7 +115,8 @@ function buildLeaderBoard(currTourny) {
 
   // Get the records for each of the tournament rounds and the course data for the footer
   currTourny.rounds.forEach((r) => {
-    rounds = [...rounds, ...pr.getRoundsByDate(r.date)];
+    //rounds = [...rounds, ...pr.getRoundsByDate(r.date)];
+    rounds = [...rounds, ...pr.getRoundsByNumber(r.number)];
   });
 
   // Get the records for the players in the player database

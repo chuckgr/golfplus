@@ -4,21 +4,38 @@
  * @param {array} - Parameters for this round in the passed object
  *                   {timestamp} - Timestamp when the round was entered
  *                   {date}      - Date of round
- *                   {course}    - Course played
+ *                   {number}    - Tournament number this round belongs to
  *                   {round#}    - Round # for this tournament
  *                   {name}.     - Name of player
  *                   {score}     - Score for the round
  */
 class PlayerRound {
   constructor(data) {
+    this._data = data;
     this._timestamp = data[0];
     this._date = data[1];
-    this._course = data[2];
+    this._number = data[2];
     this._round = data[3];
     this._name = data[4];
     this._score = data[5];
   }
   
+  /**
+   * Define the static status fields
+   */
+  static get DATE()   { return 1;}
+  static get NUMBER() { return 2;}
+  static get ROUND()  { return 3;}
+  static get PLAYER() { return 4}
+  static get SCORE()  { return 5;}
+
+  /**
+   * Get the value of the field as specified by the passed enum
+   */
+  getField(field) {
+    return this._data[field];
+  }
+
   /**
   * Get the date of this round
   */
@@ -41,7 +58,13 @@ class PlayerRound {
   }
 
   /**
-   * Get the torunament round
+   * Get the tournament number
+   */
+  getNumber() {
+    return this._number;
+  }
+  /**
+   * Get the tournament round
    */
   getRound() {
     return this._round;
@@ -51,6 +74,6 @@ class PlayerRound {
    * Print the record out
    */
   toString() {
-    return `${this._date} ${this._course} ${this._name} ${this._round} ${this._score}`
+    return `${this._date} ${this._number} ${this._name} ${this._round} ${this._score}`
   }
 }

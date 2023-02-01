@@ -7,9 +7,13 @@
  *                   {score}  - Score for the round
  */
 class PlayerRounds {
-  constructor() {
+  constructor(data) {
     this._rounds = new Array();
-    this._parse();
+    if (data == null) {
+      this._parse();
+    } else {
+      this._rounds = data;
+    }
   }
 
   /**
@@ -25,7 +29,6 @@ class PlayerRounds {
 
     // Rip through the rows and create a TournamentRound object for each tournament
     let playerRec;
-    let tmpRec;
     this._data.forEach((t,i) => { 
       playerRec = new PlayerRound(t);
       this._rounds.push(playerRec);
@@ -55,15 +58,14 @@ class PlayerRounds {
 /**
    * Get all records for a round
    * 
-   * @param {number} - Trounament number String in yy.tt format to retreive records for
+   * @param {number} - Tournament number String in yy.tt format to retreive records for
    * @return {array} - Array of selected PlayerRound object
    */
   getRoundsByNumber(number) {
     let roundWeekNumber;
     let playerRecords = new Array();
     this._rounds.forEach((r) => {
-      roundWeekNumber = getWeekNumber(r.number);
-      if (r.number == number) {
+      if (r.getNumber() == number) {
         playerRecords.push(r);
       }
     });
@@ -78,5 +80,37 @@ class PlayerRounds {
   getRoundsByName(name) {
     return this._rounds.filter((p) => p.getName() == name );
   }
+
+  /**
+   * Filter the data to return the results that match the filter expression
+   * 
+   * @param {string}  - Field to filter the results to
+   * @param {string}  - Filter criteria for the field that is being filtered
+   * @return {PlayerRounds} new PlayerRounds object with the fitered PlayerRound objects 
+  */
+  filter(field, criteria) {
+    return new PlayerRounds (this._rounds.filter( (r) => {
+      //console.log(`${r.getField(field)} = ${criteria} ${r.getField(field) == criteria}`);
+      return r.getField(field) == criteria}));
+  }
+
+  /**
+   * Get the number of rounds for this PlayerRounds object
+   */
+  getNumRounds() {
+    return this._rounds.length;
+  }
+
+  /**
+   * Make this object implenent the iterator interface so we can loop over the list
+   */
+  [Symbol.iterator]() {
+    let index = -1;
+    let data  = this._rounds;
+
+    return {
+      next: () => ({ value: data[++index], done: !(index in data) })
+    };
+  };
 }
   
