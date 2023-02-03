@@ -10,7 +10,7 @@ class Players {
       .getValues();
     this._data = new Array();
     this._playerData.forEach((d) => {
-      this._data.push(d[0]);
+      this._data.push(d[0].trim());
     })
   }
   
@@ -20,4 +20,16 @@ class Players {
   getPlayers() {
     return this._data;
   }
+
+  /**
+   * Make this object implenent the iterator interface so we can loop over the list
+   */
+  [Symbol.iterator]() {
+    let index = -1;
+    let data  = this._data;
+
+    return {
+      next: () => ({ value: data[++index], done: !(index in data) })
+    };
+  };
 }

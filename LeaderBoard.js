@@ -309,7 +309,7 @@ class Leaderboard {
     let rule;
     let range;
     for (let i=this._dataCol+1; i<this._dataCol+5; i++) {
-      console.log(`Par score column ${i} par value = ${sheet.getRange(this._footerRowStart+2, i, 1, 1).getValue()}`);
+      //console.log(`Par score column ${i} par value = ${sheet.getRange(this._footerRowStart+2, i, 1, 1).getValue()}`);
       range = sheet.getRange(this._dataRow, i, this._data.length, 1)
       rule = SpreadsheetApp.newConditionalFormatRule()
         .whenNumberLessThan(parseInt(sheet.getRange(this._footerRowStart+2, i, 1, 1).getValue()))
@@ -317,7 +317,7 @@ class Leaderboard {
         .setRanges([range])
         .build();
       newRules.push(rule);
-      console.log(`newRule length ${newRules.length}`);
+      //console.log(`newRule length ${newRules.length}`);
     }
     rules = sheet.getConditionalFormatRules();
     sheet.setConditionalFormatRules([...rules,...newRules]);

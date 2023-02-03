@@ -45,12 +45,7 @@ class Form {
       .setRequired(true)
       .setIncludesYear(true)
       .setHelpText("The date should be in the range of the tournament round or it will not be counted correctrly");
-/*
-    form.addListItem()
-      .setTitle("Course")
-      .setRequired(true)
-      .setChoiceValues(Courses.getCourses());
-*/
+
     form.addListItem()
       .setTitle("Tournament Number")
       .setRequired(true)
@@ -99,10 +94,11 @@ class Form {
       form = FormApp.openByUrl(this._url);
       lists = form.getItems();
       lists.forEach((l) => {
+        // Update the list of players
         if (l.getType() == "LIST" && l.getTitle() == "Name") {
-          // Update the list of players
           playerItem = l.asListItem();
           playerItem.setChoiceValues(this._players);
+        // Update the tournament numbers 
         } else if (l.getType == "LIST" && l.getTitle() == "Tournament Number") {
           playerItem = l.asListItem();
           playerItem.setChoiceValues(getTournamentNumbers());

@@ -34,7 +34,7 @@ function getWeekNumber(date) {
  * @customfunction
  */
 function TOURNYWEEKS(start, count) {
-  console.log(`Session 16`);
+  //console.log(`Session 16`);
   const oneDay = 1000*60*60*24;
   if (start && count) {
     let range = new Array(); 

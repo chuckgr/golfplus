@@ -115,7 +115,6 @@ function buildLeaderBoard(currTourny) {
 
   // Get the records for each of the tournament rounds and the course data for the footer
   currTourny.rounds.forEach((r) => {
-    //rounds = [...rounds, ...pr.getRoundsByDate(r.date)];
     rounds = [...rounds, ...pr.getRoundsByNumber(r.number)];
   });
 
