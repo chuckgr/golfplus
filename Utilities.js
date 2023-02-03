@@ -48,6 +48,24 @@ function TOURNYWEEKS(start, count) {
   }
 }
 
+/**
+ * Calculate the differance from par for the ranges passed
+ * 
+ * @param {range} - Range containing the score to check
+ * @paran {range} - Range for all of the courses in the footer typically
+ * @return {number} - The difference to par
+ */
+function DIFFTOPAR(scoresRange, coursesRange) {
+  let diffToPar = 0;
+  scoresRange[0].forEach((s,i) => {
+    if (s != "") {
+      diffToPar = diffToPar + (s - coursesRange[0][i]);
+    }
+  });
+  return diffToPar;
+
+}
+
 /** 
  * Get the date for the week of year (always Monday)
  */ 

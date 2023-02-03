@@ -36,10 +36,10 @@ class Leaderboard {
     this._headerColor = "yellow";
     this._sumColNum = this._headerColumn+5; // 6;
     this._sumColOff =  this._headerRow+1;   // 2;
-    this._sumColStart = columnToLetter(this._headerColumn+1);   // "B" if column start is 1
-    this._sumColEnd = columnToLetter(this._headerColumn+4);     // "E"
-    this._parFormulaCol = columnToLetter(this._headerColumn+6); // 'G'
-    this._parSumCol = columnToLetter(this._headerColumn+5);     // 'F'
+    this._sumColStart = columnToLetter(this._headerColumn+1);   // "C" 
+    this._sumColEnd = columnToLetter(this._headerColumn+4);     // "F"
+    this._parFormulaCol = columnToLetter(this._headerColumn+6); // 'H'
+    this._parSumCol = columnToLetter(this._headerColumn+5);     // 'G'
     this._scoreToParCol = this._headerColumn+6;
     this._footerNumRows = 8;
     this._footerRowStart = 0;  // This is incorrect until we add the data, updated in footer func
@@ -340,7 +340,8 @@ class Leaderboard {
    */
   _createScoreToParFormulas(rows, row) {
     let formulas = [];
-    [...Array(rows)].forEach( (r,i) => formulas.push([`=(${this._parSumCol}${i+this._sumColOff}-$${this._parSumCol}$${row})`]));
+    [...Array(rows)].forEach( (r,i) => 
+      formulas.push([`=DIFFTOPAR(${this._sumColStart}${i+this._sumColOff}:${this._sumColEnd}${i+this._sumColOff},$${this._sumColStart}$${row}:$${this._sumColEnd}$${row})`]));
     return formulas;
   }
 

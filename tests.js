@@ -21,36 +21,45 @@ function test_filterRecords() {
   let number = 23.01;
   let total = 0;
   let numRounds = 0;
-  let cnt = 0;
+  //let cnt = 0;
   let totalByPlayer = [];
+  let fedex = new Map();
 
-  // Get all of the records for one tournament
-  let tournyRes = prs.filter(PlayerRound.NUMBER, number);
-  let minRes;
+  console.log(`${tournaments.getNumbers()}`);
+  // Loop for all tournament numbers
+  tournaments.getNumbers().forEach( t => {
+    console.log(`Tournament ${t}`);
+    // Get all of the records for one tournament
+    let tournyRes = prs.filter(PlayerRound.NUMBER, t);
+    let minRes;
 
-  // Loop for all players
-  for (let p of players) {
-    // Grab all records from tournament for this player
-    minRes = tournyRes.filter(PlayerRound.PLAYER, p);
+    // Loop for all players
+    for (let p of players) {
+      // Grab all records from tournament for this player
+      minRes = tournyRes.filter(PlayerRound.PLAYER, p);
     
-    // We only count if there are 4 rounds played
-    if (minRes.getNumRounds() == 4) { 
-      for (let r of minRes) {
-        total+= r.getScore();
-        cnt++;
-      }
-      numRounds = numRounds + minRes.getNumRounds();
-      totalByPlayer.push({"name": p, "score": total});
-      console.log(`Player "${p}"" has ${minRes.getNumRounds()} rounds in this tournament`);
-    }    
-    total = 0;
-    cnt = 0;
-  }
+      // We only count if there are 4 rounds played
+      if (minRes.getNumRounds() == 4) { 
+        for (let r of minRes) {
+          total+= r.getScore();
+          //cnt++;
+        }
+        numRounds = numRounds + minRes.getNumRounds();
+        totalByPlayer.push({"name": p, "score": total});
+        console.log(`Player "${p}"" has ${minRes.getNumRounds()} rounds in this tournament`);
+      }    
+      total = 0;
+      //cnt = 0;
+    }
+  
+    console.log(`Total rounds found = ${numRounds}`);
+    //console.log(`${JSON.stringify(totalByPlayer)}`);
+    totalByPlayer.sort((a, b) => parseInt(a.score) - parseInt(b.score));
+    console.log(`${JSON.stringify(totalByPlayer)}`);
+    fedex.set(t, totalByPlayer);
+  });
 
-  console.log(`Total rounds found = ${numRounds}`);
-  console.log(`${JSON.stringify(totalByPlayer)}`);
-  totalByPlayer.sort((a, b) => parseInt(a.score) - parseInt(b.score));
-  console.log(`${JSON.stringify(totalByPlayer)}`);
+  console.log(`${fedex.keys()}`);
 }
 
 /**
@@ -188,7 +197,7 @@ function text_arraylen() {
  */
 function test_sumScoreToPar() {
   let lb = new Leaderboard();
-  console.log(`${lb._createScoreToParFormulas()}`);
+  console.log(`${lb._createScoreToParFormulas(1,13)}`);
 }
 
 /**
