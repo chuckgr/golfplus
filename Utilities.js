@@ -55,7 +55,7 @@ function TOURNYWEEKS(start, count) {
  * @paran {range} - Range for all of the courses in the footer typically
  * @return {number} - The difference to par
  */
-function DIFFTOPAR(scoresRange, coursesRange) {
+function DIFFTOPARO(scoresRange, coursesRange) {
   let diffToPar = 0;
   scoresRange[0].forEach((s,i) => {
     if (s != "") {
@@ -63,6 +63,28 @@ function DIFFTOPAR(scoresRange, coursesRange) {
     }
   });
   return diffToPar;
+}
+
+/**
+ * Calculate the differance from par for the ranges passed
+ * 
+ * @param {range}  - Range containing the scores to check
+ * @paran {range}  - Range for all of the courses in the footer typically
+ * @return {array} - The difference to par
+ */
+function DIFFTOPAR(scoresRange, coursesRange) {
+  let diffToPar = 0;
+  let res = [];
+  scoresRange.forEach( (r,i) => {
+    r.forEach((s,i) => {
+      if (s != "") {
+        diffToPar = diffToPar + (s - coursesRange[0][i]);
+      }
+    });
+    res.push([diffToPar]);
+    diffToPar = 0;
+  });
+  return res;
 
 }
 

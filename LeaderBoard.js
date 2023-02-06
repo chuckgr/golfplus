@@ -10,6 +10,9 @@
  * Typical use case are: print the current tournament board after each round and then
  * final leaderboard at the end of the tournament.                             
  * 
+ * Id for original spreadsheet: 11SMT0fM0qMMG11DqmIb6sNzihtL6W6qOBJmn7ENJsLA
+ * Script id for original spreadsheet: 1BsdkdXPc6qhec81216mX9dX-aMxgkSSoD0fKM0M6MVqswOyv9vf1M8Eg
+ * 
  */
 class Leaderboard {
   
@@ -81,11 +84,14 @@ class Leaderboard {
     // No grid lines
     this._leaderboardSheet.setHiddenGridlines(true);
 
-    // Make all column width to width of data
+    // Make all column widths uniform
     this._setColWidths(this._leaderboardSheet);
 
     // Clear out 999 for missing scores
     this._normalizeData(this._leaderboardSheet, tournaments.getTournamentById(this._tournyNumber));
+
+    // Add the score to par
+    this._addScoreToPar(this._leaderboardSheet);
   }
 
   /**
@@ -226,9 +232,9 @@ class Leaderboard {
     sheet.getRange(rangeRowStart+1, this._sumColNum, this._footerNumRows, 1)
         .setBorder(true, true, false, false, false, false);
 
-    // Get the total vs par for the course
-    sheet.getRange(this._headerRow+1, this._scoreToParCol, this._data.length, 1)
-      .setFormulas(this._createScoreToParFormulas(this._data.length, rangeRowStart+2));
+        // Get the total vs par for the course by using a custom function to calculate each score row
+    //sheet.getRange(this._headerRow+1, this._scoreToParCol, this._data.length, 1)
+    //  .setFormulas(this._createScoreToParFormulas(this._data.length, rangeRowStart+2));  
 
     // Set the font for the whole sheet
     sheet.getRange(1, 1, sheet.getLastRow(), sheet.getLastColumn())
@@ -280,6 +286,17 @@ class Leaderboard {
         }
       });
     });
+    
+  }
+
+  /**
+   * After the sheet is complete and sorted we add in the custom formula to calculate the
+   * score to par for all defined tournaments
+   */
+  _addScoreToPar(sheet) {
+    // Get the total vs par for the course by using a custom function to calculate each score row
+    sheet.getRange(this._headerRow+1, this._scoreToParCol, 1, 1)
+      .setFormulas(this._createScoreToParFormulas(this._data.length, this._footerRowStart+2));
   }
 
   /**
@@ -338,7 +355,16 @@ class Leaderboard {
   /**
    * Create the formulas for +/- par
    */
-  _createScoreToParFormulas(rows, row) {
+  _createScoreToParFormulas(rows, lastRow) {
+    let formulas = [];
+    formulas.push([`=DIFFTOPAR(${this._sumColStart}${this._sumColOff}:${this._sumColEnd}${rows+this._sumColOff-1},$${this._sumColStart}$${lastRow}:$${this._sumColEnd}$${lastRow})`]);
+    return formulas;
+  }
+
+ /**
+   * Create the formulas for +/- par
+   */
+  _createScoreToParFormulas2(rows, row) {
     let formulas = [];
     [...Array(rows)].forEach( (r,i) => 
       formulas.push([`=DIFFTOPAR(${this._sumColStart}${i+this._sumColOff}:${this._sumColEnd}${i+this._sumColOff},$${this._sumColStart}$${row}:$${this._sumColEnd}$${row})`]));

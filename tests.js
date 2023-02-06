@@ -1,4 +1,40 @@
 /**
+ * Test PlayerPoints class
+ */
+function test_playerPoints() {
+  //let data = new Map();
+  let tourn = 23.10;
+  const ps = [
+    {"name":"Rory McAroy", "score":268},
+    {"name":"Tiger Woods", "score":278},
+    {"name":"Jordan Speith", "score":276},
+    {"name":"Chuck Grieshaber", "score":308},
+    {"name":"Kari Grieshaber", "score":318},
+    {"name":"Bob Dyland", "score":338},
+  ];
+  //data.set(tourn, data);
+
+  let pp = new PlayerPoints(ps[0], tourn);
+  console.log(`PlayerPoints.name ${pp.name}`);
+  console.log(`toArray: ${pp.toArray()}`)
+}
+
+/**
+ * Test pointsleaderboard 
+ */
+function test_pointsBoard() {
+  let plb = new PointsLeaderboard();
+  //let table = plb._sliceData();
+
+/*
+  // Look at each tournament and calculate points
+  table.forEach( (v,k,m) => {
+    console.log(`Map = ${k} ${JSON.stringify(v)}`)
+  });
+*/
+}
+
+/**
  * Test assuring I can get all player records
  */
 function test_getAllPlayerRecs() {
