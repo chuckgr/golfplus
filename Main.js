@@ -12,6 +12,7 @@ function onOpen() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const menuEntries = [ 
     {name: "Create Leaderboard by Tournament Number", functionName: "selectTournament"},
+    {name: "Create Points Leaderboard", functionName: "buildPointsBoard"},
     {name: "Create/Update Form", functionName: "updateForm"},
     {name: "Recreate All Leaderboards", functionName: "allLeaderBoards"}
   ];
@@ -97,6 +98,14 @@ function weeklyLeaderBoard() {
   } else {
     console.log(`Tournament not found: ${tournaments.getCurrentTournament()}`);
   }
+}
+
+/**
+ * Build the points leader board
+ */
+function buildPointsBoard() {
+  // Gets kicked off at creation time
+  let plb = new PointsLeaderboard();
 }
 
 /**

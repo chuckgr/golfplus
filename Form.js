@@ -152,7 +152,6 @@ class Form {
     let found = false;
     sheets.forEach((s) => {
       sheetName = s.getSheetName();
-      //console.log(`Checking sheet "${sheetName}"`);
       if (sheetName.startsWith('Form Responses')) {
         if (s.getFormUrl() != null) {
           found = true;
@@ -174,7 +173,6 @@ class Form {
     let returnSheet = null;
     sheets.forEach((s) => {
       sheetName = s.getSheetName();
-      //console.log(`Checking sheet "${sheetName}"`);
       if (sheetName.startsWith('Form Responses')) {
         if (s.getFormUrl() != null) {
           found = true;

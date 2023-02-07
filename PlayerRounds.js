@@ -47,7 +47,6 @@ class PlayerRounds {
     let playerRecords = new Array();
     this._rounds.forEach((r) => {
       roundWeekNumber = getWeekNumber(r.getDate());
-      //console.log(`tournament week: ${weekNumber} round week number: ${roundWeekNumber}`);
       if (weekNumber == roundWeekNumber) {
         playerRecords.push(r);
       }
@@ -90,7 +89,6 @@ class PlayerRounds {
   */
   filter(field, criteria) {
     return new PlayerRounds (this._rounds.filter( (r) => {
-      //console.log(`${r.getField(field)} = ${criteria} ${r.getField(field) == criteria}`);
       return r.getField(field) == criteria}));
   }
 

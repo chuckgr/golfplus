@@ -31,14 +31,15 @@ class Leaderboard {
     // Everything will be based off the header row/col
     this._headerRow = 2;
     this._headerColumn = 2;
-    this._headerNumRows = 1;
-    this._dataRow = this._headerRow+1;
+    this._headerNumRows = 2;
+    //this._dataRow = this._headerRow+1;
+    this._dataRow = this._headerRow+this._headerNumRows;
     this._dataCol = this._headerColumn;
     this._scoreCols = 4;
     this._createScoreToParRow = this._headerRow+7;
-    this._headerColor = "yellow";
+    this._headerColor = "#faf570"; //"yellow";
     this._sumColNum = this._headerColumn+5; // 6;
-    this._sumColOff =  this._headerRow+1;   // 2;
+    this._sumColOff =  this._headerRow+this._headerNumRows;   
     this._sumColStart = columnToLetter(this._headerColumn+1);   // "C" 
     this._sumColEnd = columnToLetter(this._headerColumn+4);     // "F"
     this._parFormulaCol = columnToLetter(this._headerColumn+6); // 'H'
@@ -46,9 +47,7 @@ class Leaderboard {
     this._scoreToParCol = this._headerColumn+6;
     this._footerNumRows = 8;
     this._footerRowStart = 0;  // This is incorrect until we add the data, updated in footer func
-    //this._horizAlign = [["left", "right", "right", "right", "right", "right", "center"]];
-    this._horizAlign = [["left", "center", "center", "center", "center", "center", "center"]];
-    //this._horizAlignCourses = [["right"],["right"],["right"],["right"],["right"],["right"],["right"],["right"]];
+    this._horizAlign = [["right", "center", "center", "center", "center", "center", "center"]];
     this._horizAlignCourses = [["center"],["center"],["center"],["center"],["center"],["center"],["center"],["center"]];
     this._horizAlignScores = [["left", "center", "center", "center", "center", "center", "center"]];
     this._fontStyles = [["bold", "bold", "bold", "bold", "bold", "bold", "bold"]];
@@ -130,7 +129,13 @@ class Leaderboard {
       .insertRows(this._dataRow, data.length+1);  
     this._leaderboardSheet
       .getRange(this._dataRow,this._dataCol, data.length, data[0].length)
+      .setHorizontalAlignments(createValueArray(data.length, data[0].length, "center"))
       .setValues(data);
+      
+    // Align the names to the right
+    this._leaderboardSheet
+      .getRange(this._dataRow,this._dataCol, data.length, 1)
+      .setHorizontalAlignments(createValueArray(data.length, 1, "right"));
   }
 
   /**
@@ -140,21 +145,11 @@ class Leaderboard {
    */
   _setLayout(sheet) {
     if (sheet != null) {
-      // Set the horizontal alignment for the data rows +2 summ columns
-      this._data.forEach((d,i) => {
-        sheet.getRange(this._dataRow+i,this._dataCol, 1, d.length+2)
-          .setHorizontalAlignments(this._horizAlignScores);
-      });
-    
       // Set the header row color, text, and border
-      sheet.getRange(this._headerRow, this._headerColumn, this._headerNumRows, this._numCols)
+      sheet.getRange(this._headerRow+1, this._headerColumn, this._headerTitle.length, this._numCols)
         .setBackground(this._headerColor)
         .setBorder(false, false, true, false, false, false)
         .setValues(this._headerTitle);
-
-      // Set the border for the bottom of the results, these get pushed down when data rows are added 
-      sheet.getRange(this._headerRow+1, this._headerColumn, this._headerNumRows, this._numCols)
-        .setBorder(true, false, false, false, false, false);
 
       // Set the formulas for summing the scores   
       sheet.getRange(this._dataRow, this._sumColNum, this._data.length, 1)
@@ -165,11 +160,11 @@ class Leaderboard {
         .setNumberFormats(this._createTotalScoreFormat(this._data.length+1));
 
       // Set the horizontal alignment for the header row
-      sheet.getRange(this._headerRow, this._headerColumn, this._headerNumRows, this._horizAlign[0].length)
+      sheet.getRange(this._headerRow+1, this._headerColumn, 1, this._horizAlign[0].length)
         .setHorizontalAlignments(this._horizAlign);
 
-      // Make the first row bold text
-      sheet.getRange(this._headerRow, this._headerColumn, this._headerNumRows, this._numCols)
+      // Make the header titles bold text
+      sheet.getRange(this._headerRow+1, this._headerColumn, 1, this._numCols)
         .setFontWeights(this._fontStyles);
 
       // Apply row banding for the data portion of the sheet
@@ -212,18 +207,17 @@ class Leaderboard {
 
     // Add the footer data
     sheet.getRange(rangeRowStart+1, rangeColStart, this._footerNumRows, this._footerValues[0].length)
+    //  .setFontWeights(createValueArray(this._footerNumRows,this._footerValues[0].length, "bold"))
       .setValues(this._footerValues);
 
     // Make the titles bold
     //TODO Move values to variables or settings
     sheet.getRange(rangeRowStart+1, rangeColStart, this._footerNumRows, 1)
+      .setHorizontalAlignments(createValueArray(this._footerNumRows, 1, "right"))
       .setFontWeights([["bold"],["bold"],["bold"],["bold"],["bold"],["bold"],["bold"],["bold"]]);
 
-    // Set the horizontal alignment for the courses columns, but not header column
-    [...Array(4)].forEach( (c,i) =>{ 
-      sheet.getRange(rangeRowStart+1, rangeColStart+1+i, this._horizAlignCourses.length, 1)
-      .setHorizontalAlignments(this._horizAlignCourses); 
-    }); 
+    sheet.getRange(rangeRowStart+1, rangeColStart+1, this._horizAlignCourses.length, 4)
+      .setHorizontalAlignments(createValueArray(this._horizAlignCourses.length, 4, "center")); 
 
     // Add in the =SUM function to add up the course par total
     //TODO Fix hardcoded +2
@@ -294,7 +288,7 @@ class Leaderboard {
    */
   _addScoreToPar(sheet) {
     // Get the total vs par for the course by using a custom function to calculate each score row
-    sheet.getRange(this._headerRow+1, this._scoreToParCol, 1, 1)
+    sheet.getRange(this._dataRow, this._scoreToParCol, 1, 1)
       .setFormulas(this._createScoreToParFormulas(this._data.length, this._footerRowStart+2));
   }
 
@@ -325,7 +319,6 @@ class Leaderboard {
     let rule;
     let range;
     for (let i=this._dataCol+1; i<this._dataCol+5; i++) {
-      //console.log(`Par score column ${i} par value = ${sheet.getRange(this._footerRowStart+2, i, 1, 1).getValue()}`);
       range = sheet.getRange(this._dataRow, i, this._data.length, 1)
       rule = SpreadsheetApp.newConditionalFormatRule()
         .whenNumberLessThan(parseInt(sheet.getRange(this._footerRowStart+2, i, 1, 1).getValue()))
@@ -333,7 +326,6 @@ class Leaderboard {
         .setRanges([range])
         .build();
       newRules.push(rule);
-      //console.log(`newRule length ${newRules.length}`);
     }
     rules = sheet.getConditionalFormatRules();
     sheet.setConditionalFormatRules([...rules,...newRules]);

@@ -7,10 +7,7 @@
  * final leaderboard at the end of the tournament.                             
  * 
  * @param {PlayerRound[]} ? Array of player rounds for this leaderboard or should we just get PlayerRounds class?
- * TODO - Determine what tournaments are in the points run (what is the key?)
- *        - Use the tournament number as the key
- *      - Determine the layout of the leaderboard
- *        rank name events points #wins #top5 points-behind
+ * TODO - 
  *      - What function/methods can be shared with LeaderBoard class
  *        - undetermined and will be evaluated at creation time 
  *      - Make sure we take into account ties
@@ -23,7 +20,6 @@ class PointsLeaderboard {
     //this._data = data;
     this._sheetName = "GPFT Points Leaderboard";
     this._pointsSheet;
-    //this._tournaments = [23.01,23.02,23.03,23.04];
     this._tournaments = [23.02,23.03,23.04];
     this._tableData = [];
     
@@ -34,6 +30,7 @@ class PointsLeaderboard {
     this._headerRows = 2;
     this._headerTitle = [["Golf+ fun Points Leaderboard"]];
     this._headerColor = "#dcfaf5";
+    this._alternatingRowColor = "#f2f9fa" 
     this._headerTitleFontStyle = [["bold"]];
     this._headerTitleFontSize = 14;
     this._headerColumnTitles = [["Rank", "Name", "Points", "Events", "# Wins","Top Three"]];
@@ -103,22 +100,16 @@ class PointsLeaderboard {
     
     // Look at each tournament and calculate points
     tournyData.forEach( (v,k,m) => {
-      //console.log(`Tournament: ${k}`);
       // Loop for all the tournament data that is already sorted
       index = 0;
       v.forEach( t => {
-        //console.log(`Player: ${t.name}`);
         // See if we have this player yet
         tmpPP = this._tableData.findIndex(p => p._name == t.name);
         if (tmpPP != -1) {
-          //console.log(`Found player ${t.name} in the array`);
           pp = this._tableData[tmpPP];
-          //console.log(` index: ${tmpPP} record: ${this._tableData[tmpPP]}`);
         } else {
-          //console.log(`Player not found, adding to array`);
           pp = new PlayerPoints(t);
         }
-        //console.log(`Current pp: Name: ${pp.name} Points: ${pp.points}`);
 
         // Determine how many points to award
         pp.events = pp.events+1;
@@ -134,15 +125,8 @@ class PointsLeaderboard {
           pp.points = pp.points + 1;
         }
 
-        //console.log(`After Calculations: Name: ${pp.name} Points: ${pp.points}`)
         if (tmpPP > -1) {
-          //console.log(`before splice: ${JSON.stringify(this._tableData)}`);
-          //console.log(`before splice: `);
-          //this._tableData.forEach(r => console.log(`  ${r}`));
           this._tableData.splice(tmpPP,1,pp);
-          //console.log(`after splice: ${JSON.stringify(this._tableData)}`);
-          //console.log(`after splice:`);
-          //this._tableData.forEach(r => console.log(`  ${r}`));
         } else {
           this._tableData.push(pp);
         }
@@ -151,7 +135,6 @@ class PointsLeaderboard {
 
     });
     this._tableData.sort((a,b) => b.points - a.points);
-    //this._tableData.forEach((r) => console.log(`${r.toArray()}`));
     return this._tableData;
   }
 
@@ -183,13 +166,10 @@ class PointsLeaderboard {
           }
           numRounds = numRounds + plyrResults.getNumRounds();
           totalByPlayer.push({"name": p, "score": total});
-          //console.log(`Player "${p}"" has ${plyrResults.getNumRounds()} rounds in ${t} tournament`);
         }    
         total = 0;
       }
       totalByPlayer.sort((a, b) => parseInt(a.score) - parseInt(b.score));
-      //console.log(`_sliceData: Tourny ${t}`);
-      //totalByPlayer.forEach(p => console.log(`  ${p.name} ${p.score}`));
       fedex.set(t, totalByPlayer);
       totalByPlayer = [];
     });
@@ -251,6 +231,13 @@ class PointsLeaderboard {
       .setFontSize(this._dataFontSize)
       .setHorizontalAlignments(createValueArray(dataAry.length, 6, "center"))
       .setValues(dataAry);
+
+    sheet
+      .getRange(this._dataRowStart,this._dataColStart, dataAry.length, dataAry[0].length)
+      .applyRowBanding()
+      .setHeaderRowColor("white")
+      .setFirstRowColor(this._alternatingRowColor) // #faf8c8-yellow #edf2fa-blue
+      .setSecondRowColor("white");
 
     sheet
       .getRange(this._dataRowStart, this._dataColStart+1, dataAry.length, 1)
