@@ -8,9 +8,7 @@
 class PlayerPoints {
   constructor(data) {
     this._name = data.name;
-    this._score = data.score;
-
-    this._pointsData = [];
+    //this._score = data.score;
     this._points = 0;
     this._rank = 0;
     this._events = 0;
@@ -25,7 +23,7 @@ class PlayerPoints {
   get rank() { return this._rank;}
   get events()  { return this._events;}
   get name() { return this._name}
-  get score()  { return this._score;}
+  //get score()  { return this._score;}
   get wins()  { return this._numWins;}
   get topfive()  { return this._numTopFive;}
 
@@ -44,13 +42,13 @@ class PlayerPoints {
    * Output the data in an array
    */
   toArray() {
-    return [this._rank, this._name, this._events, this._points, this._numWins, this._numTopFive];
+    return [this._rank, this._name, this._points, this._events, this._numWins, this._numTopFive];
   }
 
   /**
    * Print the record out
    */
   toString() {
-    return `${this._date} ${this._number} ${this._name} ${this._round} ${this._score}`
+    return `${this._rank} ${this._name} ${this._points} ${this._events} ${this._numWins} ${this._numTopFive}`;
   }
 }

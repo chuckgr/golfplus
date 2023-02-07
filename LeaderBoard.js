@@ -126,8 +126,11 @@ class Leaderboard {
    *                       based on how many players have a scorecard for the tournament 
    */
   _addData(data) {
-    this._leaderboardSheet.insertRows(this._dataRow, data.length+1);  
-    this._leaderboardSheet.getRange(this._dataRow,this._dataCol, data.length, data[0].length).setValues(data);
+    this._leaderboardSheet
+      .insertRows(this._dataRow, data.length+1);  
+    this._leaderboardSheet
+      .getRange(this._dataRow,this._dataCol, data.length, data[0].length)
+      .setValues(data);
   }
 
   /**
@@ -231,10 +234,6 @@ class Leaderboard {
     //TODO move hardcoded values to settings
     sheet.getRange(rangeRowStart+1, this._sumColNum, this._footerNumRows, 1)
         .setBorder(true, true, false, false, false, false);
-
-        // Get the total vs par for the course by using a custom function to calculate each score row
-    //sheet.getRange(this._headerRow+1, this._scoreToParCol, this._data.length, 1)
-    //  .setFormulas(this._createScoreToParFormulas(this._data.length, rangeRowStart+2));  
 
     // Set the font for the whole sheet
     sheet.getRange(1, 1, sheet.getLastRow(), sheet.getLastColumn())
@@ -358,16 +357,6 @@ class Leaderboard {
   _createScoreToParFormulas(rows, lastRow) {
     let formulas = [];
     formulas.push([`=DIFFTOPAR(${this._sumColStart}${this._sumColOff}:${this._sumColEnd}${rows+this._sumColOff-1},$${this._sumColStart}$${lastRow}:$${this._sumColEnd}$${lastRow})`]);
-    return formulas;
-  }
-
- /**
-   * Create the formulas for +/- par
-   */
-  _createScoreToParFormulas2(rows, row) {
-    let formulas = [];
-    [...Array(rows)].forEach( (r,i) => 
-      formulas.push([`=DIFFTOPAR(${this._sumColStart}${i+this._sumColOff}:${this._sumColEnd}${i+this._sumColOff},$${this._sumColStart}$${row}:$${this._sumColEnd}$${row})`]));
     return formulas;
   }
 

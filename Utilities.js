@@ -51,23 +51,6 @@ function TOURNYWEEKS(start, count) {
 /**
  * Calculate the differance from par for the ranges passed
  * 
- * @param {range} - Range containing the score to check
- * @paran {range} - Range for all of the courses in the footer typically
- * @return {number} - The difference to par
- */
-function DIFFTOPARO(scoresRange, coursesRange) {
-  let diffToPar = 0;
-  scoresRange[0].forEach((s,i) => {
-    if (s != "") {
-      diffToPar = diffToPar + (s - coursesRange[0][i]);
-    }
-  });
-  return diffToPar;
-}
-
-/**
- * Calculate the differance from par for the ranges passed
- * 
  * @param {range}  - Range containing the scores to check
  * @paran {range}  - Range for all of the courses in the footer typically
  * @return {array} - The difference to par
@@ -117,6 +100,22 @@ function columnToLetter(column) {
   }
   return letter;
 }
+
+/** 
+ * Create an array with the text to be used for the spreadsheet class methods.  
+ */
+function createValueArray(rows, cols, text) {
+    let fontAry = [];
+    let rowAry = [];
+    [...Array(rows)].forEach(r => {
+      [...Array(cols)].forEach( c => {
+        rowAry.push(text);
+      });
+      fontAry.push(rowAry); 
+      rowAry = new Array(); 
+    });
+    return fontAry;
+  }
 
 /**
  * Export spreadsheet from GitHub

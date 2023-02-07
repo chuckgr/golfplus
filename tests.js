@@ -1,4 +1,12 @@
 /**
+ * Test tje mew utility createValueArray() function
+ */
+function test_createValueArray() {
+  let out = createValueArray(3,2, "test");
+  console.log(out);
+}
+
+/**
  * Test PlayerPoints class
  */
 function test_playerPoints() {

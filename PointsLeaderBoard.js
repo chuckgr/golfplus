@@ -21,10 +21,32 @@ class PointsLeaderboard {
   
   constructor() {
     //this._data = data;
-    this._sheetName = "FedEx Points Leaderboard";
+    this._sheetName = "GPFT Points Leaderboard";
     this._pointsSheet;
-    this._tournaments = [23.01,23.02,23.03,23.04];
+    //this._tournaments = [23.01,23.02,23.03,23.04];
+    this._tournaments = [23.02,23.03,23.04];
     this._tableData = [];
+    
+    // Define settings
+    this._numCols = 6;
+    this._headerRowStart = 2;
+    this._headerColStart = 2;
+    this._headerRows = 2;
+    this._headerTitle = [["Golf+ fun Points Leaderboard"]];
+    this._headerColor = "#dcfaf5";
+    this._headerTitleFontStyle = [["bold"]];
+    this._headerTitleFontSize = 14;
+    this._headerColumnTitles = [["Rank", "Name", "Points", "Events", "# Wins","Top Three"]];
+    this._headerHorizAlign = [["center", "center", "center", "center", "center", "center"]];
+    this._dataHorizAlign = [["center", "left", "center", "center", "center", "center"]];
+    this._headerColumnTitlesFontSize = 12;
+    this._headerColumnTitlesFontStyles = [["bold", "bold", "bold", "bold", "bold", "bold"]];
+    this._fontName = "Trebuchet MS"; // "Roboto Mono" "Comfortaa"
+    this._dataRowStart = this._headerRowStart+this._headerRows;
+    this._dataColStart = this._headerColStart;
+    this._dataFontSize = 12;
+
+    // Kick things off
     this._go();
   }
 
@@ -38,14 +60,11 @@ class PointsLeaderboard {
     // Calculate the stats and format them into an array
     let leaderBoardData = this._calculateScores(tournyBoards);
 
-    // Create the sheet
-    //this._createSheet();
-
     // Add the data
-    //this._buildLeaderBoard(tournyBoards);
+    this._buildLeaderBoard(leaderBoardData, this._createSheet());
 
     // Format the sheet
-    //this._formatSheet();
+    //this._formatSheet(this._pointsSheet);
   }
 
   /**
@@ -58,43 +77,89 @@ class PointsLeaderboard {
     if (this._pointsSheet == null) {
       this._pointsSheet = ss.insertSheet(sn);
     }
+    return this._pointsSheet;
   }
+
+  /**
+   * Clear tbe sheet before adding new data
+   */
+  _clearSheet() {
+    if (this._pointsSheet.getLastRow()>0) {
+      this._pointsSheet
+        .getRange(1, 1, this._pointsSheet.getLastRow(), this._pointsSheet.getLastColumn())
+        .clear();
+    }
+  }
+
 
   /**
    * Populate the sheet with the data     
    */
   _calculateScores(tournyData) {
-    let tournament;
-    let points = [10, 8, 6, 4, 2];
+    let points = [8, 6, 4];
     let index = 0;
     let pp;
+    let tmpPP;
     
     // Look at each tournament and calculate points
     tournyData.forEach( (v,k,m) => {
-      console.log(`Map = ${k} ${v}`);
+      //console.log(`Tournament: ${k}`);
       // Loop for all the tournament data that is already sorted
+      index = 0;
       v.forEach( t => {
-        pp = new PlayerPoints(t, k);
+        //console.log(`Player: ${t.name}`);
+        // See if we have this player yet
+        tmpPP = this._tableData.findIndex(p => p._name == t.name);
+        if (tmpPP != -1) {
+          //console.log(`Found player ${t.name} in the array`);
+          pp = this._tableData[tmpPP];
+          //console.log(` index: ${tmpPP} record: ${this._tableData[tmpPP]}`);
+        } else {
+          //console.log(`Player not found, adding to array`);
+          pp = new PlayerPoints(t);
+        }
+        //console.log(`Current pp: Name: ${pp.name} Points: ${pp.points}`);
+
+        // Determine how many points to award
         pp.events = pp.events+1;
-        pp.points = pp.points + points[index];
+        if (index < 3) {
+          pp.topfive = pp.topfive+1;  
+        } 
         if (index === 0) {
           pp.wins = pp.wins+1;
-          pp.topfive = pp.topfive+1;
-        } else if (index < 5) {
-          pp.topfive = pp.topfive+1;
+          pp.points = pp.points + points[index];
+        } else if (index < points.length) {
+          pp.points = pp.points + points[index];
+        } else {
+          pp.points = pp.points + 1;
         }
-        this._tableData.push(pp);
+
+        //console.log(`After Calculations: Name: ${pp.name} Points: ${pp.points}`)
+        if (tmpPP > -1) {
+          //console.log(`before splice: ${JSON.stringify(this._tableData)}`);
+          //console.log(`before splice: `);
+          //this._tableData.forEach(r => console.log(`  ${r}`));
+          this._tableData.splice(tmpPP,1,pp);
+          //console.log(`after splice: ${JSON.stringify(this._tableData)}`);
+          //console.log(`after splice:`);
+          //this._tableData.forEach(r => console.log(`  ${r}`));
+        } else {
+          this._tableData.push(pp);
+        }
+        index++;
       });
 
     });
-    console.log(`PLB:_buildLeaderBoard: ${JSON.stringify(this._tableData)}`);
+    this._tableData.sort((a,b) => b.points - a.points);
+    //this._tableData.forEach((r) => console.log(`${r.toArray()}`));
+    return this._tableData;
   }
 
   /**
    * Slice up the data into tournaments and create the data structures to be used by 
    * the pointleaderboard
    * 
-   * @return {Map} AMap containing the table data for the points spreadsheet by tournament number
+   * @return {Map} Map containing the table data for the points spreadsheet by tournament number
    */
   _sliceData() {
     const playerRounds = new PlayerRounds();
@@ -123,11 +188,34 @@ class PointsLeaderboard {
         total = 0;
       }
       totalByPlayer.sort((a, b) => parseInt(a.score) - parseInt(b.score));
+      //console.log(`_sliceData: Tourny ${t}`);
+      //totalByPlayer.forEach(p => console.log(`  ${p.name} ${p.score}`));
       fedex.set(t, totalByPlayer);
       totalByPlayer = [];
     });
 
     return fedex;
+  }
+
+  /**
+   * Take the calculated points data and add it to the newly created sheet
+   */
+  _buildLeaderBoard(tournyBoards, sheet) {
+    // Clear the sheet first
+    this._clearSheet();
+
+    // Turn off grid lines
+    sheet.setHiddenGridlines(true);
+
+    // Set the header rows
+    this._setHeader(sheet);
+
+    // Add in the data
+    this._addData(tournyBoards, sheet);
+
+    // Format the data area 
+    sheet.autoResizeColumns(this._headerColStart+1, this._numCols);
+
   }
 
   /**
@@ -141,9 +229,61 @@ class PointsLeaderboard {
   }
 
   /**
-   * Format the data on the sheet
+   * Take passed data and add it to the spreadsheet
+   * 
+   * @param {PlayerPoints[]} data - 2d nx5 array of PlayerPoints objects for points leaderboard. 
+   *                                n is the number of rows based on how many players have 
+   *                                a played in a tournament. 
    */
-  _formatSheet() {
+  _addData(data, sheet) {
+    let dataAry = [];
+    data.forEach(p => dataAry.push(p.toArray()));
+    dataAry.map((r,i) => r[0]=i+1);
 
+    // Add the number of rows for the new data 
+    sheet
+      .insertRows(this._dataRowStart, dataAry.length+1);
+
+    // Insert the data and format it    
+    sheet
+      .getRange(this._dataRowStart,this._dataColStart, dataAry.length, dataAry[0].length)
+      .setFontFamily(this._fontName)
+      .setFontSize(this._dataFontSize)
+      .setHorizontalAlignments(createValueArray(dataAry.length, 6, "center"))
+      .setValues(dataAry);
+
+    sheet
+      .getRange(this._dataRowStart, this._dataColStart+1, dataAry.length, 1)
+      .setHorizontalAlignments(createValueArray(dataAry.length, 1, "right"));
+  }
+
+  /**
+   * Add the header row(s)
+   */
+  _setHeader(sheet) {
+    // Set the header title, color, and merge cols
+    sheet
+      .getRange(this._headerRowStart, this._headerColStart, 1, 1)
+      .setBackground(this._headerColor)
+      .setFontWeight(this._headerTitleFontStyle)
+      .setFontSize(this._headerTitleFontSize)
+      .setFontFamily(this._fontName)
+      .setHorizontalAlignment(createValueArray(1,1, "center"))
+      .setValues(this._headerTitle);
+
+    // Merge the header title
+    sheet
+      .getRange(this._headerRowStart, this._headerColStart, 1, this._numCols)
+      .merge()
+
+    // Set the column header title
+    sheet
+      .getRange(this._headerRowStart+1, this._headerColStart, 1, 6)
+      .setBackground(this._headerColor)
+      .setFontWeight(this._headerColumnTitleFontStyle)
+      .setFontSize(this._headerColumnTitlesFontSize)
+      .setFontFamily(this._fontName)
+      .setHorizontalAlignments(this._headerHorizAlign)
+      .setValues(this._headerColumnTitles);   
   }
 }
