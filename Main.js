@@ -9,15 +9,15 @@ const tournaments = new Tournaments();
  * Add our own menu items
  */ 
 function onOpen() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const menuEntries = [ 
-    {name: "Create Leaderboard by Tournament Number", functionName: "selectTournament"},
-    {name: "Create Points Leaderboard", functionName: "buildPointsBoard"},
-    {name: "Create/Update Form", functionName: "updateForm"},
-    {name: "Recreate All Leaderboards", functionName: "allLeaderBoards"}
-  ];
-  ss.addMenu("Golf+ fun tournaments", menuEntries); 
-  
+  var ui = SpreadsheetApp.getUi();
+  ui.createMenu('Golf+ fun tournaments')
+      .addItem('Create Leaderboard by Tournament Number', 'selectTournament')
+      .addItem('Create Points Leaderboard', 'buildPointsBoard')
+      .addItem('Recreate All Leaderboards', 'allLeaderBoards')
+      .addSeparator()
+      .addSubMenu(ui.createMenu('Forms')
+          .addItem('Create/Update Form', 'updateForm'))
+      .addToUi();
 }
 
 /** 
