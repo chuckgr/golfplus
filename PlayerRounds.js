@@ -5,6 +5,10 @@
  *                   {course} - Course played
  *                   {date}   - Date round was played
  *                   {score}  - Score for the round
+ * 
+ * Copyright 2023 Chuck Grieshaber, All rights reserved.
+ * Code can be used freely as long as the copyright statement is kept with 
+ * all code used and the code is not used in a commercial product. 
  */
 class PlayerRounds {
   constructor(data) {

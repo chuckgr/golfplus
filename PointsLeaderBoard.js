@@ -13,6 +13,10 @@
  *      - Make sure we take into account ties
  *        - Do we give them the same point value and then reduce later (10 10 6)? or
  *          we go straight down (10 10 8?)
+ * 
+ * Copyright 2023 Chuck Grieshaber, All rights reserved.
+ * Code can be used freely as long as the copyright statement is kept with 
+ * all code used and the code is not used in a commercial product.
  */
 class PointsLeaderboard {
   

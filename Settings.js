@@ -2,20 +2,29 @@
  * 
  * Settings class that contains the information from the Setting sheet concerning settings
  * 
- * Settings in the table are organized as such
+ * Settings in the table are organized as such in previous product that we are basing this on
  * Row 2 - Setting name 
- *  "  3 - not used (? probably take this out)
+ *  "  3 - not used (take this out for our version)
  *  "  4 - Type format for the field (what are the options?)
  *         # - {number} one or more # indicate numbers and digits
  *         mm/dd/yyyy - {date}
  *         mm/dd/yyyy hh:mm:ss- {dateTime}
  *  "  5 - Required field 
+ *         "required" "automatic" (need to understand this one)
  *  "  6+  Data for setting
+ *         array of values or single value
  * 
  * TODO - Convert to class, validate types, test
+ * 
+ * Copyright 2023 Chuck Grieshaber, All rights reserved.
+ * Code can be used freely as long as the copyright statement is kept with 
+ * all code used and the code is not used in a commercial product.
  */ 
 class Settings {
   constructor() {
+    this._dateTimeFormat = 'mm/dd/yyyy hh:mm:ss';
+    this._dateFormat = 'mm/dd/yyyy';
+    this._numberFormat = '#';
     this._data = SpreadsheetApp.getActiveSpreadsheet()
                   .getSheetByName('Settings')
                   .getDataRange()
@@ -36,7 +45,7 @@ class Settings {
     // Assure we have a setting name
     if (data[0][i].trim() !== "") {
       displayName = data[0][i];
-      // Save the setting name
+      // Save the setting name and remove blanks between
       name = data[0][i].toUpperCase()
                        .replace(/ /g, '');
       // Determine the setting type
@@ -48,6 +57,8 @@ class Settings {
       } else if (data[2][i] === '###' || data[2][i] === '##' || data[2][i] === '#') {
         type = 'Number';
       } else {
+        // Undefined type that we just grab the data for
+        // - do we need to define?
         type = data[2][i];
       }
       

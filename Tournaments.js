@@ -2,6 +2,10 @@
  * Tournaments for the Golf+ for fun group
  *
  * This object will read in the spreadsheet for the settings for each tounament 
+ * 
+ * Copyright 2023 Chuck Grieshaber, All rights reserved.
+ * Code can be used freely as long as the copyright statement is kept with 
+ * all code used and the code is not used in a commercial product.
  */
 class Tournaments {
   constructor() {

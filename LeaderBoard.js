@@ -13,6 +13,9 @@
  * Id for original spreadsheet: 11SMT0fM0qMMG11DqmIb6sNzihtL6W6qOBJmn7ENJsLA
  * Script id for original spreadsheet: 1BsdkdXPc6qhec81216mX9dX-aMxgkSSoD0fKM0M6MVqswOyv9vf1M8Eg
  * 
+ * Copyright 2023 Chuck Grieshaber, All rights reserved.
+ * Code can be used freely as long as the copyright statement is kept with 
+ * all code used and the code is not used in a commercial product.
  */
 class Leaderboard {
   

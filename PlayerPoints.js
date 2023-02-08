@@ -4,6 +4,10 @@
  * @param {array} - Parameters for this round in the passed object
  *                   {name}       - Player name
  *                   {score}      - Total score for this player on this tournament
+ * 
+ * Copyright 2023 Chuck Grieshaber, All rights reserved.
+ * Code can be used freely as long as the copyright statement is kept with 
+ * all code used and the code is not used in a commercial product.
  */
 class PlayerPoints {
   constructor(data) {

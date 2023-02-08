@@ -1,3 +1,20 @@
+/**
+ * Golf+ fun tournaments 
+ * 
+ * This code was developed to maintain the tournament leaderboards for the Facebook
+ * Golf+ fun tournaments group.  The group will hold tournaments over a week or month.
+ * This code contains a form to enter the scores for a tournament as well as a modal
+ * popup to aquire the tournament number. The tournaments are identified by a 
+ * tournament number which is the last two digits of the year and a two digit sequential
+ * number of the tournament for this year (i.e. 23.02 for the second tournament of 2023).
+ * 
+ * This file is the location where most of the scripts get kicked off.
+ * 
+ * Copyright 2023 Chuck Grieshaber, All rights reserved.
+ * Code can be used freely as long as the copyright statement is kept with 
+ * all code used and the code is not used in a commercial product.
+ */
+
 /** 
  * Globals
  */ 

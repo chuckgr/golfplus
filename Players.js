@@ -1,6 +1,10 @@
 /** 
  * Get all the players from the sheet named "Players" for creating the
  * form and whatever else we need.
+ * 
+ * Copyright 2023 Chuck Grieshaber, All rights reserved.
+ * Code can be used freely as long as the copyright statement is kept with 
+ * all code used and the code is not used in a commercial product.
  */ 
 class Players {
   constructor() {

@@ -1,5 +1,5 @@
 /**
- * Test tje mew utility createValueArray() function
+ * Test the new utility createValueArray() function
  */
 function test_createValueArray() {
   let out = createValueArray(3,2, "test");

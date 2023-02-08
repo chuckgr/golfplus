@@ -2,6 +2,9 @@
  * 
  * Contains the data/methods for the courses in Golf+
  *
+ * Copyright 2023 Chuck Grieshaber, All rights reserved.
+ * Code can be used freely as long as the copyright statement is kept with 
+ * all code used and the code is not used in a commercial product. 
  */
 class Courses {
   constructor() {
