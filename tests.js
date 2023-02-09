@@ -1,4 +1,12 @@
 /**
+ * Test 'instanceof' keyword on my classes
+ */
+function test_instanceOf() {
+  let lb = new Leaderboard();
+  console.log(`is lb an instanceof LeaderBoard class? ${lb instanceof Tournament}`);
+}
+
+/**
  * Test the new utility createValueArray() function
  */
 function test_createValueArray() {

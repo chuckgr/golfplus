@@ -156,10 +156,12 @@ class Leaderboard {
 
       // Set the formulas for summing the scores   
       sheet.getRange(this._dataRow, this._sumColNum, this._data.length, 1)
+        .setHorizontalAlignments(createValueArray(this._data.length, 1, "center"))
         .setFormulas(this._createSumFormulas(this._data.length));
 
       // Set the number format for score vs par
       sheet.getRange(this._dataRow, this._scoreToParCol, this._data.length+1, 1)
+        .setHorizontalAlignments(createValueArray(this._data.length+1, 1, "center"))
         .setNumberFormats(this._createTotalScoreFormat(this._data.length+1));
 
       // Set the horizontal alignment for the header row
@@ -361,7 +363,7 @@ class Leaderboard {
   _createTotalScoreFormat(rows) {
     let formats = [];
     //[...Array(rows)].forEach( (r,i) => formats.push(["+0;-0;0"]));
-    [...Array(rows)].forEach( (r,i) => formats.push(["(+0);(-0);(0)"]));
+    [...Array(rows)].forEach( (r,i) => formats.push(['(+0);(-0);"E"']));
     return formats;
   }
 

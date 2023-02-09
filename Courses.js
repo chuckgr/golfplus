@@ -60,7 +60,7 @@ class Courses {
        "Valhalla":72,
        "Wolf Creek":72,
        "Pebble Beach":72,
-       "TPC Scottsdale":72
+       "TPC Scottsdale":71
       };
     return this._par[course];
   }

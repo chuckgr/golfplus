@@ -25,6 +25,9 @@ class Settings {
     this._dateTimeFormat = 'mm/dd/yyyy hh:mm:ss';
     this._dateFormat = 'mm/dd/yyyy';
     this._numberFormat = '#';
+    this._nameLoc = 0;
+    this._typeLoc = 1;
+    this._requiredLoc = 2;
     this._data = SpreadsheetApp.getActiveSpreadsheet()
                   .getSheetByName('Settings')
                   .getDataRange()
@@ -43,27 +46,29 @@ class Settings {
   // Loop for all settings and create a setting object for each
   for (var i=0; i<data[0].length; i++) {
     // Assure we have a setting name
-    if (data[0][i].trim() !== "") {
+    if (data[this._nameLoc][i].trim() !== "") {
       displayName = data[0][i];
       // Save the setting name and remove blanks between
       name = data[0][i].toUpperCase()
                        .replace(/ /g, '');
       // Determine the setting type
       var settingType = data[2][i];
-      if (data[2][i] === 'mm/dd/yyyy hh:mm:ss') {
+      if (data[this._typeLoc][i] === 'mm/dd/yyyy hh:mm:ss') {
         type = 'Datetime';
-      } else if (data[2][i] === 'mm/dd/yyyy') {
+      } else if (data[this._typeLoc][i] === 'mm/dd/yyyy') {
         type = 'Date';
-      } else if (data[2][i] === '###' || data[2][i] === '##' || data[2][i] === '#') {
+      } else if (data[this._typeLoc][i] === '###' || 
+                data[this._typeLoc][i] === '##' || 
+                data[this._typeLoc][i] === '#') {
         type = 'Number';
       } else {
         // Undefined type that we just grab the data for
         // - do we need to define?
-        type = data[2][i];
+        type = data[this._typeLoc][i];
       }
       
       // Determine if its a required field
-      required = data[3][i];
+      required = data[this._requiredLoc][i];
       // Enum of values if the first row is not empty
       if (data[4][i] !== '') {
         var e = 4+0;

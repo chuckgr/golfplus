@@ -69,6 +69,8 @@ function recreateForm() {
  * Get the valid tournament numbers for the selection dialog
  * 
  * @return {array} Contains all of the valid tournament numbers
+ * 
+ * TODO - Move this to the Tournaments class
  */
 function getTournamentNumbers(){
   let numbers = [];
@@ -92,7 +94,9 @@ function selectTournament() {
 }
 
 /**
- * Create a leaderboard for the tournament selected from the dialog box
+ * Create a leaderboard for the tournament selected from the dialog box. 
+ * This is called by the script service from the clients browser 
+ * (see SelectTournamentDialog.html)
  * 
  * @param {number} number - the tournament number selected by the user
  */
@@ -121,8 +125,8 @@ function weeklyLeaderBoard() {
  * Build the points leader board
  */
 function buildPointsBoard() {
-  // Gets kicked off at creation time
-  let plb = new PointsLeaderboard();
+  // Gets kicked off at creation time in the constructor
+  const plb = new PointsLeaderboard();
 }
 
 /**
