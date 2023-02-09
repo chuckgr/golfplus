@@ -52,6 +52,13 @@ class Tournaments {
   }
 
   /**
+   * Get tournament name by using the tournament id as a key
+   */
+  getTournamentNameById(id) {
+    return this._tournaments.get(id).name;
+  }
+
+  /**
    * Get all the tournaments
    * 
    * @return {array} 2D Array for each tournament
@@ -69,14 +76,6 @@ class Tournaments {
     let returnAry = [];
     this._tournaments.forEach(t => returnAry.push(t.number));
     return returnAry;
-  }
-
-  /**
-   * Get the number of defined tournament rounds. Since they are not defined ahead of time
-   * we can use this to determine if a round was missed by a player
-   */
-  getNumberOfCourses() {
-
   }
 
   /**

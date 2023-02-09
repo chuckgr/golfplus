@@ -1,4 +1,12 @@
 /**
+ * Test new method to get tounament name
+ */
+function test_getTournyName() {
+  let tourny = tournaments.getTournamentById(23.03);
+  console.log(`Name=${tourny.name}`);
+  console.log(`"${tournaments.getTournamentNameById(23.03)}"`);
+}
+/**
  * Test 'instanceof' keyword on my classes
  */
 function test_instanceOf() {

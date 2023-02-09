@@ -10,6 +10,7 @@
  *                     - greens: Green speed 
  *                     - wind: Wind speed
  *                     - level: Player Level
+ *                     - name: Tournament name (if any)
  * 
  * Copyright 2023 Chuck Grieshaber, All rights reserved.
  * Code can be used freely as long as the copyright statement is kept with 
@@ -36,6 +37,7 @@ class TournamentRound {
     this._greens = data[5];
     this._wind = data[6];
     this._level = data[7];
+    this._name = data[8];
   }
 
   /**
@@ -107,6 +109,13 @@ class TournamentRound {
    */
   get level() {
     return this._level;
+  }
+
+  /**
+   * Getter for Tournament name
+   */
+  get name() {
+    return this._name;
   }
 
   /**

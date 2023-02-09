@@ -41,6 +41,7 @@ class Leaderboard {
     this._scoreCols = 4;
     this._createScoreToParRow = this._headerRow+7;
     this._headerColor = "#faf570"; //"yellow";
+    this._headerTitleFontSize = 16;
     this._sumColNum = this._headerColumn+5; // 6;
     this._sumColOff =  this._headerRow+this._headerNumRows;   
     this._sumColStart = columnToLetter(this._headerColumn+1);   // "C" 
@@ -68,6 +69,7 @@ class Leaderboard {
    */
   create(id) {
     this._tournyNumber = id;
+
     // create/find the sheet
     this._createSheet(id);
 
@@ -78,7 +80,7 @@ class Leaderboard {
     this._addData(this._data);
 
     // format the sheet
-    this._setLayout(this._leaderboardSheet);
+    this._setLayout(this._leaderboardSheet, id);
 
     // Add the footer
     this._createFooter(this._leaderboardSheet);
@@ -146,8 +148,20 @@ class Leaderboard {
    * 
    * @param {spreadsheet} Sheet that the layout will be applied to
    */
-  _setLayout(sheet) {
+  _setLayout(sheet, id) {
     if (sheet != null) {
+      // Add in the tournament name as the first line in the header 
+      sheet.getRange(this._headerRow, this._headerColumn, 1, 1)
+        .setBackground(this._headerColor)
+        .setFontFamily(this._fontName)
+        .setFontSize(this._headerTitleFontSize)
+        .setValues([[tournaments.getTournamentNameById(id)]]);
+
+      // Merge all columns for the title together
+      sheet.getRange(this._headerRow, this._headerColumn, 1, this._numCols)
+        .setHorizontalAlignments(createValueArray(1,this._numCols,"center"))
+        .merge();  
+
       // Set the header row color, text, and border
       sheet.getRange(this._headerRow+1, this._headerColumn, this._headerTitle.length, this._numCols)
         .setBackground(this._headerColor)

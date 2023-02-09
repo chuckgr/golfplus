@@ -11,6 +11,7 @@
 class Tournament {
   constructor(tournyNumber) {
     this._number = tournyNumber;
+    this._name = "";
     this._rounds = new Array();
     this._valid = false;
   }
@@ -21,6 +22,7 @@ class Tournament {
    * @param {TournamentRound} tournyRound - Contains a round for the current tournament 
    */
   add(tournyRound) {
+    this._name = tournyRound.name;
     this._rounds.push(tournyRound);
   }
 
@@ -38,6 +40,15 @@ class Tournament {
    */
   get number() {
     return this._number;
+  }
+
+  /**
+   * Get the name of the tournament
+   * 
+   * @return {string} Name of this tournament
+   */
+  get name() {
+    return this._name;
   }
 
   /**
