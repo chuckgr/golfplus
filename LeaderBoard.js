@@ -131,7 +131,7 @@ class Leaderboard {
    */
   _addData(data) {
     this._leaderboardSheet
-      .insertRows(this._dataRow, data.length+1);  
+      .insertRows(this._dataRow, data.length+0);  
     this._leaderboardSheet
       .getRange(this._dataRow,this._dataCol, data.length, data[0].length)
       .setHorizontalAlignments(createValueArray(data.length, data[0].length, "center"))
@@ -186,13 +186,6 @@ class Leaderboard {
       sheet.getRange(this._headerRow+1, this._headerColumn, 1, this._numCols)
         .setFontWeights(this._fontStyles);
 
-      // Apply row banding for the data portion of the sheet
-      sheet.getRange(this._dataRow, this._headerColumn, this._data.length, this._data[0].length+2)
-        .applyRowBanding()
-        .setHeaderRowColor("white")
-        .setFirstRowColor("#faf8c8") // #faf8c8-yellow #edf2fa-blue
-        .setSecondRowColor("white");
-
       // TODO - move border values to settings page
       sheet.getRange(this._dataRow, this._sumColNum, this._data.length, 1)
         .setBorder(true, true, false, false, false, false);
@@ -203,8 +196,8 @@ class Leaderboard {
    * Create the footer values based on the tournaments that have been defined
    */
   _createFooter(sheet) {
-    let rangeRowStart = sheet.getLastRow()+1;
-    this._footerRowStart = sheet.getLastRow()+1;
+    let rangeRowStart = sheet.getLastRow()+0;
+    this._footerRowStart = sheet.getLastRow()+0;
     let rangeColStart = this._headerColumn;
 
     // Horizontal border of the top row of footer
@@ -260,7 +253,15 @@ class Leaderboard {
     this._createConditionalRuleScoreToPar(sheet);
 
     // Create a conditional rule for all of the scores to par
-    this._createConditionalRuleScores(sheet);
+    this._createConditionalRuleScores(sheet); 
+
+     // Apply row banding for the data portion of the sheet after footer data has been added/formatted
+    sheet
+        .getRange(this._dataRow, this._dataCol, this._data.length, this._data[0].length+2)
+        .applyRowBanding()
+        .setHeaderRowColor("white")
+        .setFirstRowColor("#faf8c8") // #faf8c8-yellow #edf2fa-blue
+        .setSecondRowColor("white");    
   }
 
   /**

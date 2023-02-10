@@ -1,4 +1,12 @@
 /**
+ * Kick off a build of leaderboard manually 
+ */
+function test_buildLB() {
+  let tID = 23.03;
+  tournamentByNumber(tID);
+}
+
+/**
  * Test new method to get tounament name
  */
 function test_getTournyName() {

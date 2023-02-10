@@ -23,6 +23,34 @@ const courses = new Courses();
 const tournaments = new Tournaments();
 
 /**
+ * Set a trigger to capture the form submit events
+ * 
+ * TODO - Create a function in Utilities file to check for a trigger 
+ *        to get tripped when a add score form is submitted. 
+ */
+//let triggers = new Triggers();
+/*
+let thisSheet = SpreadsheetApp.getActive();
+ScriptApp.newTrigger("postFormSubmit")
+  .forSpreadsheet(thisSheet)
+  .onFormSubmit()
+  .create();
+*/
+/**
+ * On form submit we will build the leaderboard for the tournament that the score was
+ * submitted to
+ *
+ * @param {Event} Event from the form submission 
+ */
+function postFormSubmit(e) {
+  let tournyNumber = e.values[2];
+  console.log(`Form Submitted: values: ${JSON.stringify(e.values)}`);
+  // TODO - Create new class to manage record backup on form submit
+  //      - 1) Get a list of current triggers
+  //
+}
+
+/**
  * Add our own menu items
  */ 
 function onOpen() {
