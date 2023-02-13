@@ -24,7 +24,7 @@ class PointsLeaderboard {
     //this._data = data;
     this._sheetName = "GPFT Points Leaderboard";
     this._pointsSheet;
-    this._tournaments = [23.02,23.03,23.04];
+    this._tournaments = [23.02,23.03,23.04,23.05,23.06,23.07,23.08];
     this._tableData = [];
     
     // Define settings
@@ -98,6 +98,8 @@ class PointsLeaderboard {
    */
   _calculateScores(tournyData) {
     let points = [8, 6, 4];
+    let lastScore = -1;
+    let tie = false;
     let index = 0;
     let pp;
     let tmpPP;
@@ -113,6 +115,18 @@ class PointsLeaderboard {
           pp = this._tableData[tmpPP];
         } else {
           pp = new PlayerPoints(t);
+        }
+
+        // Prepair handling of ties
+        if (lastScore == -1) {
+          // First score
+          lastScore = t.score;
+        } else if (lastScore == t.score) {
+          // TIE!
+          tie = true;
+          index--;
+        } else {
+          lastScore = t.score;
         }
 
         // Determine how many points to award
@@ -135,6 +149,9 @@ class PointsLeaderboard {
           this._tableData.push(pp);
         }
         index++;
+        if (tie) {
+          index++;
+        }
       });
 
     });

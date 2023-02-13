@@ -1,4 +1,33 @@
 /**
+ * Test Trigger class
+ */
+function test_triggerClass() {
+  // Lets create an installable trigger to see if we can find it
+  const ss = SpreadsheetApp.getActive();
+  //let triggerID = ScriptApp.newTrigger("postFormSubmit")
+  //                  .forSpreadsheet(ss)
+  //                  .onChange()
+  //                  .create();
+
+  let trig = new Triggers(ss);
+  let found = trig.find("14752940");
+  console.log(`Trigger found? ${found != null} `);
+  //trig._saveTriggerID("3756437776730826077");
+  console.log(` ${parseInt(trig._getTriggerID())}`);
+  if (triggers.find(triggers._getTriggerID())) {
+    console.log(`Found it: ${trig._getTriggerID()}`);
+  }
+}
+
+/**
+ * Used as a destination of the trigger
+ */
+function triggerCatcher(e) {
+  // Print the results
+  console.log(`${JSON.stringify(e)}`);
+} 
+
+/**
  * Kick off a build of leaderboard manually 
  */
 function test_buildLB() {

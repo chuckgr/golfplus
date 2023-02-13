@@ -26,20 +26,18 @@ class Leaderboard {
     this._tournyNumber;
     this._sheetName = `Leaderboard`;
     this._leaderboardSheet = null;
-    this._numCols = 7;
-    
     this._headerTitle = [["Name", "Round 1", "Round 2", "Round 3", "Round 4", "Total", "+/-"]];
     this._footerValues = [["Course"],["Par"],["Date"],["Tees"], ["Pins"], ["Greens"],["Wind"],["Level"]];
 
     // Everything will be based off the header row/col
-    this._headerRow = 2;
-    this._headerColumn = 2;
-    this._headerNumRows = 2;
-    //this._dataRow = this._headerRow+1;
-    this._dataRow = this._headerRow+this._headerNumRows;
-    this._dataCol = this._headerColumn;
-    this._scoreCols = 4;
-    this._createScoreToParRow = this._headerRow+7;
+    this._numCols = 7;
+    this._headerRow = 2;      // What row the header will start on
+    this._headerColumn = 2;   // What column the header will start on
+    this._headerNumRows = 2;  // Number of rows in the header
+    this._dataRow = this._headerRow+this._headerNumRows; // Data row starts after header
+    this._dataCol = this._headerColumn;                  // Data columns line up with the header
+    this._scoreCols = 4;                                 // Number of columns for the scores (4 rounds)
+    //this._createScoreToParRow = this._headerRow+7;       // Not used?
     this._headerColor = "#faf570"; //"yellow";
     this._headerTitleFontSize = 16;
     this._sumColNum = this._headerColumn+5; // 6;
@@ -131,7 +129,7 @@ class Leaderboard {
    */
   _addData(data) {
     this._leaderboardSheet
-      .insertRows(this._dataRow, data.length+0);  
+      .insertRows(this._dataRow, data.length);  
     this._leaderboardSheet
       .getRange(this._dataRow,this._dataCol, data.length, data[0].length)
       .setHorizontalAlignments(createValueArray(data.length, data[0].length, "center"))
@@ -186,6 +184,7 @@ class Leaderboard {
       sheet.getRange(this._headerRow+1, this._headerColumn, 1, this._numCols)
         .setFontWeights(this._fontStyles);
 
+      // Add border to the left of the score sum column
       // TODO - move border values to settings page
       sheet.getRange(this._dataRow, this._sumColNum, this._data.length, 1)
         .setBorder(true, true, false, false, false, false);
@@ -196,8 +195,8 @@ class Leaderboard {
    * Create the footer values based on the tournaments that have been defined
    */
   _createFooter(sheet) {
-    let rangeRowStart = sheet.getLastRow()+0;
-    this._footerRowStart = sheet.getLastRow()+0;
+    let rangeRowStart = sheet.getLastRow();
+    this._footerRowStart = sheet.getLastRow();
     let rangeColStart = this._headerColumn;
 
     // Horizontal border of the top row of footer
@@ -330,8 +329,6 @@ class Leaderboard {
 
   /**
    * Create conditional formatting rules for the individual scores
-   * 
-   * TODO - make it work
    */
   _createConditionalRuleScores(sheet) {
     let rules = [];
