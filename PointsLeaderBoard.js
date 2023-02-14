@@ -98,17 +98,15 @@ class PointsLeaderboard {
    */
   _calculateScores(tournyData) {
     let points = [8, 6, 4];
-    let lastScore = -1;
-    let tie = false;
-    let index = 0;
     let pp;
     let tmpPP;
+    let done = false;
     
     // Look at each tournament and calculate points
     tournyData.forEach( (v,k,m) => {
       // Loop for all the tournament data that is already sorted
       index = 0;
-      v.forEach( t => {
+      v.forEach( (t,i) => {
         // See if we have this player yet
         tmpPP = this._tableData.findIndex(p => p._name == t.name);
         if (tmpPP != -1) {
@@ -117,40 +115,50 @@ class PointsLeaderboard {
           pp = new PlayerPoints(t);
         }
 
-        // Prepair handling of ties
-        if (lastScore == -1) {
-          // First score
-          lastScore = t.score;
-        } else if (lastScore == t.score) {
-          // TIE!
-          tie = true;
-          index--;
-        } else {
-          lastScore = t.score;
-        }
-
-        // Determine how many points to award
         pp.events = pp.events+1;
-        if (index < 3) {
+        if (i < 3) {
           pp.topfive = pp.topfive+1;  
         } 
-        if (index === 0) {
-          pp.wins = pp.wins+1;
-          pp.points = pp.points + points[index];
-        } else if (index < points.length) {
-          pp.points = pp.points + points[index];
-        } else {
-          pp.points = pp.points + 1;
+
+        // Determine the points if there are ties
+        switch (i) {
+          case 0:
+            pp.wins = pp.wins+1;
+            if (v[0].score === v[1].score && v[0].score === v[2].score) {
+              pp.points = pp.points + points[i+2];
+              done = true;
+            } else if (v[0].score === v[1].score) {
+              pp.points = pp.points + points[i+1];
+            } else {
+              pp.points = pp.points + points[i];
+            }
+            break;
+          case 1:
+            console.log(`Case 1: ${v[1].name}`);
+            if (!done) {
+              if (v[1].score === v[0].score) {
+                pp.wins = pp.wins+1;
+              }
+              if (v[1].score === v[2].score) {
+                pp.points = pp.points + points[i+1];
+              } else {
+                pp.points = pp.points + points[i];
+              }
+            } else {
+              pp.points = pp.points + points[i+1];
+            }
+            break;
+          case 2:
+            pp.points = pp.points + points[i];
+            break;
+          default:
+            pp.points = pp.points + 1;
         }
 
         if (tmpPP > -1) {
           this._tableData.splice(tmpPP,1,pp);
         } else {
           this._tableData.push(pp);
-        }
-        index++;
-        if (tie) {
-          index++;
         }
       });
 
