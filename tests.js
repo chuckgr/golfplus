@@ -1,4 +1,34 @@
 /**
+ * Create file in folder test
+ */
+function test_createSpreadsheet() {
+  /*
+  // Works but has a depricated method addFile(), the Drive API works, so we go with that!
+  var destination = DriveApp.getFolderById('1PUUa99wncEhzpMHdnGvpWDgXsLTB7Ran');
+  var newFile = SpreadsheetApp.create('Golf+ tournaments - BACKUP').getId();
+  destination.addFile(DriveApp.getFileById(newFile));
+  */
+  let backup = new Backup();
+  backup.createFile(`Golf tournaments - backup`);
+}
+
+/**
+ * Backup class test
+ */
+function test_backupClass() {
+  //let bk = new Backup();
+  //bk._findFile("Golf tournaments - dev");
+
+  let backup = new Backup();
+  let backupSS = backup.findFile(backup.fileName);
+  let formRespSheet = SpreadsheetApp.getActive().getSheetByName("Form Responses");
+  if (!backupSS) {
+    backupSS = backup.createFile(backup.fileName);
+    backup.fullBackup(formRespSheet);
+  }
+}
+
+/**
  * Test Trigger class
  */
 function test_triggerClass() {

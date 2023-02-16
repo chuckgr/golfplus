@@ -28,7 +28,6 @@ const tournaments = new Tournaments();
 let triggers = new Triggers();
 // Get the property of the trigger and then see if it is still installed and active
 if (!triggers.find(triggers._getTriggerID())) {
-  console.log(`OnFormSubmit trigger not found, create the trigger`);
   triggers.create({"functionName":"postFormSubmit"});
 } 
 
@@ -45,7 +44,15 @@ function postFormSubmit(e) {
   console.log(`Form Submitted: values: ${JSON.stringify(e.values)}`);
 
   // TODO - Create new class to manage record backup on form submit and leadeboard creation
-  //      
+  /*
+  let backup = new Backup();
+  let backupSS = backup.findFile(backup.fileName);
+  let formRespSheet = SpreadsheetApp.getActive().getSheetName("Form Responses");
+  if (!backupSS) {
+    backupSSId = backup.createFile(backup.fileName);
+    backup.fullBackup(formRespSheet);
+  }
+  */
 
   // Recreate the leaderboard on form submit
   tournamentByNumber(tournyNumber); 
