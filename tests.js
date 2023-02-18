@@ -1,4 +1,15 @@
 /**
+ * Test incremental backup
+ */
+function test_incrementalBackup() {
+  let record = JSON.parse('["1/1/2021 22:49:36","1/1/2021","22.01","1","Bob Dylan","77"]');
+  let bk = new Backup();
+  if (bk.findFile(bk.fileName)) {
+    bk.add(record);
+  }
+}
+
+/**
  * Create file in folder test
  */
 function test_createSpreadsheet() {

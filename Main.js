@@ -35,7 +35,7 @@ if (!triggers.find(triggers._getTriggerID())) {
  * On form submit we will build the leaderboard for the tournament that the score was
  * submitted to
  *
- * @param {Event} Event from the form submission 
+ * @param {Event} e - Event from the form submission 
  */
 function postFormSubmit(e) {
   let tournyNumber = e.values[2];
@@ -43,16 +43,15 @@ function postFormSubmit(e) {
   console.log(`Tourny number from event object: ${tournyNumber}`);
   console.log(`Form Submitted: values: ${JSON.stringify(e.values)}`);
 
-  // TODO - Create new class to manage record backup on form submit and leadeboard creation
-  /*
+  // Make a backup of the form responses 
   let backup = new Backup();
   let backupSS = backup.findFile(backup.fileName);
-  let formRespSheet = SpreadsheetApp.getActive().getSheetName("Form Responses");
   if (!backupSS) {
-    backupSSId = backup.createFile(backup.fileName);
+    let formRespSheet = SpreadsheetApp.getActive().getSheetByName('Form Responses');
+    backupSS = backup.createFile(backup.fileName);
     backup.fullBackup(formRespSheet);
   }
-  */
+  backup.add(e.values);
 
   // Recreate the leaderboard on form submit
   tournamentByNumber(tournyNumber); 
