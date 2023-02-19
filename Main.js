@@ -39,8 +39,6 @@ if (!triggers.find(triggers._getTriggerID())) {
  */
 function postFormSubmit(e) {
   let tournyNumber = e.values[2];
-  
-  console.log(`Tourny number from event object: ${tournyNumber}`);
   console.log(`Form Submitted: values: ${JSON.stringify(e.values)}`);
 
   // Make a backup of the form responses 

@@ -39,6 +39,7 @@ class Leaderboard {
     this._scoreCols = 4;                                 // Number of columns for the scores (4 rounds)
     //this._createScoreToParRow = this._headerRow+7;       // Not used?
     this._headerColor = "#faf570"; //"yellow";
+    this._rowBandingColor = "#faf8c8"; // light yellow
     this._headerTitleFontSize = 16;
     this._sumColNum = this._headerColumn+5; // 6;
     this._sumColOff =  this._headerRow+this._headerNumRows;   
@@ -240,6 +241,11 @@ class Leaderboard {
     sheet.getRange(rangeRowStart+1, this._sumColNum, this._footerNumRows, 1)
         .setBorder(true, true, false, false, false, false);
 
+    // Add a last updated row at the bottom of the footer
+    sheet.getRange(this._footerRowStart+this._footerNumRows+1, this._headerColumn, 1, this._numCols)
+         .setBackground(this._rowBandingColor)
+         .setValues([[`Last updated ${new Date().toLocaleString('en-US')}`, "", "", "", "", "", ""]]);
+
     // Set the font for the whole sheet
     sheet.getRange(1, 1, sheet.getLastRow(), sheet.getLastColumn())
       .setFontFamilies(this._createFontArray(sheet.getLastRow(), sheet.getLastColumn(), this._fontName));
@@ -259,7 +265,7 @@ class Leaderboard {
         .getRange(this._dataRow, this._dataCol, this._data.length, this._data[0].length+2)
         .applyRowBanding()
         .setHeaderRowColor("white")
-        .setFirstRowColor("#faf8c8") // #faf8c8-yellow #edf2fa-blue
+        .setFirstRowColor(this._rowBandingColor) // #faf8c8-yellow #edf2fa-blue
         .setSecondRowColor("white");    
   }
 
