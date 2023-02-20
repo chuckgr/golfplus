@@ -47,7 +47,8 @@ class PointsLeaderboard {
     this._dataColStart = this._headerColStart;
     this._dataFontSize = 12;
     this._footerRowStart = this._dataRowStart; // The length of the data will be added in build phase
-    this._footerHorizAlign = [["left", "left", "left", "left", "left", "left"]]
+    this._footerHorizAlign = [["left", "left", "left", "left", "left", "left"]];
+    this._footerFontSize = 10;
 
     // Kick things off
     this._go();
@@ -320,6 +321,7 @@ class PointsLeaderboard {
     sheet.getRange(this._footerRowStart, this._headerColStart, 1, this._numCols)
          .setBackground(this._rowBandingColor)
          .setValues([[`Last updated ${new Date().toLocaleString('en-US')}`, "", "", "", "", ""]])
+         .setFontSize(this._footerFontSize)
          .setHorizontalAlignments(this._footerHorizAlign);   
   }
 }
