@@ -46,6 +46,8 @@ class PointsLeaderboard {
     this._dataRowStart = this._headerRowStart+this._headerRows;
     this._dataColStart = this._headerColStart;
     this._dataFontSize = 12;
+    this._footerRowStart = this._dataRowStart; // The length of the data will be added in build phase
+    this._footerHorizAlign = [["left", "left", "left", "left", "left", "left"]]
 
     // Kick things off
     this._go();
@@ -94,7 +96,10 @@ class PointsLeaderboard {
 
 
   /**
-   * Populate the sheet with the data     
+   * Populate the sheet with the data  
+   * 
+   * @param {Map} tournyData contains a map of each tournament in this Points board
+   * @return {array} Array for placement on the sheet   
    */
   _calculateScores(tournyData) {
     let points = [8, 6, 4];
@@ -105,7 +110,6 @@ class PointsLeaderboard {
     // Look at each tournament and calculate points
     tournyData.forEach( (v,k,m) => {
       // Loop for all the tournament data that is already sorted
-      index = 0;
       v.forEach( (t,i) => {
         // See if we have this player yet
         tmpPP = this._tableData.findIndex(p => p._name == t.name);
@@ -210,6 +214,8 @@ class PointsLeaderboard {
    * Take the calculated points data and add it to the newly created sheet
    */
   _buildLeaderBoard(tournyBoards, sheet) {
+    this._footerRowStart+=tournyBoards.length;
+     
     // Clear the sheet first
     this._clearSheet();
 
@@ -221,6 +227,9 @@ class PointsLeaderboard {
 
     // Add in the data
     this._addData(tournyBoards, sheet);
+
+    // Set up the footer
+    this._setFooter(sheet);
 
     // Format the data area 
     sheet.autoResizeColumns(this._headerColStart+1, this._numCols);
@@ -301,5 +310,16 @@ class PointsLeaderboard {
       .setFontFamily(this._fontName)
       .setHorizontalAlignments(this._headerHorizAlign)
       .setValues(this._headerColumnTitles);   
+  }
+
+  /**
+   * Set the footer area. Right now it's just the last updated date/time
+   */
+  _setFooter(sheet) {
+    // Add a last updated row at the bottom of the footer
+    sheet.getRange(this._footerRowStart, this._headerColStart, 1, this._numCols)
+         .setBackground(this._rowBandingColor)
+         .setValues([[`Last updated ${new Date().toLocaleString('en-US')}`, "", "", "", "", ""]])
+         .setHorizontalAlignments(this._footerHorizAlign);   
   }
 }

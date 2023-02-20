@@ -297,10 +297,6 @@ class Leaderboard {
         // If we have a temp score we clear it from the scoreboard
         if (s===999) {
           sheet.getRange(this._dataRow+i, this._dataCol+j+1, 1 ,1).clear();
-          // If a totally missed round we clear totals formula
-          if (j+1<=tournament.definedRounds) {
-            //sheet.getRange(this._dataRow+i, this._scoreToParCol, 1, 1).clear();
-          }
         }
       });
     });
@@ -367,7 +363,9 @@ class Leaderboard {
   }
 
   /**
-   * Create the formulas for +/- par
+   * Create the formulas for +/- par. This formula will go in the last column of the first row of data 
+   * with the first paramater being the data range to sum, second parameter is the row with the course
+   * par values.  The last column will be filled with the score to par for each row in the range.
    */
   _createScoreToParFormulas(rows, lastRow) {
     let formulas = [];
@@ -380,7 +378,6 @@ class Leaderboard {
    */
   _createTotalScoreFormat(rows) {
     let formats = [];
-    //[...Array(rows)].forEach( (r,i) => formats.push(["+0;-0;0"]));
     [...Array(rows)].forEach( (r,i) => formats.push(['(+0);(-0);"E"']));
     return formats;
   }
