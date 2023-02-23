@@ -9,6 +9,8 @@
  *         # - {number} one or more # indicate numbers and digits
  *         mm/dd/yyyy - {date}
  *         mm/dd/yyyy hh:mm:ss- {dateTime}
+ *         bool - {boolean} 
+ *         string - {String} 
  *  "  5 - Required field 
  *         "required" "automatic" (need to understand this one)
  *  "  6+  Data for setting

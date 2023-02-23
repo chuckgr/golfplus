@@ -79,7 +79,7 @@ class PointsLeaderboard {
     let sn = `${this._sheetName}`;
     this._pointsSheet = ss.getSheetByName(sn);
     if (this._pointsSheet == null) {
-      this._pointsSheet = ss.insertSheet(sn);
+      this._pointsSheet = ss.insertSheet(sn, 2);
     }
     return this._pointsSheet;
   }

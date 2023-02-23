@@ -23,13 +23,32 @@ const courses = new Courses();
 const tournaments = new Tournaments();
 
 /**
+ * Add our own menu items
+ */ 
+function onOpen() {
+  var ui = SpreadsheetApp.getUi();
+  ui.createMenu('Golf+ fun tournaments')
+      .addItem('Create Leaderboard by Tournament Number', 'selectTournament')
+      .addItem('Create Points Leaderboard', 'buildPointsBoard')
+      .addItem('Recreate All Leaderboards', 'allLeaderBoards')
+      .addSeparator()
+      .addSubMenu(ui.createMenu('Forms')
+          .addItem('Create/Update Form', 'updateForm'))
+      .addToUi();
+}
+
+/**
  * Set a trigger to capture the form submit events
+ * 
+ * started getting errors creating the ui menu in onOpen, comment out for now to see
  */
+/*
 let triggers = new Triggers();
 // Get the property of the trigger and then see if it is still installed and active
 if (!triggers.find(triggers._getTriggerID())) {
   triggers.create({"functionName":"postFormSubmit"});
 } 
+*/
 
 /**
  * On form submit we will build the leaderboard for the tournament that the score was
@@ -53,21 +72,6 @@ function postFormSubmit(e) {
 
   // Recreate the leaderboard on form submit
   tournamentByNumber(tournyNumber); 
-}
-
-/**
- * Add our own menu items
- */ 
-function onOpen() {
-  var ui = SpreadsheetApp.getUi();
-  ui.createMenu('Golf+ fun tournaments')
-      .addItem('Create Leaderboard by Tournament Number', 'selectTournament')
-      .addItem('Create Points Leaderboard', 'buildPointsBoard')
-      .addItem('Recreate All Leaderboards', 'allLeaderBoards')
-      .addSeparator()
-      .addSubMenu(ui.createMenu('Forms')
-          .addItem('Create/Update Form', 'updateForm'))
-      .addToUi();
 }
 
 /** 
@@ -190,6 +194,9 @@ function buildLeaderBoard(currTourny) {
     // Preload scores so sort will work for missing scores
     playerScores = [999, 999, 999, 999];
     rounds.forEach((r) => {
+      if (p.trim() === "Zach Pifer") {
+        console.log(`r.getName: "${r.getName()}" p: "${p}" r.getScore(): ${r.getScore()} `);
+      }
       if (r.getName().trim() == p.trim()) {
         found = true;
         playerScores[r.getRound()-1] = r.getScore();

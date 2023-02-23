@@ -107,7 +107,7 @@ class Leaderboard {
     let sn = `${this._sheetName} ${tournyNumber}`;
     this._leaderboardSheet = ss.getSheetByName(sn);
     if (this._leaderboardSheet == null) {
-      this._leaderboardSheet = ss.insertSheet(sn, 1);
+      this._leaderboardSheet = ss.insertSheet(sn);
     }
   }
 

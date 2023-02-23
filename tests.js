@@ -72,7 +72,7 @@ function triggerCatcher(e) {
  * Kick off a build of leaderboard manually 
  */
 function test_buildLB() {
-  let tID = 23.04;
+  let tID = 23.05;
   tournamentByNumber(tID);
 }
 
