@@ -91,10 +91,7 @@ class Leaderboard {
     this._setColWidths(this._leaderboardSheet);
 
     // Clear out 999 for missing scores
-    this._normalizeData(this._leaderboardSheet, tournaments.getTournamentById(this._tournyNumber));
-
-    // Add the score to par
-    this._addScoreToPar(this._leaderboardSheet);
+    this._normalizeData(this._leaderboardSheet);
   }
 
   /**
@@ -140,6 +137,11 @@ class Leaderboard {
     this._leaderboardSheet
       .getRange(this._dataRow,this._dataCol, data.length, 1)
       .setHorizontalAlignments(createValueArray(data.length, 1, "right"));
+
+    // Add in the score to par 
+    this._leaderboardSheet
+      .getRange(this._dataRow,this._scoreToParCol, data.length, 1)
+      .setValues(this._createScoreToPar(tournaments.getCourseArray(this._tournyNumber)));
   }
 
   /**
@@ -288,7 +290,7 @@ class Leaderboard {
    * 
    * @param {Spreadsheet} Leaderboard spreadsheet to make the changes on.
    */
-  _normalizeData(sheet, tournament) {
+  _normalizeData(sheet) {
     const scores = sheet
       .getRange(this._dataRow, this._dataCol+1, this._data.length, this._scoreCols)
       .getValues();
@@ -300,17 +302,6 @@ class Leaderboard {
         }
       });
     });
-    
-  }
-
-  /**
-   * After the sheet is complete and sorted we add in the custom formula to calculate the
-   * score to par for all defined tournaments
-   */
-  _addScoreToPar(sheet) {
-    // Get the total vs par for the course by using a custom function to calculate each score row
-    sheet.getRange(this._dataRow, this._scoreToParCol, 1, 1)
-      .setFormulas(this._createScoreToParFormulas(this._data.length, this._footerRowStart+2));
   }
 
   /**
@@ -363,14 +354,32 @@ class Leaderboard {
   }
 
   /**
-   * Create the formulas for +/- par. This formula will go in the last column of the first row of data 
-   * with the first paramater being the data range to sum, second parameter is the row with the course
-   * par values.  The last column will be filled with the score to par for each row in the range.
+   * Calculate the diff to par after the table is loaded, thus removing the need to have a custom function
+   * 
+   * @param {array[]}  footerData - 2d array of the courses data to capture the par for each course
+   * @return {array[]} Array of score to par calculations to be added to the last row of table
    */
-  _createScoreToParFormulas(rows, lastRow) {
-    let formulas = [];
-    formulas.push([`=DIFFTOPAR(${this._sumColStart}${this._sumColOff}:${this._sumColEnd}${rows+this._sumColOff-1},$${this._sumColStart}$${lastRow}:$${this._sumColEnd}$${lastRow})`]);
-    return formulas;
+  _createScoreToPar(footerData) {
+    let results = [];
+    let diffToPar = 0;
+    // Loop for each player (row)
+    this._data.forEach((r,i) => {
+      // Loop for each score for the player (col)
+      r.forEach((s,j) => {
+        console.log(`s: ${s} ${diffToPar}`);
+        // Skip over the name
+        if (j>0) {
+          // Skip rounds with no scores
+          if (parseInt(s) != 999) {
+            diffToPar = diffToPar + (s - footerData[1][j]);
+          }
+        }
+      });
+      console.log(`push diffToPar: ${diffToPar}`);
+      results.push([diffToPar]);
+      diffToPar = 0;
+    });
+    return results;
   }
 
   /**

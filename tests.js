@@ -1,4 +1,16 @@
 /**
+ * Test new createScoreToPar method
+ */
+function test_createScoreToPar() {
+  let num = 23.05
+  let tourny = tournaments.getTournamentById(num);
+  let courseData = tournaments.getCourseArray(num);
+  let lb = new Leaderboard(buildLeaderBoard(tourny));
+  let res = lb._createScoreToPar(courseData);
+  console.log(`createSocreToPar: ${JSON.stringify(res)}`);
+}
+
+/**
  * Test incremental backup
  */
 function test_incrementalBackup() {
@@ -72,7 +84,7 @@ function triggerCatcher(e) {
  * Kick off a build of leaderboard manually 
  */
 function test_buildLB() {
-  let tID = 23.05;
+  let tID = 23.04;
   tournamentByNumber(tID);
 }
 

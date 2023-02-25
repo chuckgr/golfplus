@@ -56,11 +56,12 @@ function TOURNYWEEKS(start, count) {
 /**
  * Calculate the differance from par for the ranges passed
  * 
- * @param {range}  - Range containing the scores to check
- * @paran {range}  - Range for all of the courses in the footer typically
+ * @param {aray[]}  - Array from range containing the scores to check
+ * @paran {array[]} - Array from range for all of the courses in the footer typically
  * @return {array} - The difference to par
  */
 function DIFFTOPAR(scoresRange, coursesRange) {
+  //console.log(`${JSON.stringify(scoresRange)} ${JSON.stringify(coursesRange)}`);
   let diffToPar = 0;
   let res = [];
   scoresRange.forEach( (r,i) => {
@@ -72,6 +73,7 @@ function DIFFTOPAR(scoresRange, coursesRange) {
     res.push([diffToPar]);
     diffToPar = 0;
   });
+  console.log(`DIFFTOPAR: array size[${res.length}]`);
   return res;
 
 }

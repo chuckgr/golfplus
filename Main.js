@@ -30,7 +30,7 @@ function onOpen() {
   ui.createMenu('Golf+ fun tournaments')
       .addItem('Create Leaderboard by Tournament Number', 'selectTournament')
       .addItem('Create Points Leaderboard', 'buildPointsBoard')
-      .addItem('Recreate All Leaderboards', 'allLeaderBoards')
+      // TODO .addItem('Recreate All Leaderboards', 'allLeaderBoards')
       .addSeparator()
       .addSubMenu(ui.createMenu('Forms')
           .addItem('Create/Update Form', 'updateForm'))
@@ -107,7 +107,7 @@ function recreateForm() {
  * 
  * @return {array} Contains all of the valid tournament numbers
  * 
- * TODO - Move this to the Tournaments class
+ * TODO - Move this to the Utilities class
  */
 function getTournamentNumbers(){
   let numbers = [];
@@ -140,21 +140,11 @@ function selectTournament() {
 function tournamentByNumber(number) {
   let currentTourny = tournaments.getTournamentById(Number(number));
   if (typeof currentTourny === "object") {
-    buildLeaderBoard(currentTourny);
+    const lbData = buildLeaderBoard(currentTourny);
+    const lb = new Leaderboard(lbData);
+    lb.create(currentTourny.number);
   } else {
     console.log(`Could not find the selected tournament ${number}`);
-  }
-}
-
-/**
- * Build the weekly tournament by using the date
- */
-function weeklyLeaderBoard() {
-  let currTourny = tournaments.getCurrentTournament();
-  if (typeof currTourny === "object") {
-    buildLeaderBoard(currTourny);
-  } else {
-    console.log(`Tournament not found: ${tournaments.getCurrentTournament()}`);
   }
 }
 
@@ -194,60 +184,11 @@ function buildLeaderBoard(currTourny) {
     // Preload scores so sort will work for missing scores
     playerScores = [999, 999, 999, 999];
     rounds.forEach((r) => {
-      if (p.trim() === "Zach Pifer") {
-        console.log(`r.getName: "${r.getName()}" p: "${p}" r.getScore(): ${r.getScore()} `);
-      }
       if (r.getName().trim() == p.trim()) {
         found = true;
         playerScores[r.getRound()-1] = r.getScore();
       }
     });
   });
-
-  // Create/update the sheet
-  const lb = new Leaderboard(leaderboard);
-  lb.create(currTourny.number);
-}
-
-/**
- * Create all leaderboards that do not already have a leaderboard sheet
- */
-function allLeaderBoards() {
-  let pr = new PlayerRounds();
-  let rounds = [];
-  let tournyRounds = [];
-  let playerScores = [];
-  let leaderBoard = [];
-  let tournyNumbers = [];
-  let playerName;
-  tournaments.getTournaments().forEach(t => {
-    t.rounds.forEach(r => rounds = [...rounds, ...pr.getRoundsByDate(r.date)]);
-    tournyRounds.push(rounds);
-    tournyNumbers.push(t.number);
-    rounds = new Array();
-  });
-
-  let lb;
-  let found = false;
-  // Loop for all tournaments
-  tournyRounds.forEach( (r,i) => {
-    // Check each player for this torunament
-    players.getPlayers().forEach((p) => {
-      if (found) leaderBoard.push([playerName, ...playerScores]) 
-      playerName = p;
-      found = false;
-      playerScores = new Array(4);
-      r.forEach((r,i) => {
-        if (r.getName().trim() == p.trim()) {
-          found = true;
-          playerScores[r.getRound()-1] = r.getScore();
-        } 
-      });
-    });
-    if (leaderBoard.length > 0) {
-      lb = new Leaderboard(leaderBoard);
-      lb.create(tournyNumbers[i]);
-    }
-    leaderBoard = new Array();
-  });
+  return leaderboard;
 }
