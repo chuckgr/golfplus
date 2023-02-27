@@ -139,7 +139,7 @@ class PointsLeaderboard {
             }
             break;
           case 1:
-            console.log(`Case 1: ${v[1].name}`);
+            //console.log(`Case 1: ${v[1].name}`);
             if (!done) {
               if (v[1].score === v[0].score) {
                 pp.wins = pp.wins+1;

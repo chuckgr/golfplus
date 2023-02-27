@@ -366,7 +366,7 @@ class Leaderboard {
     this._data.forEach((r,i) => {
       // Loop for each score for the player (col)
       r.forEach((s,j) => {
-        console.log(`s: ${s} ${diffToPar}`);
+        //console.log(`s: ${s} ${diffToPar}`);
         // Skip over the name
         if (j>0) {
           // Skip rounds with no scores
@@ -375,7 +375,7 @@ class Leaderboard {
           }
         }
       });
-      console.log(`push diffToPar: ${diffToPar}`);
+      //console.log(`push diffToPar: ${diffToPar}`);
       results.push([diffToPar]);
       diffToPar = 0;
     });

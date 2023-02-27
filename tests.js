@@ -1,4 +1,72 @@
 /**
+ * Test converting the dates in course data to strings
+ */
+function test_convertDates() {
+  let tnums = tournaments.getNumbers();
+  let ct = tournaments.getTournamentById(tnums[tnums.length-1]);
+  let data = ct.leaderboardData;
+
+  let diffToPar = 0;
+  let totalScore = 0;
+  let courseData = tournaments.getCourseArray(tnums[tnums.length-1]);
+
+  console.log(`Date field: ${courseData[2]}`);
+  // Turn date obj to date string
+  let courseDates = courseData[2].map(d => {
+    if (d != 'Date') {
+      return new Date(d).toLocaleDateString();
+    } else {
+      return "Date";
+    }
+  });
+  //console.log(`courseDates: ${courseDates}`);
+  courseData[2] = courseDates;
+  console.log(`${courseData[2]}`);
+
+}
+
+/**
+ * Test building the leaderboard data in the Tournament class
+ */
+function test_createLeaderboardData() {
+  let tnums = tournaments.getNumbers();
+  let ct = tournaments.getTournamentById(tnums[tnums.length-1]);
+  let data = ct.leaderboardData;
+
+  let diffToPar = 0;
+  let totalScore = 0;
+  let footerData = tournaments.getCourseArray(tnums[tnums.length-1]);
+  data.forEach((r,i) => {
+    r.forEach((s,j) => {
+      if (j>0 && j<5) {
+        totalScore += s;
+        if (parseInt(s) != 999) {
+          diffToPar = diffToPar + (parseInt(s) - footerData[1][j]);
+        }
+      }
+    });
+    data[i].push(totalScore);
+    data[i].push(diffToPar);
+    diffToPar = 0;
+    totalScore = 0;
+  });
+  //console.log(`${JSON.stringify(data)}`);
+  let sdata = data.sort((a,b) => a[5]-b[5]);
+  //data.forEach(r => console.log(r));
+
+  // Normalize the data after the sort
+  data.forEach((r,i) =>{
+    r.forEach((c,j) => {
+      if (c==999) {
+        data[i][j] = 0;
+        data[i][5] -= 999;
+      }
+    });
+  });
+  //console.log(`${JSON.stringify(data)}`);;
+}
+
+/**
  * Test new createScoreToPar method
  */
 function test_createScoreToPar() {

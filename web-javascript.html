@@ -1,0 +1,106 @@
+<script>
+/**
+ * Contains all of the client side javascript to display the current leaderboard 
+ */
+
+/**
+ * Request the data from the server 
+ */
+async function loadData() {
+  const e = await new Promise(r => {
+    google.script.run.withSuccessHandler(r).getData();
+  });
+  const results = updateTable(e);
+}
+
+/**
+ * Update the table with the data from the spreadsheet
+ * 
+ * The css classes to color the 
+ */
+function updateTable(data) {
+  let tableData = data.data;
+  let courseData = data.courseData;
+
+  // Load the data into the html tables
+  // Loop through all the playerdata 
+  // For each player
+  // - Create the html elements (td)
+  //.- All classes used in table are in in the inline css above the html.
+  // - Set each row attribute via correct css class, have different classes.for even/odd
+  // -  rows aswell as red/black for neg/pos numbers  .
+  // - have to account for the rows that have the border top/bottom/right
+  //   - s18-s22 border bottom (so these are for the last row)
+  //Name    rnd1   rnd2   rnd3    rnd4  total topar
+  let topRowClasses = [];
+  const evenRowClasses = [
+    ["s4", "s5",  "s5",  "s5",  "s7",  "s5", "s5"], // below par - red
+    ["s4", "s12", "s12", "s12", "s11", "s9", "s9"]  // above par - black
+    ]; // White
+  const oddRowClasses =  [
+    ["s8", "s9",  "s9",  "s9",  "s11", "s5"],  // there is no class for under par yet, so use above for now
+    ["s8", "s12", "s12", "s12", "s11", "s9"].  
+    ]; // light yellow
+  let bottomRowClasses = [];
+  const playerIds = [
+    "playerName", "playerScore1", "playerScore2", "playerScore3", "playerScore4", "playerTotal", "playerScoreToPar"
+  ];
+  
+
+  let row;
+  let td;
+  let table = document.getElementById("lbbody");
+  // Loop for all of the table data and add TD elements to TR elements
+  tableData.forEach((r,i) => {
+    console.log(`r ${r}`);
+    row = createTr();
+    td = document.createElement('tr');
+    td.classList.add('s0');
+    row.appendChild(td);
+    r.forEach((c,j) => {
+      //console.log(`c ${c}`);
+      td = document.createElement('td');
+      // Even/odd row TODO - pick class on under/over par
+      if (i%2 == 0) {
+        td.classList.add(evenRowClasses[0][j]);
+      } else {
+        td.classList.add(oddRowClasses[0][j]);
+      }
+      td.id = playerIds[j];
+      td.innerHTML = c;
+      row.appendChild(td);
+    });
+    table.appendChild(row);
+  });
+
+}
+
+/**
+ * Create the table row (tr) and header (th) components to add the table data (td) for 
+ * each players scores.
+ * 
+ * @return {Element} Element to add the td as children to this table row.
+ */
+function createTr() {
+  let tr = document.createElement('tr');
+  tr.style.height = "20px";
+  let th = document.createElement('th');
+  th.classList.add("row-headers-background");
+  th.style.height = "20px";
+  let div = document.createElement('div');
+  div.style.height = "20px";
+  div.classList.add("row-header-wrapper");
+  th.appendChild(div);
+  tr.appendChild(th);
+  return tr;
+}
+
+
+/**
+ * Main
+ */
+loadData();
+
+
+
+</script>

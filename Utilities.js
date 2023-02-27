@@ -73,7 +73,7 @@ function DIFFTOPAR(scoresRange, coursesRange) {
     res.push([diffToPar]);
     diffToPar = 0;
   });
-  console.log(`DIFFTOPAR: array size[${res.length}]`);
+  //console.log(`DIFFTOPAR: array size[${res.length}]`);
   return res;
 
 }

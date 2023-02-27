@@ -70,6 +70,41 @@ class Tournament {
   } 
 
   /**
+   * Create the tournament leaderboard data (table of players and scores with totals and score to par)
+   */
+  get leaderboardData() {
+    let rounds = [];
+    let leaderboard = [];
+    let found = false;
+    let playerName;
+    let playerScores = new Array(4);
+    const pr = new PlayerRounds();
+    const players = new Players();  
+
+    // Get the records for each of the tournament rounds and the course data for the footer
+    this._rounds.forEach((r) => {
+      rounds = [...rounds, ...pr.getRoundsByNumber(r.number)];
+    });
+
+    // Get the records for the players in the player database
+    let playerList = players.getPlayers();
+    playerList.forEach( (p,i) => {
+      if (found) { leaderboard.push([playerName, ...playerScores]);}
+      playerName = p;
+      found = false;
+      // Preload scores so sort will work for missing scores
+      playerScores = [999, 999, 999, 999];
+      rounds.forEach((r) => {
+        if (r.getName().trim() == p.trim()) {
+          found = true;
+          playerScores[r.getRound()-1] = r.getScore();
+        }
+      });
+    });
+    return leaderboard;
+  }
+
+  /**
    * Check to see we have all required data for a valid tournament
    */
   isValid() {
