@@ -27,7 +27,6 @@ class PlayerPoints {
   get rank() { return this._rank;}
   get events()  { return this._events;}
   get name() { return this._name}
-  //get score()  { return this._score;}
   get wins()  { return this._numWins;}
   get topfive()  { return this._numTopFive;}
 
@@ -37,8 +36,6 @@ class PlayerPoints {
   set points(points) { this._points = points;}
   set rank(rank) { this._rank = rank;}
   set events(events)  { this._events = events;}
-  //set name(name) { this._name = name;}
-  //set score(score)  { this._score = score;}
   set wins(numWins)  { this._numWins = numWins;}
   set topfive(numTopFive)  { this._numTopFive = numTopFive;}
 

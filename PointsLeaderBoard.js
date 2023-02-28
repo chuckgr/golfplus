@@ -12,7 +12,7 @@
  *        - undetermined and will be evaluated at creation time 
  *      - Make sure we take into account ties
  *        - Do we give them the same point value and then reduce later (10 10 6)? or
- *          we go straight down (10 10 8?)
+ *          this on -> we go straight down (10 10 8?)
  * 
  * Copyright 2023 Chuck Grieshaber, All rights reserved.
  * Code can be used freely as long as the copyright statement is kept with 
@@ -22,9 +22,9 @@ class PointsLeaderboard {
   
   constructor() {
     //this._data = data;
-    this._sheetName = "GPFT Points Leaderboard";
+    this._sheetName = "Golf+ Fun Tournaments Points Leaderboard";
     this._pointsSheet;
-    this._tournaments = [23.02,23.03,23.04,23.05,23.06,23.07,23.08];
+    this._tournaments = [23.02,23.03,23.04,23.05,23.06,23.07,23.08,23.09,23.10,23.11,23.12];
     this._tableData = [];
     
     // Define settings
@@ -95,7 +95,6 @@ class PointsLeaderboard {
     }
   }
 
-
   /**
    * Populate the sheet with the data  
    * 
@@ -103,10 +102,12 @@ class PointsLeaderboard {
    * @return {array} Array for placement on the sheet   
    */
   _calculateScores(tournyData) {
-    let points = [8, 6, 4];
+    let points = [8, 6, 4, 1];
     let pp;
     let tmpPP;
-    let done = false;
+    //let done = false;
+    let seen = {}; 
+    let scoreIdx = 0;
     
     // Look at each tournament and calculate points
     tournyData.forEach( (v,k,m) => {
@@ -120,44 +121,32 @@ class PointsLeaderboard {
           pp = new PlayerPoints(t);
         }
 
+        // Increment events and determine if top three
         pp.events = pp.events+1;
         if (i < 3) {
           pp.topfive = pp.topfive+1;  
         } 
 
-        // Determine the points if there are ties
-        switch (i) {
-          case 0:
-            pp.wins = pp.wins+1;
-            if (v[0].score === v[1].score && v[0].score === v[2].score) {
-              pp.points = pp.points + points[i+2];
-              done = true;
-            } else if (v[0].score === v[1].score) {
-              pp.points = pp.points + points[i+1];
-            } else {
-              pp.points = pp.points + points[i];
-            }
-            break;
-          case 1:
-            //console.log(`Case 1: ${v[1].name}`);
-            if (!done) {
-              if (v[1].score === v[0].score) {
-                pp.wins = pp.wins+1;
-              }
-              if (v[1].score === v[2].score) {
-                pp.points = pp.points + points[i+1];
-              } else {
-                pp.points = pp.points + points[i];
-              }
-            } else {
-              pp.points = pp.points + points[i+1];
-            }
-            break;
-          case 2:
-            pp.points = pp.points + points[i];
-            break;
-          default:
-            pp.points = pp.points + 1;
+        // Find any dups and rescore
+        if (i!=0) {
+          if (seen[t.score]) {
+            scoreIdx--;
+            //console.log(`dup ${t.name} ${t.score} ${scoreIdx} ${points[Math.min(scoreIdx,3)]}`);
+            pp.points = pp.points + points[Math.min(scoreIdx,3)];
+            scoreIdx++;
+          }
+          else { 
+            seen[t.score] = true;
+            //console.log(`no dup ${t.name} ${t.score} ${scoreIdx} ${points[Math.min(scoreIdx,3)]}`);
+            pp.points = pp.points + points[Math.min(scoreIdx,3)];
+            scoreIdx++;
+          }
+        } else {
+          seen[t.score] = true;
+          pp.wins = pp.wins+1;
+          //console.log(`Winner 10 ${t.name} ${t.score} ${scoreIdx} ${points[Math.min(scoreIdx,3)]}`);
+          pp.points = pp.points + points[0];
+          scoreIdx++;
         }
 
         if (tmpPP > -1) {
@@ -166,7 +155,8 @@ class PointsLeaderboard {
           this._tableData.push(pp);
         }
       });
-
+      scoreIdx = 0;
+      seen = {};
     });
     this._tableData.sort((a,b) => b.points - a.points);
     return this._tableData;

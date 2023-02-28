@@ -63,6 +63,16 @@ function test_createLeaderboardData() {
       }
     });
   });
+
+  console.log(`data length [${data.length}]`);
+  let msg = '';
+  let plyMsg = 'Players';
+  let courMsg = 'Courses';
+  let limit = data.length;
+  [...data,...footerData].forEach( (r,i) => {
+    i < limit ? msg = plyMsg : msg = courMsg;
+    console.log(`Record number [${i}] [${msg}] value [${r}]`);
+  });
   //console.log(`${JSON.stringify(data)}`);;
 }
 

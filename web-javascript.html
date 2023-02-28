@@ -22,26 +22,24 @@ function updateTable(data) {
   let tableData = data.data;
   let courseData = data.courseData;
 
-  // Load the data into the html tables
-  // Loop through all the playerdata 
-  // For each player
-  // - Create the html elements (td)
-  //.- All classes used in table are in in the inline css above the html.
-  // - Set each row attribute via correct css class, have different classes.for even/odd
-  // -  rows aswell as red/black for neg/pos numbers  .
-  // - have to account for the rows that have the border top/bottom/right
-  //   - s18-s22 border bottom (so these are for the last row)
-  //Name    rnd1   rnd2   rnd3    rnd4  total topar
   let topRowClasses = [];
   const evenRowClasses = [
-    ["s4", "s5",  "s5",  "s5",  "s7",  "s5", "s5"], // below par - red
-    ["s4", "s12", "s12", "s12", "s11", "s9", "s9"]  // above par - black
+    ["s4", "s6", "s6", "s6", "s7r", "s6", "s6"], // below par - red
+    ["s4", "s5", "s5", "s5", "s7b", "s5", "s5"]  // above par - black
     ]; // White
   const oddRowClasses =  [
-    ["s8", "s9",  "s9",  "s9",  "s11", "s5"],  // there is no class for under par yet, so use above for now
-    ["s8", "s12", "s12", "s12", "s11", "s9"].  
+    ["s8", "s10r", "s10r", "s10r", "s11", "s10r", "s10r"],  // there is no class for under par yet, so use above for now
+    ["s8", "s10b", "s10b", "s10b", "s11", "s10b", "s10b"] 
     ]; // light yellow
-  let bottomRowClasses = [];
+  let bottomEvenRowClasses = [
+    ["s13wr-r", "s13wr", "s13wr", "s13wr", "s15yb", "s6", "s6"], // red
+    ["s13wb-r", "s13wb", "s13wb", "s13wb", "s15wb", "s5", "s5"] // black
+  ]; // white
+  let bottomOddRowClasses = [
+    ["s2", "s13r", "s13r", "s13r", "s15wr", "s18", "s10r"], // red
+    ["s2", "s13b", "s13b", "s13b", "s15wb", "s15",  "s10b"]  // black
+  ]; // yellow
+  let courseClasses = ["s16", "s5", "s5", "s5", "s7", "s4", "s0"];
   const playerIds = [
     "playerName", "playerScore1", "playerScore2", "playerScore3", "playerScore4", "playerTotal", "playerScoreToPar"
   ];
@@ -49,30 +47,94 @@ function updateTable(data) {
 
   let row;
   let td;
+  let parIndex = 1;
+  let red = 0;
+  let black = 1;
+  let scoreToParCol = 6;
+  let classSelect = black;
   let table = document.getElementById("lbbody");
-  // Loop for all of the table data and add TD elements to TR elements
-  tableData.forEach((r,i) => {
-    console.log(`r ${r}`);
+  let limit = tableData.length;
+  /**
+   *  Loop for all of the table data and course data. add TD elements to TR elements
+   */
+  [...tableData, ...courseData].forEach((r,i) => {
     row = createTr();
     td = document.createElement('tr');
     td.classList.add('s0');
     row.appendChild(td);
     r.forEach((c,j) => {
-      //console.log(`c ${c}`);
       td = document.createElement('td');
-      // Even/odd row TODO - pick class on under/over par
-      if (i%2 == 0) {
-        td.classList.add(evenRowClasses[0][j]);
+
+      /**
+       * Below we are still working on the player data rows
+       */ 
+      if (i < limit) {
+        
+        // Check the each player score to par to pick the correct class
+        if ((j>0 && j<5) || j==scoreToParCol) {
+          if (c>0) {
+            parseInt(c) < parseInt(courseData[parIndex][j]) ? 
+              classSelect = red : 
+              classSelect = black;
+          } else {
+            classSelect = black;
+          }
+        }
+        //if (j==scoreToParCol) { console.log(`${classSelect==0 ? "Red" : "Black"}`);}
+        // Even/odd row TODO - pick class on under/over par
+        if (i%2 == 0) {
+          if (i==limit-1) {
+            td.classList.add(bottomEvenRowClasses[classSelect][j]);
+          } else {
+            td.classList.add(evenRowClasses[classSelect][j]);
+          }
+        } else {
+          if (i==limit-1) {
+            td.classList.add(bottomOddRowClasses[classSelect][j]);
+          } else {
+            td.classList.add(oddRowClasses[classSelect][j]);
+          }
+        }
+        td.id = playerIds[j];
+        // Clear out the 0 scores...
+        c==0 ? c="" : c=c;
+
+        // Add parens for score to par
+        j==scoreToParCol ? c=`(${c})` : c=c;
+
+
+      /**
+       * Above the limit, working on Course records now
+       */
       } else {
-        td.classList.add(oddRowClasses[0][j]);
+        //console.log(`j=${j} class=${courseClasses[j]}`);
+        td.classList.add(courseClasses[j]);
       }
-      td.id = playerIds[j];
+
       td.innerHTML = c;
       row.appendChild(td);
     });
     table.appendChild(row);
   });
 
+}
+
+/**
+ * Create the table elements up to where the table contents (scores and course data)
+ * 
+ * @return {Element} Return the tbody element for the  
+ */
+function createTable() {
+  let thStyles = ["100px", "140px", "93px", "93px", "93px", "93px", "37px", "43px"];
+  let table = document.createElement('table');
+  table.id = "ibtable";
+  table.classList.add("waffle no-grid");
+  table.cellspacing = "0";
+  table.cellpadding = "0";
+
+  let thead = document.createElement('thead');
+  let tr = document.createElement('tr');
+  let th = document.createElement('th');
 }
 
 /**
@@ -94,7 +156,6 @@ function createTr() {
   tr.appendChild(th);
   return tr;
 }
-
 
 /**
  * Main
