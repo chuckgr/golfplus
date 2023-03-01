@@ -22,7 +22,7 @@ class PointsLeaderboard {
   
   constructor() {
     //this._data = data;
-    this._sheetName = "Golf+ Fun Tournaments Points Leaderboard";
+    this._sheetName = "Points Leaderboard";
     this._pointsSheet;
     this._tournaments = [23.02,23.03,23.04,23.05,23.06,23.07,23.08,23.09,23.10,23.11,23.12];
     this._tableData = [];
@@ -32,7 +32,7 @@ class PointsLeaderboard {
     this._headerRowStart = 2;
     this._headerColStart = 2;
     this._headerRows = 2;
-    this._headerTitle = [["Golf+ fun Points Leaderboard"]];
+    this._headerTitle = [["Golf+ Fun Tournaments Points Leaderboard"]];
     this._headerColor = "#dcfaf5";
     this._alternatingRowColor = "#f2f9fa" 
     this._headerTitleFontStyle = [["bold"]];
