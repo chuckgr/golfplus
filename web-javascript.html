@@ -22,7 +22,6 @@ function updateTable(data) {
   let tableData = data.data;
   let courseData = data.courseData;
 
-  let topRowClasses = [];
   const evenRowClasses = [
     ["s4", "s6", "s6", "s6", "s7r", "s6", "s6"], // below par - red
     ["s4", "s5", "s5", "s5", "s7b", "s5", "s5"]  // above par - black
@@ -44,6 +43,8 @@ function updateTable(data) {
     "playerName", "playerScore1", "playerScore2", "playerScore3", "playerScore4", "playerTotal", "playerScoreToPar"
   ];
   
+  // Create the table for adding the data
+  createTable();
 
   let row;
   let td;
@@ -122,19 +123,126 @@ function updateTable(data) {
 /**
  * Create the table elements up to where the table contents (scores and course data)
  * 
- * @return {Element} Return the tbody element for the  
+ * @return {Element} Return the table element for the leaderboard table
  */
 function createTable() {
   let thStyles = ["100px", "140px", "93px", "93px", "93px", "93px", "37px", "43px"];
   let table = document.createElement('table');
-  table.id = "ibtable";
-  table.classList.add("waffle no-grid");
+  table.id = "lbtable";
+  table.classList.add("waffle");
+  table.classList.add("no-grid");
   table.cellspacing = "0";
   table.cellpadding = "0";
 
+  // Create the header elements
   let thead = document.createElement('thead');
   let tr = document.createElement('tr');
   let th = document.createElement('th');
+  th.classList.add("row-headers-background");
+  tr.appendChild(th);
+  //let td;
+  [...Array(8).keys()].forEach(i => {
+    th = document.createElement('th');
+    th.style.width = `${thStyles[i]}`;
+    th.classList.add("s0");
+    tr.appendChild(th);
+  });
+  thead.appendChild(tr);
+  table.appendChild(thead);
+  let tbody = document.createElement('tbody');
+  tbody.id = "lbbody";
+
+  tbody.appendChild(createBlankRow());
+  tbody.appendChild(createTitle());
+  tbody.appendChild(createHeader());
+  table.appendChild(tbody);
+  
+  let tableDiv = document.getElementById("tableDiv");
+  tableDiv.appendChild(table);
+}
+
+/**
+ * Create a blank row in the table
+ * 
+ * @return {Element} Element to attach to the tbody
+ */
+function createBlankRow() {
+  let tr = document.createElement('tr');
+  tr.style.height = "20px";
+  let th = createRowTh();
+  let td;
+  [...Array(8).keys()].forEach(i => {
+    td = document.createElement('td');
+    td.classList.add("s0");
+    tr.appendChild(td);
+  });
+  return tr;
+}
+
+/**
+ * Create the header row with the labels in it
+ */
+function createHeader() {
+  let labels  = ["", "Name", "Round 1", "Round 2", "Round 3", "Round4", "Total", "+/-"];
+  let classes = ["s0", "s2", "s3", "s3", "s3", "s3", "s3", "s3"];
+  let tr = document.createElement('tr');
+  tr.style.height = "20px";
+  let th = createRowTh();
+  tr.appendChild(th);
+  // Add the labels
+  [...Array(labels.length).keys()].forEach( (n,i) => {
+    tr.appendChild(createHeaderTd(classes[n], labels[n]))
+  });
+  return tr;
+}
+
+/**
+ * Create the header for the table
+ * 
+ * @return {Element} tr element with the header
+ */
+function createTitle() {
+  let tr = document.createElement('tr');
+  tr.style.height = "20px";
+  let th = createRowTh();
+  let td = document.createElement('td');
+  td.classList.add("s0");
+  th.appendChild(td);
+  td = document.createElement('td');
+  td.id = "tournyName";
+  td.classList.add("s1");
+  td.colspan = "7";
+  td.innerHTML = "Generated Golf+ Leaderboard";
+  th.appendChild(td);
+  tr.appendChild(th);
+  return tr;
+}
+
+/**
+ * Function to add the labels for each column
+ */
+function createHeaderTd(headClass, label) {
+  let td = document.createElement('td');
+  if (headClass != "") {
+    td.classList.add(headClass);
+  }
+  td.innerHTML = label;
+  return td;
+}
+
+/**
+ * Create the th for a table row (they are all the same...)
+ */
+function createRowTh() {
+  console.log(`createRowTh`);
+  let th = document.createElement('th');
+  th.style.height = "20px";
+  th.classList.add("row-header-background");
+  let div = document.createElement('div');
+  //div.style.line-height = "20px";
+  div.classList.add("row-header-wrapper");
+  th.appendChild(div);
+  return th;
 }
 
 /**
@@ -144,6 +252,7 @@ function createTable() {
  * @return {Element} Element to add the td as children to this table row.
  */
 function createTr() {
+  console.log(`createTr`);
   let tr = document.createElement('tr');
   tr.style.height = "20px";
   let th = document.createElement('th');

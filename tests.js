@@ -1,4 +1,25 @@
 /**
+ * Tournament by number
+ */
+function test_tournyByNumber() {
+  tournamentByNumber(23.06);
+}
+
+/**
+ * Test pointsleaderboard 
+ */
+function test_pointsBoard() {
+  let plb = new PointsLeaderboard();
+}
+
+/**
+ * Test array of numbers
+ */
+function test_arrayNumber() {
+  [...Array(10).keys()].forEach(n => console.log(`Number ${n}`));
+}
+
+/**
  * Test converting the dates in course data to strings
  */
 function test_convertDates() {
@@ -159,14 +180,6 @@ function triggerCatcher(e) {
 } 
 
 /**
- * Kick off a build of leaderboard manually 
- */
-function test_buildLB() {
-  let tID = 23.04;
-  tournamentByNumber(tID);
-}
-
-/**
  * Test new method to get tounament name
  */
 function test_getTournyName() {
@@ -211,20 +224,6 @@ function test_playerPoints() {
   console.log(`toArray: ${pp.toArray()}`)
 }
 
-/**
- * Test pointsleaderboard 
- */
-function test_pointsBoard() {
-  let plb = new PointsLeaderboard();
-  //let table = plb._sliceData();
-
-/*
-  // Look at each tournament and calculate points
-  table.forEach( (v,k,m) => {
-    console.log(`Map = ${k} ${JSON.stringify(v)}`)
-  });
-*/
-}
 
 /**
  * Test assuring I can get all player records

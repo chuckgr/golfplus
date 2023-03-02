@@ -4,6 +4,40 @@
  * all code used and the code is not used in a commercial product.
  */
 
+/**
+ * Determine which players we have loaded that have not played a round so they can
+ * be culled from the database 
+ */
+function playersWithNoRounds() {
+  let plrs = new PlayerRounds();
+  let missingGolfers = [];
+  let currPlayerRound;
+  
+  // Loop for all of the players in database
+  players.getPlayers().forEach( p => { 
+    currPlayerRound = plrs.filter(PlayerRound.PLAYER, p);
+    if (currPlayerRound.getNumRounds() == 0) {
+      missingGolfers.push([p]);
+      console.log(`${p} has no rounds`);
+    }
+  });
+
+  if (missingGolfers.length > 1) {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    let sn = `Missing Players`;
+    let _missingPlayerSheet = ss.getSheetByName(sn);
+    if (_missingPlayerSheet == null) {
+      _missingPlayerSheet = ss.insertSheet(sn);
+    }
+
+    // Add the missing players
+    _missingPlayerSheet
+      .getRange(1,1,missingGolfers.length, 1)
+      .clear()
+      .setValues(missingGolfers);
+  }
+}
+
 /** 
  * Get the week number for this week
  * 
@@ -29,28 +63,6 @@ function getWeekNumber(date) {
   const days = Math.floor((currentDate - startDate)/(24 * 60 * 60 * 1000));
   const weekNumber = Math.ceil(days/7);
   return weekNumber;
-}
-
-/**
- * Get the dates for the weeks of tournament
- *
- * @param {string} mm/dd/yy for the date to calculate the values.
- * @param {number} count for the resulting dates to populate 
- * @return Dates 7 days from start date in first perameter
- * @customfunction
- */
-function TOURNYWEEKS(start, count) {
-  const oneDay = 1000*60*60*24;
-  if (start && count) {
-    let range = new Array(); 
-    // Map each value with a week later from the pervious value
-    let currDate = new Date(start).getTime();
-    for (let i=0; i< count; i++){
-      currDate = new Date(currDate+(oneDay*7)).getTime();
-      range.push([new Date(currDate).toLocaleDateString('en-US')]);
-    }
-    return range;
-  }
 }
 
 /**
