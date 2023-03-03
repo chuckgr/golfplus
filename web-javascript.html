@@ -21,13 +21,14 @@ async function loadData() {
 function updateTable(data) {
   let tableData = data.data;
   let courseData = data.courseData;
+  let tournyName = data.tournyData;
 
   const evenRowClasses = [
     ["s4", "s6", "s6", "s6", "s7r", "s6", "s6"], // below par - red
     ["s4", "s5", "s5", "s5", "s7b", "s5", "s5"]  // above par - black
     ]; // White
   const oddRowClasses =  [
-    ["s8", "s10r", "s10r", "s10r", "s11", "s10r", "s10r"],  // there is no class for under par yet, so use above for now
+    ["s8", "s10r", "s10r", "s10r", "s11", "s10r", "s10r"],  
     ["s8", "s10b", "s10b", "s10b", "s11", "s10b", "s10b"] 
     ]; // light yellow
   let bottomEvenRowClasses = [
@@ -117,7 +118,7 @@ function updateTable(data) {
     });
     table.appendChild(row);
   });
-
+  let titleElem = document.getElementById("tournyName").innerHTML = tournyName;
 }
 
 /**
@@ -205,16 +206,17 @@ function createTitle() {
   let tr = document.createElement('tr');
   tr.style.height = "20px";
   let th = createRowTh();
+  tr.appendChild(th);
   let td = document.createElement('td');
   td.classList.add("s0");
-  th.appendChild(td);
+  tr.appendChild(td);
   td = document.createElement('td');
   td.id = "tournyName";
   td.classList.add("s1");
-  td.colspan = "7";
+  td.colSpan = "7";
   td.innerHTML = "Generated Golf+ Leaderboard";
-  th.appendChild(td);
-  tr.appendChild(th);
+  
+  tr.appendChild(td);
   return tr;
 }
 

@@ -42,6 +42,7 @@ function getData() {
   let tnums = tournaments.getNumbers();
   let currTourny = tournaments.getTournamentById(tnums[tnums.length-1]);
   let data = currTourny.leaderboardData;
+  let tournamentName = currTourny.name;
 
   // Calculate the total score (with bumpers for sorting) and score to par
   let diffToPar = 0;
@@ -86,5 +87,5 @@ function getData() {
   courseData[2] = courseDates;
   
   // Return the table with the par table for the courses
-  return {"data":data, "courseData":courseData};
+  return {"data":data, "courseData":courseData, "tournyData":tournamentName};
 }
