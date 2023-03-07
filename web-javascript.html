@@ -32,7 +32,7 @@ function updateTable(data) {
     ["s8", "s10b", "s10b", "s10b", "s11", "s10b", "s10b"] 
     ]; // light yellow
   let bottomEvenRowClasses = [
-    ["s13wr-r", "s13wr", "s13wr", "s13wr", "s15yb", "s6", "s6"], // red
+    ["s13wb-r", "s13wr", "s13wr", "s13wr", "s15yb", "s6", "s6"], // red
     ["s13wb-r", "s13wb", "s13wb", "s13wb", "s15wb", "s5", "s5"] // black
   ]; // white
   let bottomOddRowClasses = [
@@ -43,6 +43,9 @@ function updateTable(data) {
   const playerIds = [
     "playerName", "playerScore1", "playerScore2", "playerScore3", "playerScore4", "playerTotal", "playerScoreToPar"
   ];
+
+  // Clear the loading screen
+  removeLoadingScreen();
   
   // Create the table for adding the data
   createTable();
@@ -70,19 +73,21 @@ function updateTable(data) {
       /**
        * Below we are still working on the player data rows
        */ 
-      if (i < limit) {
-        
+      if (i < limit) { 
         // Check the each player score to par to pick the correct class
         if ((j>0 && j<5) || j==scoreToParCol) {
-          if (c>0) {
-            parseInt(c) < parseInt(courseData[parIndex][j]) ? 
-              classSelect = red : 
-              classSelect = black;
+          if (c != 0) {
+            if (j==scoreToParCol) {
+              parseInt(c) < 0 ? classSelect = red : classSelect = black;
+            } else {
+              parseInt(c) < parseInt(courseData[parIndex][j]) ? 
+                classSelect = red : 
+                classSelect = black;
+            }
           } else {
             classSelect = black;
           }
-        }
-        //if (j==scoreToParCol) { console.log(`${classSelect==0 ? "Red" : "Black"}`);}
+        } 
         // Even/odd row TODO - pick class on under/over par
         if (i%2 == 0) {
           if (i==limit-1) {
@@ -104,12 +109,10 @@ function updateTable(data) {
         // Add parens for score to par
         j==scoreToParCol ? c=`(${c})` : c=c;
 
-
       /**
        * Above the limit, working on Course records now
        */
       } else {
-        //console.log(`j=${j} class=${courseClasses[j]}`);
         td.classList.add(courseClasses[j]);
       }
 
@@ -236,7 +239,6 @@ function createHeaderTd(headClass, label) {
  * Create the th for a table row (they are all the same...)
  */
 function createRowTh() {
-  console.log(`createRowTh`);
   let th = document.createElement('th');
   th.style.height = "20px";
   th.classList.add("row-header-background");
@@ -254,7 +256,6 @@ function createRowTh() {
  * @return {Element} Element to add the td as children to this table row.
  */
 function createTr() {
-  console.log(`createTr`);
   let tr = document.createElement('tr');
   tr.style.height = "20px";
   let th = document.createElement('th');
@@ -269,8 +270,35 @@ function createTr() {
 }
 
 /**
+ * Create a loading div to display till data is loaded
+ */
+function createLoadingScreen() {
+  let div = document.createElement('div');
+  div.id = "loading";
+  let h1 = document.createElement('h2');
+  h1.innerHTML = " Loading...";
+  h1.classList.add("s1");
+  //h1.colSpan = "7";
+  div.appendChild(h1);
+  let tableDiv = document.getElementById("tableDiv");
+  tableDiv.appendChild(div);
+}
+
+/**
+ * Remove the loading screen
+ */
+function removeLoadingScreen() {
+  let loadingElem = document.getElementById('loading');
+  loadingElem.style.display = "none";
+}
+
+/**
  * Main
  */
+// Show a loading screen before data is loaded
+createLoadingScreen();
+
+// Load the data
 loadData();
 
 

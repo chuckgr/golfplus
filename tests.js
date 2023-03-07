@@ -13,6 +13,15 @@ function test_pointsBoard() {
 }
 
 /**
+ * Test spliting score to par
+ */
+function test_splitToPar() {
+  let c = "(-17)";
+  let parts = c.slice(1,c.length-1);
+  console.log(`parts ${JSON.stringify(parts)}`);
+}
+
+/**
  * Test array of numbers
  */
 function test_arrayNumber() {
