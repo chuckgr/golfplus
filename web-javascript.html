@@ -103,11 +103,14 @@ function updateTable(data) {
           }
         }
         td.id = playerIds[j];
+
         // Clear out the 0 scores...
         c==0 ? c="" : c=c;
 
         // Add parens for score to par
-        j==scoreToParCol ? c=`(${c})` : c=c;
+        if (j==scoreToParCol) {
+          c>0 ? c = `(+${c})` : c=`(${c})`;
+        } 
 
       /**
        * Above the limit, working on Course records now
@@ -272,16 +275,9 @@ function createTr() {
 /**
  * Create a loading div to display till data is loaded
  */
-function createLoadingScreen() {
-  let div = document.createElement('div');
-  div.id = "loading";
-  let h1 = document.createElement('h2');
-  h1.innerHTML = " Loading...";
-  h1.classList.add("s1");
-  //h1.colSpan = "7";
-  div.appendChild(h1);
-  let tableDiv = document.getElementById("tableDiv");
-  tableDiv.appendChild(div);
+function showLoadingScreen() {
+  let loadingElem = document.getElementById('loading');
+  loadingElem.style.display = "block";
 }
 
 /**
@@ -296,7 +292,7 @@ function removeLoadingScreen() {
  * Main
  */
 // Show a loading screen before data is loaded
-createLoadingScreen();
+showLoadingScreen();
 
 // Load the data
 loadData();

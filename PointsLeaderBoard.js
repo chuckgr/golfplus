@@ -133,12 +133,14 @@ class PointsLeaderboard {
             scoreIdx--;
             //console.log(`dup ${t.name} ${t.score} ${scoreIdx} ${points[Math.min(scoreIdx,3)]}`);
             pp.points = pp.points + points[Math.min(scoreIdx,3)];
+            //pp.topfive = pp.topfive+1; 
             scoreIdx++;
           }
           else { 
             seen[t.score] = true;
             //console.log(`no dup ${t.name} ${t.score} ${scoreIdx} ${points[Math.min(scoreIdx,3)]}`);
             pp.points = pp.points + points[Math.min(scoreIdx,3)];
+            //scoreIdx < 3 ? pp.topfive = pp.topfive+1 :  
             scoreIdx++;
           }
         } else {
@@ -146,6 +148,7 @@ class PointsLeaderboard {
           pp.wins = pp.wins+1;
           //console.log(`Winner 10 ${t.name} ${t.score} ${scoreIdx} ${points[Math.min(scoreIdx,3)]}`);
           pp.points = pp.points + points[0];
+          //pp.topfive = pp.topfive+1;
           scoreIdx++;
         }
 
