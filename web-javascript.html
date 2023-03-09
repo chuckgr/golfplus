@@ -124,7 +124,12 @@ function updateTable(data) {
     });
     table.appendChild(row);
   });
+  // Add the tourny name to the title
   let titleElem = document.getElementById("tournyName").innerHTML = tournyName;
+
+  // Add the last updated to the bottom of the table
+  let lastUp = createLastUpdated();
+  table.appendChild(lastUp);
 }
 
 /**
@@ -227,6 +232,29 @@ function createTitle() {
 }
 
 /**
+ * Create the last updated label for the table
+ * 
+ * @return {Element} tr element with the label
+ */
+function createLastUpdated() {
+  let tr = document.createElement('tr');
+  tr.style.height = "20px";
+  let th = createRowTh();
+  tr.appendChild(th);
+  let td = document.createElement('td');
+  td.classList.add("s0");
+  tr.appendChild(td);
+  td = document.createElement('td');
+  td.id = "lastUpdated";
+  td.classList.add("s8lu");
+  td.colSpan = "7";
+  td.style.textAlign = "left";
+  td.innerHTML = `Last Updated: ${new Date().toLocaleString('en-US')}`;
+  tr.appendChild(td);
+  return tr;
+}
+
+/**
  * Function to add the labels for each column
  */
 function createHeaderTd(headClass, label) {
@@ -246,7 +274,7 @@ function createRowTh() {
   th.style.height = "20px";
   th.classList.add("row-header-background");
   let div = document.createElement('div');
-  //div.style.line-height = "20px";
+  div.style.lineHeight = "20px";
   div.classList.add("row-header-wrapper");
   th.appendChild(div);
   return th;
