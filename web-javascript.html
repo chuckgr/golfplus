@@ -6,11 +6,28 @@
 /**
  * Request the data from the server 
  */
-async function loadData() {
+async function loadData(options) {
   const e = await new Promise(r => {
-    google.script.run.withSuccessHandler(r).getData();
+    google.script.run.withSuccessHandler(r).getData(options);
   });
   const results = updateTable(e);
+}
+
+/**
+ * 
+ */
+function tournySelect(sel) {
+  console.log(`Selected tournament: ${sel}`);
+  // hide the table
+  let table = document.getElementById("table");
+  //table.style.display = "none";
+
+  // get the data from server
+  loadData(sel);
+
+  // remove the table - in updateTable() method
+
+  // recreate the table with the new data - is updateTable() method
 }
 
 /**
@@ -22,6 +39,16 @@ function updateTable(data) {
   let tableData = data.data;
   let courseData = data.courseData;
   let tournyName = data.tournyData;
+
+  // get the div for the table and make sure we remove any children to recreate the table
+  let tableDiv = document.getElementById("tableDiv");
+  let innerDiv = document.getElementById("innerDiv");
+  if (innerDiv) {
+    console.log(`hasChildNodes(): ${tableDiv.hasChildNodes()} ${tableDiv.childNodes[0].nodeName}`);
+    let lbtable = document.getElementById("innerDiv");
+    console.log(`lbtable node ${lbtable}`);
+    tableDiv.removeChild(lbtable);
+  }
 
   const evenRowClasses = [
     ["s4", "s6", "s6", "s6", "s7r", "s6", "s6"], // below par - red
@@ -143,8 +170,8 @@ function createTable() {
   table.id = "lbtable";
   table.classList.add("waffle");
   table.classList.add("no-grid");
-  table.cellspacing = "0";
-  table.cellpadding = "0";
+  table.cellSpacing = "0";
+  table.cellPadding = "0";
 
   // Create the header elements
   let thead = document.createElement('thead');
@@ -170,7 +197,10 @@ function createTable() {
   table.appendChild(tbody);
   
   let tableDiv = document.getElementById("tableDiv");
-  tableDiv.appendChild(table);
+  let innerDiv = document.createElement('div');
+  innerDiv.id = "innerDiv";
+  innerDiv.appendChild(table);
+  tableDiv.appendChild(innerDiv);
 }
 
 /**

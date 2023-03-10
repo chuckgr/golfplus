@@ -37,17 +37,30 @@ function include(filename) {
  * Get the table data to display, includes calculating the score and score to par 
  * before it is returned to the web client
  */
-function getData() {
-  // Get the latest tournament number and then get that tournament object
-  let tnums = tournaments.getNumbers();
-  let currTourny = tournaments.getTournamentById(tnums[tnums.length-1]);
+function getData(options) {
+  let currTourny;
+  let tnums;
+  let tnum;
+
+  // Check to see if a new tournament was selected
+  if (options) {
+    console.log(`We have options`);
+    tnum = Number(options);
+    currTourny = tournaments.getTournamentById(tnum);
+  } else {
+    tnums = tournaments.getNumbers();
+    tnum = tnums[tnums.length-1];
+    currTourny = tournaments.getTournamentById(tnum);
+  }
+
+  // Using the tournament number get that tournament object
   let data = currTourny.leaderboardData;
   let tournamentName = currTourny.name;
 
   // Calculate the total score (with bumpers for sorting) and score to par
   let diffToPar = 0;
   let totalScore = 0;
-  let courseData = tournaments.getCourseArray(tnums[tnums.length-1]);
+  let courseData = tournaments.getCourseArray(tnum);
   data.forEach((r,i) => {
     r.forEach((s,j) => {
       if (j>0 && j<5) {

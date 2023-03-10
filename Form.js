@@ -160,7 +160,6 @@ class Form {
         if (s.getFormUrl() != null) {
           found = true;
           this._url = s.getFormUrl();
-          console.log(this._url);
         }
       }
     });
