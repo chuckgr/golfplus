@@ -39,18 +39,21 @@ function include(filename) {
  */
 function getData(options) {
   let currTourny;
-  let tnums;
-  let tnum;
+  let tnums = tournaments.getNumbers();
+  let tnum = tnums[tnums.length-1];
 
-  // Check to see if a new tournament was selected
-  if (options) {
-    console.log(`We have options`);
-    tnum = Number(options);
-    currTourny = tournaments.getTournamentById(tnum);
-  } else {
-    tnums = tournaments.getNumbers();
-    tnum = tnums[tnums.length-1];
-    currTourny = tournaments.getTournamentById(tnum);
+  // Check the request 
+  switch(options.request) {
+    case 'leaderboard':
+      if (options.number !== 'current') {
+        tnum = Number(options.number);
+      } 
+      currTourny = tournaments.getTournamentById(tnum);
+      break;
+    case 'pointsboard':
+      break;
+    case 'stats':
+      break;
   }
 
   // Using the tournament number get that tournament object

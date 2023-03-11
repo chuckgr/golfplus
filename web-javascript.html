@@ -17,17 +17,29 @@ async function loadData(options) {
  * 
  */
 function tournySelect(sel) {
+  // Build the request object
+  let request = {"request":"leaderboard", "number": sel};
+
   // Show loading screen 
   showLoadingScreen();
 
-  // get the data from server
-  loadData(sel);
+  // Request the data from server
+  loadData(request);
 }
 
 /**
  * Update the table with the data from the spreadsheet
  * 
- * The css classes to color the 
+ * @param {object} data is an object that contains the data as specified in the "request"
+ *                 key in the object. Data will be different based on the request.
+ *                 - "leaderboard" - "data" - contains the table data
+ *                                   "courseData" - course data for this tournament
+ *                                   "tournyData" - contains the data for the tournament
+ *                 - "pointsboard" - "data" - contains the table data
+ *                 - "stats"       - "data" - contains the stats based on query key
+ *                                   "player" - Player to return the stats for
+ *                                      or
+ *                                   "course" - Course to return data for
  */
 function updateTable(data) {
   let tableData = data.data;
@@ -38,9 +50,7 @@ function updateTable(data) {
   let tableDiv = document.getElementById("tableDiv");
   let innerDiv = document.getElementById("innerDiv");
   if (innerDiv) {
-    console.log(`hasChildNodes(): ${tableDiv.hasChildNodes()} ${tableDiv.childNodes[0].nodeName}`);
     let lbtable = document.getElementById("innerDiv");
-    console.log(`lbtable node ${lbtable}`);
     tableDiv.removeChild(lbtable);
   }
 
@@ -346,8 +356,9 @@ function removeLoadingScreen() {
 // Show a loading screen before data is loaded
 showLoadingScreen();
 
-// Load the data
-loadData();
+let request = {'request':'leaderboard', 'number':'current'}
+// Request the data for the current tournament
+loadData(request);
 
 
 
