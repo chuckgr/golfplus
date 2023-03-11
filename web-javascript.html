@@ -17,17 +17,11 @@ async function loadData(options) {
  * 
  */
 function tournySelect(sel) {
-  console.log(`Selected tournament: ${sel}`);
-  // hide the table
-  let table = document.getElementById("table");
-  //table.style.display = "none";
+  // Show loading screen 
+  showLoadingScreen();
 
   // get the data from server
   loadData(sel);
-
-  // remove the table - in updateTable() method
-
-  // recreate the table with the new data - is updateTable() method
 }
 
 /**
