@@ -14,7 +14,7 @@ async function loadData(options) {
 }
 
 /**
- * 
+ * Called when dropdown is used to select a new tournament leaderboard to show
  */
 function tournySelect(sel) {
   // Build the request object
@@ -44,7 +44,7 @@ function tournySelect(sel) {
 function updateTable(data) {
   let tableData = data.data;
   let courseData = data.courseData;
-  let tournyName = data.tournyData;
+  let tournyName = data.tournyData.name;
 
   // get the div for the table and make sure we remove any children to recreate the table
   let tableDiv = document.getElementById("tableDiv");
@@ -159,7 +159,7 @@ function updateTable(data) {
   let titleElem = document.getElementById("tournyName").innerHTML = tournyName;
 
   // Add the last updated to the bottom of the table
-  let lastUp = createLastUpdated();
+  let lastUp = createLastUpdated(data.tournyData.lastUpdate);
   table.appendChild(lastUp);
 }
 
@@ -268,9 +268,10 @@ function createTitle() {
 /**
  * Create the last updated label for the table
  * 
+ * @param  {number} Date in milliseconds
  * @return {Element} tr element with the label
  */
-function createLastUpdated() {
+function createLastUpdated(date) {
   let tr = document.createElement('tr');
   tr.style.height = "20px";
   let th = createRowTh();
@@ -283,7 +284,7 @@ function createLastUpdated() {
   td.classList.add("s8lu");
   td.colSpan = "7";
   td.style.textAlign = "left";
-  td.innerHTML = `Last Updated: ${new Date().toLocaleString('en-US')}`;
+  td.innerHTML = `Last Updated: ${new Date(date).toLocaleString('en-US')}`;
   tr.appendChild(td);
   return tr;
 }

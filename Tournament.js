@@ -61,7 +61,7 @@ class Tournament {
   /**
    * Get the dates for a tournament 
    * 
-   * @return {srtring[]} Array of date strings for the torunament 
+   * @return {srtring[]} Array of date strings for the tournament 
    */
   get tournamentDates() {
     let roundDates = new Array();
@@ -102,6 +102,19 @@ class Tournament {
       });
     });
     return leaderboard;
+  }
+
+  /**
+   * Get the latest round date, in milliseconds, for the status display on the web
+   */
+  get latestRoundDate() {
+    let latestDate = 0;
+    let prs = new PlayerRounds().filter(PlayerRound.NUMBER, this._number);
+    //let rounds = pr.filter(PlayerRound.NUMBER, 23.07);
+    for (let r of prs) {
+      latestDate = Math.max(latestDate, new Date(r.getTimeStamp()).getTime());
+    }
+    return latestDate;
   }
 
   /**

@@ -27,17 +27,25 @@ class PlayerRound {
   /**
    * Define the static status fields
    */
-  static get DATE()   { return 1;}
-  static get NUMBER() { return 2;}
-  static get ROUND()  { return 3;}
-  static get PLAYER() { return 4}
-  static get SCORE()  { return 5;}
+  static get TIMESTAMP() { return 0;}
+  static get DATE()      { return 1;}
+  static get NUMBER()    { return 2;}
+  static get ROUND()     { return 3;}
+  static get PLAYER()    { return 4}
+  static get SCORE()     { return 5;}
 
   /**
    * Get the value of the field as specified by the passed enum
    */
   getField(field) {
     return this._data[field];
+  }
+
+  /**
+   * Get the timestamp of when the round was recorded 
+   */
+  getTimeStamp() {
+    return this._timestamp;
   }
 
   /**

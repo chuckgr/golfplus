@@ -13,6 +13,15 @@ function test_pointsBoard() {
 }
 
 /**
+ * Test getting the last timestamp of a round in a tournament
+ */
+function test_getTimestamp() {
+  let tourny = tournaments.getTournamentById(23.07);
+  let lastDate = tourny.latestRoundDate;
+  console.log(`Latest date for tournament ${23.07} is ${new Date(lastDate).toLocaleString('en-US')}`);
+}
+
+/**
  * Test spliting score to par
  */
 function test_splitToPar() {
@@ -568,23 +577,6 @@ function test_getScoresByDate(){
 
   pr.forEach( p => console.log(`${p.getName()} ${p.getScore()} ${p.getRound()}`))
 }
-
-/**
- * Test get week number for passed date
- */
-function test_getWeekNumber() {
-  console.log(`Week number: ${getWeekNumber("12/3/2022")}`);
-  console.log(`Week number: ${getWeekNumber("12/4/2022")}`);
-  console.log(`Week number: ${getWeekNumber("12/5/2022")}`);
-  console.log(`Week number: ${getWeekNumber("12/6/2022")}`);
-  console.log(`Week number: ${getWeekNumber("12/7/2022")}`);
-  console.log(`Week number: ${getWeekNumber("12/8/2022")}`);
-  console.log(`Week number: ${getWeekNumber("12/9/2022")}`);
-  console.log(`Week number: ${getWeekNumber("12/10/2022")}`);
-  console.log(`Week number: ${getWeekNumber("12/11/2022")}`);
-  console.log(`Week number: ${getWeekNumber("12/12/2022")}`);
-}
-
 
 function test_getPlayers() {
   let players = new Players();
