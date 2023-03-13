@@ -129,7 +129,7 @@ class Tournament {
    */
   toString() {
     let tmp = "";
-    this._rounds.forEach((r,i) => tmp=tmp+`Tournament:toString ${i} ${r.number} ${this._rounds.length}`);
+    this._rounds.forEach((r,i) => tmp=tmp+` ${r.number} ${r.name}`);
     return tmp;
   }
 }

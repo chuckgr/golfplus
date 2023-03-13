@@ -13,6 +13,14 @@ function test_pointsBoard() {
 }
 
 /**
+ * Get the tounament names and number for web page
+ */
+function test_tournyNameValue() {
+  let res = tournaments.getTournaments();
+  res.forEach(t => console.log(`${t.number} ${t.name}`))
+}
+
+/**
  * Test getting the last timestamp of a round in a tournament
  */
 function test_getTimestamp() {
