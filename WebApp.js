@@ -58,7 +58,6 @@ function getData(options) {
 
   // Using the tournament number get that tournament object
   let data = currTourny.leaderboardData;
-  //let tournamentName = currTourny.name;
 
   // Calculate the total score (with bumpers for sorting) and score to par
   let diffToPar = 0;
@@ -102,7 +101,17 @@ function getData(options) {
   });
   courseData[2] = courseDates;
 
-  let tournamentData = {"name": currTourny.name, "lastUpdate": currTourny.latestRoundDate};
+  // Get the tournament names/valiues for the dropdown selection
+  let tournys = tournaments.getTournaments();
+  let tournyNameValues = [];
+  tournys.forEach(t => {
+    tournyNameValues.push([t.number, t.name]);
+  });
+  tournyNameValues.sort((a,b) => b[0]-a[0]);
+
+  let tournamentData = {"name": currTourny.name, 
+                        "lastUpdate": currTourny.latestRoundDate,
+                        "nameValues": tournyNameValues};
   
   // Return the table with the par table for the courses
   return {"data":data, "courseData":courseData, "tournyData":tournamentData};

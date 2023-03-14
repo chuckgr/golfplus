@@ -50,7 +50,11 @@ function tournySelect(sel) {
 function updateTable(data) {
   let tableData = data.data;
   let courseData = data.courseData;
-  let tournyName = data.tournyData.name;
+  let tournyData = data.tournyData
+  let tournyName = tournyData.name;
+
+  // Load up the tournaments that can be selected
+  loadTournySelection(tournyData.nameValues);
 
   // get the div for the table and make sure we remove any children to recreate the table
   let tableDiv = document.getElementById("tableDiv");
@@ -339,6 +343,20 @@ function createTr() {
   th.appendChild(div);
   tr.appendChild(th);
   return tr;
+}
+
+/**
+ * Load up the tournament names and values for leaderboard selection
+ */
+function loadTournySelection(data) {
+  let selectElem = document.getElementById("tournaments");
+  let optionElem;
+  data.forEach(t => {
+    optionElem = document.createElement('option');
+    optionElem.value = t[0];
+    optionElem.innerHTML = t[1];
+    selectElem.appendChild(optionElem);
+  });
 }
 
 /**
