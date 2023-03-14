@@ -350,13 +350,21 @@ function createTr() {
  */
 function loadTournySelection(data) {
   let selectElem = document.getElementById("tournaments");
-  let optionElem;
-  data.forEach(t => {
-    optionElem = document.createElement('option');
-    optionElem.value = t[0];
-    optionElem.innerHTML = t[1];
-    selectElem.appendChild(optionElem);
-  });
+
+  // First check that if we qlready added them
+  if (selectElem.hasChildNodes()) {
+    let children = selectElem.childNodes;
+    // Should have one option and two text nodes to start
+    if (children.length < 4) { 
+      let optionElem;
+      data.forEach(t => {
+        optionElem = document.createElement('option');
+        optionElem.value = t[0];
+        optionElem.innerHTML = t[1];
+        selectElem.appendChild(optionElem);
+      });
+    }
+  }
 }
 
 /**
