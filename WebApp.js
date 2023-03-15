@@ -113,6 +113,6 @@ function getData(options) {
                         "lastUpdate": currTourny.latestRoundDate,
                         "nameValues": tournyNameValues};
   
-  // Return the table with the par table for the courses
-  return {"data":data, "courseData":courseData, "tournyData":tournamentData};
+  // Return the reults with the original request, table data, table for the courses
+  return {"options":options, "data":data, "courseData":courseData, "tournyData":tournamentData};
 }

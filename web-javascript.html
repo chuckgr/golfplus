@@ -37,7 +37,9 @@ function tournySelect(sel) {
  * Update the table with the data from the spreadsheet
  * 
  * @param {object} data is an object that contains the data as specified in the "request"
- *                 key in the object. Data will be different based on the request.
+ *                 key in the object, which is passed back with the data as 
+ *                 "options" key. Data returned will be different based on the request.
+ *         
  *                 - "leaderboard" - "data" - contains the table data
  *                                   "courseData" - course data for this tournament
  *                                   "tournyData" - contains the data for the tournament
@@ -48,15 +50,35 @@ function tournySelect(sel) {
  *                                   "course" - Course to return data for
  */
 function updateTable(data) {
-  let tableData = data.data;
-  let courseData = data.courseData;
-  let tournyData = data.tournyData
-  let tournyName = tournyData.name;
+  // Check the request 
+  switch(data.options.request) {
+    case 'leaderboard':
+      buildLeaderboard(data);
+      break;
+    case 'pointsboard':
+      break;
+    case 'stats':
+      break;
+  }
 
+}
+
+/**
+ * Build the leaderboard based on the data received from the request.
+ * 
+ * @param {object} Data - object that contain the 2d arrays for the leaderboard
+ *                        data - 2d array for the leaderboard
+ *                        courseData - 2d array for the course data
+ *                        tournyData - 2d array with the relavent tournament data
+ */
+function buildLeaderboard(data) {  
   // Load up the tournaments that can be selected
-  loadTournySelection(tournyData.nameValues);
+  loadTournySelection(data.tournyData.nameValues);
 
-  // get the div for the table and make sure we remove any children to recreate the table
+  // Clear the loading screen
+  removeLoadingScreen();
+
+  // Get the div for the table and make sure we remove any children to recreate the table
   let tableDiv = document.getElementById("tableDiv");
   let innerDiv = document.getElementById("innerDiv");
   if (innerDiv) {
@@ -64,32 +86,37 @@ function updateTable(data) {
     tableDiv.removeChild(lbtable);
   }
 
-  const evenRowClasses = [
-    ["s4", "s6", "s6", "s6", "s7r", "s5", "s6"], // below par - red
-    ["s4", "s5", "s5", "s5", "s7b", "s5", "s5"]  // above par - black
-    ]; // White
-  const oddRowClasses =  [
-    ["s8", "s10r", "s10r", "s10r", "s11yr", "s10b", "s10r"],  
-    ["s8", "s10b", "s10b", "s10b", "s11yb", "s10b", "s10b"] 
-    ]; // light yellow
-  let bottomEvenRowClasses = [
-    ["s13wb-r", "s13wr", "s13wr", "s13wr", "s15yb", "s13wb", "s13wb"], // red
-    ["s13wb-r", "s13wb", "s13wb", "s13wb", "s15wb", "s13wb", "s13wb"] // black
-  ]; // white
-  let bottomOddRowClasses = [
-    ["s2ybbb", "s13r", "s13r", "s13r", "s15yr", "s13r", "s13b"], // red
-    ["s2ybbb", "s13b", "s13b", "s13b", "s15yb", "s13b",  "s13b"]  // black
-  ]; // yellow
-  let courseClasses = ["s16", "s5", "s5", "s5", "s7b", "s4", "s0"];
-  const playerIds = [
-    "playerName", "playerScore1", "playerScore2", "playerScore3", "playerScore4", "playerTotal", "playerScoreToPar"
-  ];
-
-  // Clear the loading screen
-  removeLoadingScreen();
-  
   // Create the table for adding the data
   createTable();
+
+  // Load up the table with the returned data
+  loadTableData(data);
+}
+
+/**
+ * Load the data in the leaderboard table, creating elements as needed
+ */
+function loadTableData(data){
+  let tableData = data.data;
+  let courseData = data.courseData;
+  let tournyData = data.tournyData
+  let requestObj = data.options;
+
+  const evenRowClasses = [ ["s4", "s6", "s6", "s6", "s7r", "s5", "s6"], // below par - red
+                           ["s4", "s5", "s5", "s5", "s7b", "s5", "s5"]  // above par - black 
+                           ]; // White
+  const oddRowClasses =  [ ["s8", "s10r", "s10r", "s10r", "s11yr", "s10b", "s10r"],  
+                           ["s8", "s10b", "s10b", "s10b", "s11yb", "s10b", "s10b"] 
+                           ]; // light yellow
+  let bottomEvenRowClasses = [ ["s13wb-r", "s13wr", "s13wr", "s13wr", "s15yb", "s13wb", "s13wb"], // red
+                               ["s13wb-r", "s13wb", "s13wb", "s13wb", "s15wb", "s13wb", "s13wb"] // black 
+                               ]; // white
+  let bottomOddRowClasses = [ ["s2ybbb", "s13r", "s13r", "s13r", "s15yr", "s13r", "s13b"], // red
+                              ["s2ybbb", "s13b", "s13b", "s13b", "s15yb", "s13b",  "s13b"]  // black 
+                              ]; // yellow
+  let courseClasses = ["s16", "s5", "s5", "s5", "s7b", "s4", "s0"];
+  const playerIds = [
+    "playerName", "playerScore1", "playerScore2", "playerScore3", "playerScore4", "playerTotal", "playerScoreToPar"];
 
   let row;
   let td;
@@ -166,8 +193,9 @@ function updateTable(data) {
     });
     table.appendChild(row);
   });
+
   // Add the tourny name to the title
-  let titleElem = document.getElementById("tournyName").innerHTML = tournyName;
+  let titleElem = document.getElementById("tournyName").innerHTML = data.tournyData.name;
 
   // Add the last updated to the bottom of the table
   let lastUp = createLastUpdated(data.tournyData.lastUpdate);
@@ -385,15 +413,16 @@ function removeLoadingScreen() {
 }
 
 /**
- * Main
+ * ----------------
+ *      Main
+ * ----------------
  */
 // Show a loading screen before data is loaded
 showLoadingScreen();
 
-let request = {'request':'leaderboard', 'number':'current'}
 // Request the data for the current tournament
+let request = {'request':'leaderboard', 'number':'current'}
 loadData(request);
-
 
 
 </script>
