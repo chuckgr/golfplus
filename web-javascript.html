@@ -151,6 +151,7 @@ function updateTable(data) {
         // Add parens for score to par
         if (j==scoreToParCol) {
           c>0 ? c = `(+${c})` : c=`(${c})`;
+          c==`()` ? c = `E` : c=c;
         } 
 
       /**
@@ -179,7 +180,7 @@ function updateTable(data) {
  * @return {Element} Return the table element for the leaderboard table
  */
 function createTable() {
-  let thStyles = ["100px", "140px", "93px", "93px", "93px", "93px", "37px", "43px"];
+  let thStyles = ["10px", "140px", "93px", "93px", "93px", "93px", "37px", "43px"];
   let table = document.createElement('table');
   table.id = "lbtable";
   table.classList.add("waffle");
