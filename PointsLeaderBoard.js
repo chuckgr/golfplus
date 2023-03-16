@@ -24,7 +24,8 @@ class PointsLeaderboard {
     //this._data = data;
     this._sheetName = "Points Leaderboard";
     this._pointsSheet;
-    this._tournaments = [23.02,23.03,23.04,23.05,23.06,23.07,23.08,23.09,23.10,23.11,23.12];
+    //this._tournaments = [23.02,23.03,23.04,23.05,23.06,23.07,23.08,23.09,23.10,23.11,23.12];
+    this._tournaments = [23.02,23.03,23.04,23.05,23.06,23.07];
     this._tableData = [];
     
     // Define settings
@@ -105,12 +106,12 @@ class PointsLeaderboard {
     let points = [8, 6, 4, 1];
     let pp;
     let tmpPP;
-    //let done = false;
     let seen = {}; 
     let scoreIdx = 0;
     
     // Look at each tournament and calculate points
     tournyData.forEach( (v,k,m) => {
+      //console.log(`## New Tourny ${k} ##`);
       // Loop for all the tournament data that is already sorted
       v.forEach( (t,i) => {
         // See if we have this player yet
@@ -131,14 +132,18 @@ class PointsLeaderboard {
         if (i!=0) {
           if (seen[t.score]) {
             scoreIdx--;
-            //console.log(`dup ${t.name} ${t.score} ${scoreIdx} ${points[Math.min(scoreIdx,3)]}`);
+            //console.log(`1 dup ${t.name} ${t.score} idx:${scoreIdx} point:${points[Math.min(scoreIdx,3)]}`);
             pp.points = pp.points + points[Math.min(scoreIdx,3)];
             //pp.topfive = pp.topfive+1; 
+            if (scoreIdx==0) {
+              //console.log(`1 win ${t.name}`);
+              pp.wins = pp.wins+1;
+            } 
             scoreIdx++;
           }
           else { 
             seen[t.score] = true;
-            //console.log(`no dup ${t.name} ${t.score} ${scoreIdx} ${points[Math.min(scoreIdx,3)]}`);
+            //console.log(`2 no dup ${t.name} ${t.score} idx:${scoreIdx} points:${points[Math.min(scoreIdx,3)]}`);
             pp.points = pp.points + points[Math.min(scoreIdx,3)];
             //scoreIdx < 3 ? pp.topfive = pp.topfive+1 :  
             scoreIdx++;
@@ -146,7 +151,7 @@ class PointsLeaderboard {
         } else {
           seen[t.score] = true;
           pp.wins = pp.wins+1;
-          //console.log(`Winner 10 ${t.name} ${t.score} ${scoreIdx} ${points[Math.min(scoreIdx,3)]}`);
+          //console.log(`Winner ${t.name} ${t.score} idx:${scoreIdx} points:${points[Math.min(scoreIdx,3)]}`);
           pp.points = pp.points + points[0];
           //pp.topfive = pp.topfive+1;
           scoreIdx++;

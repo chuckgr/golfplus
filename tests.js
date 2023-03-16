@@ -13,6 +13,117 @@ function test_pointsBoard() {
 }
 
 /**
+ * Slicer function from Pointsleaderboard to call the pointsCalculations
+ */
+function test_pointsSlicer() {
+  const playerRounds = new PlayerRounds();
+  let numRounds = 0;
+  let totalByPlayer = [];
+  let total = 0;
+  let fedex = new Map();
+  let tournamentNumbers = [23.02,23.03,23.04,23.05,23.06,23.07];
+
+  // Loop for all of the tournaments eligble for leaderboard
+  tournamentNumbers.forEach( (t,i) => {
+    let tournyRes = playerRounds.filter(PlayerRound.NUMBER, t);
+    let plyrResults;
+    // Loop for all players (players is a global Players object)
+    for (let p of players) {
+      // Grab all records from tournament for this player
+      plyrResults = tournyRes.filter(PlayerRound.PLAYER, p);
+      // We only count if there are 4 rounds played
+      if (plyrResults.getNumRounds() == 4) { 
+        for (let r of plyrResults) {
+          total+= r.getScore();
+        }
+        numRounds = numRounds + plyrResults.getNumRounds();
+        totalByPlayer.push({"name": p, "score": total});
+      }    
+      total = 0;
+    }
+    totalByPlayer.sort((a, b) => parseInt(a.score) - parseInt(b.score));
+    fedex.set(t, totalByPlayer);
+    totalByPlayer = [];
+  });
+
+  test_pointsCalculations(fedex);
+}
+
+/**
+ * Work on the points leaerboard calculating correct values
+ */
+function test_pointsCalculations(tournyData) {
+  let points = [8, 6, 4, 1];
+    let pp;
+    let tmpPP;
+    let seen = {}; 
+    let scoreIdx = 0;
+    let _tableData = [];
+    
+    // Look at each tournament and calculate points
+    tournyData.forEach( (v,k,m) => {
+      console.log(`## New Tourny ${k} ##`);
+      // Loop for all the tournament data that is already sorted
+      v.forEach( (t,i) => {
+        // See if we have this player yet
+        tmpPP = _tableData.findIndex(p => p._name == t.name);
+        if (tmpPP != -1) {
+          pp = _tableData[tmpPP];
+        } else {
+          pp = new PlayerPoints(t);
+        }
+
+        // Increment events and determine if top three
+        pp.events = pp.events+1;
+        if (i < 3) {
+          pp.topfive = pp.topfive+1;  
+        } 
+
+        // Find any dups and rescore
+        if (i!=0) {
+          if (t.score in seen) {
+            seen[t.score]++;
+            scoreIdx--;
+            console.log(`1 dup ${t.name} ${t.score} idx:${scoreIdx} point:${points[Math.min(scoreIdx,3)]} seen:${seen[t.score]}`);
+            pp.points = pp.points + points[Math.min(scoreIdx,3)];
+            if (scoreIdx==0) {
+              console.log(`1 win ${t.name}`);
+              pp.wins = pp.wins+1;
+            } 
+            //pp.topfive = pp.topfive+1; 
+            scoreIdx++;
+          }
+          else { 
+            seen[t.score] = 1;
+            console.log(`2 no dup ${t.name} ${t.score} idx:${scoreIdx} points:${points[Math.min(scoreIdx,3)]} seen:${seen[t.score]}`);
+            pp.points = pp.points + points[Math.min(scoreIdx,3)];
+            //scoreIdx < 3 ? pp.topfive = pp.topfive+1 :  
+            scoreIdx++;
+          }
+        } else {
+          seen[t.score] = 1;
+          pp.wins = pp.wins+1;
+          console.log(`Winner 10 ${t.name} ${t.score} idx:${scoreIdx} points:${points[Math.min(scoreIdx,3)]} seen:${seen[t.score]}`);
+          pp.points = pp.points + points[0];
+          //pp.topfive = pp.topfive+1;
+          scoreIdx++;
+        }
+
+        if (tmpPP > -1) {
+          _tableData.splice(tmpPP,1,pp);
+        } else {
+          _tableData.push(pp);
+        }
+      });
+      scoreIdx = 0;
+      seen = {};
+    });
+    _tableData.sort((a,b) => b.points - a.points);
+    let tableData = _tableData;
+    return _tableData;
+}
+
+/**
  * Get the tounament names and number for web page
  */
 function test_tournyNameValue() {
