@@ -12,17 +12,20 @@
         <h2 style="text-align:center; display: block;">Loading...</h2>
   </div>
   <div id="container" style="display:flex; flex-direction:column;">  
-    <div id="menu" style="display: block">
+    <div id="menu" style="display: flex; flex-direction: row;">
       <form id="tournamentForm" > 
         <div style="display:flex">
             <select id="tournaments" name="tournament" onchange="tournySelect(this.value)"> 
               <option selected disabled>Select Tournament</option>
             </select>
         </div>
-      </form> 
+      </form>
+      <button type="button" onclick="buildPointsboard()">Points Leaderboard</button>
     </div>
     <div id="tableDiv" class="ritz grid-container" style="display: block">
     </div>
+    <div id="pointsDiv" class="ritz grid-container" style="display: block">
+    </div>  
   </div>
   <?!= include('web-javascript'); ?>
 </body>

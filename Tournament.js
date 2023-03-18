@@ -14,6 +14,7 @@ class Tournament {
     this._name = "";
     this._rounds = new Array();
     this._valid = false;
+    this._status;
   }
 
   /**
@@ -23,6 +24,7 @@ class Tournament {
    */
   add(tournyRound) {
     this._name = tournyRound.name;
+    this._status = tournyRound.status;
     this._rounds.push(tournyRound);
   }
 
@@ -49,6 +51,13 @@ class Tournament {
    */
   get name() {
     return this._name;
+  }
+
+  /**
+   * Return the status of the tournament 
+   */
+  get status() {
+    return this._status;
   }
 
   /**

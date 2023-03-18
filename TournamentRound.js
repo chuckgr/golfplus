@@ -11,6 +11,7 @@
  *                     - wind: Wind speed
  *                     - level: Player Level
  *                     - name: Tournament name (if any)
+ *                `    - status: Complete or In Progress
  * 
  * Copyright 2023 Chuck Grieshaber, All rights reserved.
  * Code can be used freely as long as the copyright statement is kept with 
@@ -38,6 +39,7 @@ class TournamentRound {
     this._wind = data[6];
     this._level = data[7];
     this._name = data[8];
+    this._status = data[9];
   }
 
   /**
@@ -51,7 +53,10 @@ class TournamentRound {
              this._pins != "" &&
              this._greens != "" &&
              this._wind != "" &&
-             this._level != "");
+             this._level != "" &&
+             this._name != "" &&
+             this.status != ""
+             );
   }
 
 
@@ -116,6 +121,13 @@ class TournamentRound {
    */
   get name() {
     return this._name;
+  }
+
+  /**
+   * Getter for torunament status, "In progress" or "Complete"
+   */
+  get status() {
+    return this._status;
   }
 
   /**

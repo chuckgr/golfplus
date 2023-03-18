@@ -70,6 +70,15 @@ class Tournaments {
   }
 
   /**
+   * Get all of the completed tournaments
+   */
+  getCompletedTournaments() {
+    let returnAry = [];
+    this._tournaments.forEach(t => {if (t.status == "Complete") returnAry.push(t)});
+    return returnAry;
+  }
+
+  /**
    * Get all of the tournament numbers 
    */
   getNumbers() {

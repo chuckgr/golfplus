@@ -10,9 +10,6 @@
  * TODO - 
  *      - What function/methods can be shared with LeaderBoard class
  *        - undetermined and will be evaluated at creation time 
- *      - Make sure we take into account ties
- *        - Do we give them the same point value and then reduce later (10 10 6)? or
- *          this on -> we go straight down (10 10 8?)
  * 
  * Copyright 2023 Chuck Grieshaber, All rights reserved.
  * Code can be used freely as long as the copyright statement is kept with 

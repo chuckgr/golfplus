@@ -27,10 +27,17 @@ function tournySelect(sel) {
   let request = {"request":"leaderboard", "number": sel};
 
   // Show loading screen 
-  showLoadingScreen();
+  show("loading");
 
   // Request the data from server
   loadData(request);
+}
+
+/**
+ * Called when the points board button is pressed 
+ */ 
+function loadPointsBoard() {
+
 }
 
 /**
@@ -56,11 +63,32 @@ function updateTable(data) {
       buildLeaderboard(data);
       break;
     case 'pointsboard':
+      buildPointsboard(data);
       break;
     case 'stats':
       break;
   }
+}
 
+/**
+ * Build the points leaderboard
+ * 
+ * @param {object} data object with the point leaderboard table data
+ */
+function buildPointsboard(data) {
+  // Get the div for the table and make sure we remove any children to recreate the table
+  let pointsDiv = document.getElementById("pointsDiv");
+  let pointsInnerDiv = document.getElementById("pointsInnerDiv");
+  if (pointsInnerDiv) {
+    let plbtable = document.getElementById("pointsInnerDiv");
+    pointsDiv.removeChild(plbtable);
+  }
+
+  // Create the table for adding the data
+  createTable("pointsboard");
+
+  // Show the screen
+  show("pointsboard");
 }
 
 /**
@@ -75,9 +103,6 @@ function buildLeaderboard(data) {
   // Load up the tournaments that can be selected
   loadTournySelection(data.tournyData.nameValues);
 
-  // Clear the loading screen
-  removeLoadingScreen();
-
   // Get the div for the table and make sure we remove any children to recreate the table
   let tableDiv = document.getElementById("tableDiv");
   let innerDiv = document.getElementById("innerDiv");
@@ -87,10 +112,13 @@ function buildLeaderboard(data) {
   }
 
   // Create the table for adding the data
-  createTable();
+  createTable("leaderboard");
 
   // Load up the table with the returned data
   loadTableData(data);
+
+  // Show the leaderboard
+  show('leaderboard');
 }
 
 /**
@@ -205,12 +233,28 @@ function loadTableData(data){
 /**
  * Create the table elements up to where the table contents (scores and course data)
  * 
+ * @param {string} type - the type of table to build - leaderboard or pointsboard
  * @return {Element} Return the table element for the leaderboard table
  */
-function createTable() {
-  let thStyles = ["10px", "140px", "93px", "93px", "93px", "93px", "37px", "43px"];
+function createTable(type) {
+  let tableId = "lbtable";
+  let tableDivId = "tableDiv";
+  let bodyId = "lbbody";
+  let stylesIdx = 0;
+  let cols = 8;
+  let innerDivId = "innerDiv";
+  if (type == "pointsboard") {
+    tableId = "plbtable";
+    bodyId = "plbbody";
+    innerDivId = "pointsInnerDiv";
+    tableDivId = "pointsDiv";
+    stylesIdx = 1;
+    cols = 7;
+  }
+  let thStyles = [["10px", "140px", "93px", "93px", "93px", "93px", "37px", "43px"],
+                  ["100px", "100px", "136px", "50px", "50px", "50px", "80px"]];
   let table = document.createElement('table');
-  table.id = "lbtable";
+  table.id = tableId;
   table.classList.add("waffle");
   table.classList.add("no-grid");
   table.cellSpacing = "0";
@@ -223,25 +267,25 @@ function createTable() {
   th.classList.add("row-headers-background");
   tr.appendChild(th);
   //let td;
-  [...Array(8).keys()].forEach(i => {
+  [...Array(cols).keys()].forEach(i => {
     th = document.createElement('th');
-    th.style.width = `${thStyles[i]}`;
+    th.style.width = `${thStyles[stylesIdx][i]}`;
     th.classList.add("s0");
     tr.appendChild(th);
   });
   thead.appendChild(tr);
   table.appendChild(thead);
   let tbody = document.createElement('tbody');
-  tbody.id = "lbbody";
+  tbody.id = bodyId;
 
   tbody.appendChild(createBlankRow());
-  tbody.appendChild(createTitle());
-  tbody.appendChild(createHeader());
+  tbody.appendChild(createTitle(type));
+  tbody.appendChild(createHeader(type));
   table.appendChild(tbody);
   
-  let tableDiv = document.getElementById("tableDiv");
+  let tableDiv = document.getElementById(tableDivId);
   let innerDiv = document.createElement('div');
-  innerDiv.id = "innerDiv";
+  innerDiv.id = innerDivId;
   innerDiv.appendChild(table);
   tableDiv.appendChild(innerDiv);
 }
@@ -267,16 +311,23 @@ function createBlankRow() {
 /**
  * Create the header row with the labels in it
  */
-function createHeader() {
-  let labels  = ["", "Name", "Round 1", "Round 2", "Round 3", "Round4", "Total", "+/-"];
-  let classes = ["s0", "s2", "s3", "s3", "s3", "s3", "s3", "s3"];
+function createHeader(type) {
+  let arrayIdx = 0;
+  if (type=="pointsboard") {
+    arrayIdx = 1;
+  } 
+
+  let labels  = [["", "Name", "Round 1", "Round 2", "Round 3", "Round4", "Total", "+/-"],
+                 ["", "Rank", "Name", "Points", "Events", "# Wins", "Top Three"]];
+  let classes = [["s0", "s2", "s3", "s3", "s3", "s3", "s3", "s3"],
+                 ["p0", "p1", "p1", "p1", "p1", "p1", "p1"]];
   let tr = document.createElement('tr');
   tr.style.height = "20px";
   let th = createRowTh();
   tr.appendChild(th);
   // Add the labels
-  [...Array(labels.length).keys()].forEach( (n,i) => {
-    tr.appendChild(createHeaderTd(classes[n], labels[n]))
+  [...Array(labels[arrayIdx].length).keys()].forEach( (n,i) => {
+    tr.appendChild(createHeaderTd(classes[arrayIdx][n], labels[arrayIdx][n]))
   });
   return tr;
 }
@@ -286,19 +337,31 @@ function createHeader() {
  * 
  * @return {Element} tr element with the header
  */
-function createTitle() {
+function createTitle(type) {
+  let title = "Generated Golf+ Leaderboard";
+  let titleId = "tournyName";
+  let blankColClass = "s0";
+  let titleClass = "s1";
+  let colSpan = "7";
+  if (type=="pointsboard") {
+    title = "Golf+ Fun Tournaments Points Leaderboard";
+    titleId = "pointsName";
+    titleClass = "p0";
+    blankColClass = "p0";
+    colSpan = "6";
+  }
   let tr = document.createElement('tr');
   tr.style.height = "20px";
   let th = createRowTh();
   tr.appendChild(th);
   let td = document.createElement('td');
-  td.classList.add("s0");
+  td.classList.add(blankColClass);
   tr.appendChild(td);
   td = document.createElement('td');
-  td.id = "tournyName";
-  td.classList.add("s1");
-  td.colSpan = "7";
-  td.innerHTML = "Generated Golf+ Leaderboard";
+  td.id = titleId;
+  td.classList.add(titleClass);
+  td.colSpan = colSpan;
+  td.innerHTML = title;
   
   tr.appendChild(td);
   return tr;
@@ -413,12 +476,24 @@ function removeLoadingScreen() {
 }
 
 /**
+ * Show a screen, which in our case is hiding all of the other divs and show the one passed
+ */
+function show(name) {
+  let screens = ["loading", "leaderboard", "pointsboard"];
+  let ids = ["loading", "tableDiv", "pointsDiv"];
+  ids.forEach(e => {
+    document.getElementById(e).style.display = "none";
+  });
+  document.getElementById(ids[screens.indexOf(name)]).style.display = "block";
+}
+
+/**
  * ----------------
  *      Main
  * ----------------
  */
 // Show a loading screen before data is loaded
-showLoadingScreen();
+show('loading');
 
 // Request the data for the current tournament
 let request = {'request':'leaderboard', 'number':'current'}

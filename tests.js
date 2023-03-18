@@ -13,6 +13,29 @@ function test_pointsBoard() {
 }
 
 /**
+ * 
+ */
+function test_hideShow() {
+  let name = 'leaderboard';
+  let screens = ["loading", "leaderboard", "pointsboard"];
+  let ids = ["loading", "tableDiv", "pointsDiv"];
+  ids.forEach(e => {
+    //document.getElementById(e).style.display = "none";
+    console.log(`hiding ${e}`);
+  });
+  //document.getElementById(ids[screens.indexOf(name)]);
+  console.log(`showing ${ids[screens.indexOf(name)]}`);
+}
+
+/**
+ * Test completed tournaments
+ */
+function test_completedTournaments() {
+  let ct = tournaments.getCompletedTournaments();
+  ct.forEach(t => console.log(`${t.number} ${t.name}`));
+}
+
+/**
  * Slicer function from Pointsleaderboard to call the pointsCalculations
  */
 function test_pointsSlicer() {
