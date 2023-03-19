@@ -15,12 +15,12 @@
     <div id="menu" style="display: flex; flex-direction: row;">
       <form id="tournamentForm" > 
         <div style="display:flex">
-            <select id="tournaments" name="tournament" onchange="tournySelect(this.value)"> 
+            <select class="jfk-button" id="tournaments" name="tournament" onchange="tournySelect(this.value)"> 
               <option selected disabled>Select Tournament</option>
             </select>
         </div>
       </form>
-      <button type="button" onclick="buildPointsboard()">Points Leaderboard</button>
+      <button class="jfk-button" type="button" onclick="pointsSelect()">Points Leaderboard</button>
     </div>
     <div id="tableDiv" class="ritz grid-container" style="display: block">
     </div>

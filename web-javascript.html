@@ -34,10 +34,19 @@ function tournySelect(sel) {
 }
 
 /**
- * Called when the points board button is pressed 
- */ 
-function loadPointsBoard() {
+ *  Called when the point board button is pressed
+ */
+function pointsSelect() {
+  // Build the request object
+  let request = {"request":"pointsboard"};
 
+  // Show loading screen
+  show("loading");
+
+  // Request the data from the server
+  console.log(`before loadData`);
+  loadData(request);
+  console.log(`after loadData`);
 }
 
 /**
@@ -63,10 +72,13 @@ function updateTable(data) {
       buildLeaderboard(data);
       break;
     case 'pointsboard':
+      console.log(`updateTable:pointsboard`);
       buildPointsboard(data);
       break;
     case 'stats':
       break;
+    default:
+      console.log(`Request not found: data.options.request = ${data.options.request} `);
   }
 }
 
@@ -87,8 +99,44 @@ function buildPointsboard(data) {
   // Create the table for adding the data
   createTable("pointsboard");
 
+  // Now load up the data
+  loadPointsData(data);
+
   // Show the screen
   show("pointsboard");
+}
+
+/**
+ * Load the data for the points board
+ * 
+ * @param {object} Object containing the data to build the points board 
+ */
+function loadPointsData(data) {
+  const evenRowClasses = ["p2", "p3", "p2", "p2", "p2", "p2", "p2"]; // White
+  const oddRowClasses =  ["p4", "p5", "p4", "p4", "p4", "p4", "p4"]; // light blue
+  let table = document.getElementById("plbbody");
+
+  [...data.pointsData].forEach((r,i) => {
+    // Create a blank column
+    row = createTr();
+    td = document.createElement('tr');
+    td.classList.add('p0');
+    row.appendChild(td);
+
+    // Loop for each item in the row
+    r.forEach((c,j) => {
+      td = document.createElement('td');
+      if (i%2 == 0) {
+        td.classList.add(evenRowClasses[j]);
+      } else {
+        td.classList.add(oddRowClasses[j]);
+      }
+      td.innerHTML = c;
+      row.appendChild(td);
+    });
+    table.appendChild(row);
+  });
+
 }
 
 /**
@@ -159,10 +207,13 @@ function loadTableData(data){
    *  Loop for all of the table data and course data. add TD elements to TR elements
    */
   [...tableData, ...courseData].forEach((r,i) => {
+    // Create a blank column
     row = createTr();
     td = document.createElement('tr');
     td.classList.add('s0');
     row.appendChild(td);
+
+    // Now loop for all the data records
     r.forEach((c,j) => {
       td = document.createElement('td');
 
@@ -251,8 +302,8 @@ function createTable(type) {
     stylesIdx = 1;
     cols = 7;
   }
-  let thStyles = [["10px", "140px", "93px", "93px", "93px", "93px", "37px", "43px"],
-                  ["100px", "100px", "136px", "50px", "50px", "50px", "80px"]];
+  let thStyles = [["0px", "140px", "93px", "93px", "93px", "93px", "37px", "43px"],
+                  ["0px", "100px", "136px", "50px", "50px", "50px", "80px"]];
   let table = document.createElement('table');
   table.id = tableId;
   table.classList.add("waffle");

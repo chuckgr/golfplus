@@ -49,13 +49,23 @@ class PointsLeaderboard {
     this._footerFontSize = 10;
 
     // Kick things off
-    this._go();
+    //this._go();
+  }
+
+  /**
+   * Get the data for the web page to display the points leaderboard
+   */
+  getData() {
+    let data = [];
+    let pps = this._calculateScores(this._sliceData());
+    pps.forEach((p,i) => data.push([i+1, p.name, p.points, p.events, p.wins, p.topfive]))
+    return data;
   }
 
   /**
    * Kick off the building of the sheet
    */
-  _go() {
+  build() {
     // Rip through the data to create the tournament boards
     let tournyBoards = this._sliceData();
 
@@ -247,7 +257,7 @@ class PointsLeaderboard {
    * 
    * @param {PlayerPoints[]} data - 2d nx5 array of PlayerPoints objects for points leaderboard. 
    *                                n is the number of rows based on how many players have 
-   *                                a played in a tournament. 
+   *                                played in a tournament. 
    */
   _addData(data, sheet) {
     let dataAry = [];

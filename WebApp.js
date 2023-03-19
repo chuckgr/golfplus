@@ -49,6 +49,32 @@ function getData(options) {
         tnum = Number(options.number);
       } 
       currTourny = tournaments.getTournamentById(tnum);
+      return getLeaderboardData(options);
+      break;
+    case 'pointsboard':
+      return {"options": options, "pointsData":new PointsLeaderboard().getData()};
+      break;
+    case 'stats':
+      break;
+  }
+
+}
+
+/**
+ * Get the leaderboard data to return to the web client
+ */
+function getLeaderboardData(options) {
+  let currTourny;
+  let tnums = tournaments.getNumbers();
+  let tnum = tnums[tnums.length-1];
+
+  // Check the request 
+  switch(options.request) {
+    case 'leaderboard':
+      if (options.number !== 'current') {
+        tnum = Number(options.number);
+      } 
+      currTourny = tournaments.getTournamentById(tnum);
       break;
     case 'pointsboard':
       break;
@@ -115,4 +141,11 @@ function getData(options) {
   
   // Return the reults with the original request, table data, table for the courses
   return {"options":options, "data":data, "courseData":courseData, "tournyData":tournamentData};
+}
+
+/**
+ * Get the points leaderboard to return to the web client
+ */
+function getPointsLeaderboardData(options) {
+
 }

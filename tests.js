@@ -15,6 +15,15 @@ function test_pointsBoard() {
 /**
  * 
  */
+function test_pointsSliceDice() {
+  let ptsAry = new PointsLeaderboard().getData()
+  //let ptsAry = pb.getData();
+  ptsAry.forEach(p => console.log(`${p}`));
+}
+
+/**
+ * Test hide/show method
+ */
 function test_hideShow() {
   let name = 'leaderboard';
   let screens = ["loading", "leaderboard", "pointsboard"];

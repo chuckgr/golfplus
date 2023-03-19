@@ -154,6 +154,7 @@ function tournamentByNumber(number) {
 function buildPointsBoard() {
   // Gets kicked off at creation time in the constructor
   const plb = new PointsLeaderboard();
+  plb.build();
 }
 
 /**
