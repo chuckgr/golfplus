@@ -6,11 +6,6 @@
  * Typical use case are: print the current points board after each round and then
  * final leaderboard at the end of the tournament.                             
  * 
- * @param {PlayerRound[]} ? Array of player rounds for this leaderboard or should we just get PlayerRounds class?
- * TODO - 
- *      - What function/methods can be shared with LeaderBoard class
- *        - undetermined and will be evaluated at creation time 
- * 
  * Copyright 2023 Chuck Grieshaber, All rights reserved.
  * Code can be used freely as long as the copyright statement is kept with 
  * all code used and the code is not used in a commercial product.
@@ -18,11 +13,9 @@
 class PointsLeaderboard {
   
   constructor() {
-    //this._data = data;
     this._sheetName = "Points Leaderboard";
     this._pointsSheet;
-    //this._tournaments = [23.02,23.03,23.04,23.05,23.06,23.07,23.08,23.09,23.10,23.11,23.12];
-    this._tournaments = [23.02,23.03,23.04,23.05,23.06,23.07];
+    this._tournaments = this._getSettings();
     this._tableData = [];
     
     // Define settings
@@ -40,16 +33,13 @@ class PointsLeaderboard {
     this._dataHorizAlign = [["center", "left", "center", "center", "center", "center"]];
     this._headerColumnTitlesFontSize = 12;
     this._headerColumnTitlesFontStyles = [["bold", "bold", "bold", "bold", "bold", "bold"]];
-    this._fontName = "Trebuchet MS"; // "Roboto Mono" "Comfortaa"
+    this._fontName = "Trebuchet MS"; 
     this._dataRowStart = this._headerRowStart+this._headerRows;
     this._dataColStart = this._headerColStart;
     this._dataFontSize = 12;
     this._footerRowStart = this._dataRowStart; // The length of the data will be added in build phase
     this._footerHorizAlign = [["left", "left", "left", "left", "left", "left"]];
     this._footerFontSize = 10;
-
-    // Kick things off
-    //this._go();
   }
 
   /**
@@ -250,6 +240,36 @@ class PointsLeaderboard {
    */
   getTournamentNumbers() {
     return this._tournaments;
+  }
+
+  /**
+   * Read in the settings for the tournaments
+   */
+  _getSettings() {
+    let ret = [];
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    let sn = "Settings";
+    this._settingsSheet = ss.getSheetByName(sn);
+
+    let settings = this._settingsSheet
+                .getDataRange()
+                .getValues();
+
+    let pointsIdx = -1;
+    settings[0].forEach((name,i) => {
+      if (name == "PointsTournaments" ) pointsIdx = i;
+    });
+
+    settings.forEach((s,i) => {
+      // Jump past the header info
+      if (i > 2) {
+        // Could have blanks, skip them
+        if (s[pointsIdx] != "") {
+          ret.push(s[pointsIdx]);
+        }
+      }
+    });
+    return ret;
   }
 
   /**

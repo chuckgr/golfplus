@@ -26,6 +26,9 @@ function tournySelect(sel) {
   // Build the request object
   let request = {"request":"leaderboard", "number": sel};
 
+  // Reset the tournament selection to the "Select tournament" option
+  document.getElementById("tournaments").selectedIndex = 0;
+
   // Show loading screen 
   show("loading");
 
@@ -39,6 +42,9 @@ function tournySelect(sel) {
 function pointsSelect() {
   // Build the request object
   let request = {"request":"pointsboard"};
+
+  // Reset the tournament selection to the "Select tournament" option
+  document.getElementById("tournaments").selectedIndex = 0;
 
   // Show loading screen
   show("loading");
@@ -511,22 +517,6 @@ function loadTournySelection(data) {
 }
 
 /**
- * Create a loading div to display till data is loaded
- */
-function showLoadingScreen() {
-  let loadingElem = document.getElementById('loading');
-  loadingElem.style.display = "block";
-}
-
-/**
- * Remove the loading screen
- */
-function removeLoadingScreen() {
-  let loadingElem = document.getElementById('loading');
-  loadingElem.style.display = "none";
-}
-
-/**
  * Show a screen, which in our case is hiding all of the other divs and show the one passed
  */
 function show(name) {
@@ -543,6 +533,8 @@ function show(name) {
  *      Main
  * ----------------
  */
+let  ua= navigator.userAgent;
+console.log(`User agent ${ua}`);
 // Show a loading screen before data is loaded
 show('loading');
 

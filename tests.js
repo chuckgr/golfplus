@@ -15,6 +15,15 @@ function test_pointsBoard() {
 /**
  * 
  */
+function test_pointsTournySetting() {
+  let pb = new PointsLeaderboard()
+  let ret = pb._getSettings();
+  console.log(`${ret}`);
+}
+
+/**
+ * 
+ */
 function test_pointsSliceDice() {
   let ptsAry = new PointsLeaderboard().getData()
   //let ptsAry = pb.getData();
