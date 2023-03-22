@@ -38,6 +38,26 @@ function playersWithNoRounds() {
   }
 }
 
+/**
+ * Determine the Tournament that a player first participated in
+ */
+function calcFirstPlayerTournament() {
+  let plrs = new PlayerRounds();
+  let firstT = new Map();
+
+  for (const pr of plrs) {
+    if (!firstT.has(pr.getName())) {
+      firstT.set(pr.getName(), pr.getNumber());
+    } else {
+      firstT.set(pr.getName(), Math.min(firstT.get(pr.getName(), pr.getNumber())));
+    }
+  }
+
+  for (const [key, value] of firstT) {
+    console.log(`${key} = ${value}`);
+  } 
+}
+
 /** 
  * Get the week number for this week
  * 

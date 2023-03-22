@@ -44,12 +44,6 @@ class Form {
     //-----------------------------------------------------------------------
     // Create the prompts for a round
     //-----------------------------------------------------------------------
-    form.addDateItem()
-      .setTitle("Date of round")
-      .setRequired(true)
-      .setIncludesYear(true)
-      .setHelpText("The date should be in the range of the tournament round or it will not be counted correctrly");
-
     form.addListItem()
       .setTitle("Tournament Number")
       .setRequired(true)
@@ -73,7 +67,7 @@ class Form {
     // Make sure the form is attached before we try to update it
     SpreadsheetApp.flush();
 
-    // Assign the form responses to the responses sheet
+    // Assign the form responses to the responses sheet (not working yet)
     //form.removeDestination();
     //form.setDestination(FormApp.DestinationType.SPREADSHEET, this._ss.getSheetByName(this._formSheet))
 
@@ -82,7 +76,6 @@ class Form {
     this._url = form.getPublishedUrl();
     this._editUrl = form.getEditUrl();
     Logger.log('Form:create(): Published URL: ' + this._url);
-    //Logger.log('Form:create(): Editor URL: ' + this._editUrl); 
   }
 
   /** 
@@ -141,8 +134,8 @@ class Form {
    * number of scores
    */
   getScoreChoices() {
-    const numOfScores = 90;
-    const startNumber = 60
+    const numOfScores = 100;
+    const startNumber = 50
     return [...Array(numOfScores).keys()].map(i => i+startNumber);
   }
 

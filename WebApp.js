@@ -4,25 +4,9 @@
  * and to select a leaderboard by number.
  */
 function doGet(e) {
-  if(e.queryString !=='') {  
-    console.log(e.parameter.mode);
-    switch(e.parameter.mode) {
-      case 'pointsboard':
-        return HtmlService
-          .createTemplateFromFile('pointsboard')
-          .evaluate(); 
-        break;
-      case 'scoreboard':
-         return HtmlService
-          .createTemplateFromFile('scoreboard')
-          .evaluate();
-        break;
-    }
-  } else {
     return HtmlService
          .createTemplateFromFile('LeaderboardTemplate')
          .evaluate();
-  }
 }
 
 /**
@@ -57,7 +41,6 @@ function getData(options) {
     case 'stats':
       break;
   }
-
 }
 
 /**
@@ -141,11 +124,4 @@ function getLeaderboardData(options) {
   
   // Return the reults with the original request, table data, table for the courses
   return {"options":options, "data":data, "courseData":courseData, "tournyData":tournamentData};
-}
-
-/**
- * Get the points leaderboard to return to the web client
- */
-function getPointsLeaderboardData(options) {
-
 }
