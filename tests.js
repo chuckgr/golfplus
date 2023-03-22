@@ -13,6 +13,29 @@ function test_pointsBoard() {
 }
 
 /**
+ * Get the value for the admin sheet
+ */
+function test_getValue() {
+  let result;
+  const nameFields = ["E4", "E5", "E6", "D4", "D5", "D6", "F4", "F5", "F6"];
+  let ss = SpreadsheetApp.getActiveSpreadsheet();
+  let newPlayer;
+  let sheet = ss.getSheetByName('Admin');
+  nameFields.forEach(r => {
+    console.log(`${r}: "${sheet.getRange(r).getValue()}"`);
+  });
+}
+
+/**
+ * Test add player in Players
+ */
+function test_addPlayer() {
+  let plyrs = new Players();
+  //console.log(`Add new player "Tiger Woods" rc=${plyrs.add("Tiger Woods")}`);
+  console.log(`Add existing player "Chuck Grieshaber" rc=${plyrs.add("Chuck Grieshaber")}`);
+}
+
+/**
  * 
  */
 function test_pointsTournySetting() {

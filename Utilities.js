@@ -5,6 +5,40 @@
  */
 
 /**
+ * ---------------------------------------------------------
+ *  The following functions are called from the Admin sheet
+ * ---------------------------------------------------------
+ */
+
+/**
+ * Add a new player to the player database. This is call by pressing the button on the admin screen.
+ */
+function adminAddPlayer() {
+  let result;
+  const nameField = "E5";
+  let ss = SpreadsheetApp.getActiveSpreadsheet();
+  let newPlayer = ss
+    .getSheetByName('Admin')
+    .getRange(nameField)
+    .getValue();
+  if (newPlayer) {
+    let plrs = new Players();
+    result = plrs.add(newPlayer);
+    if (result == -1) {
+      ss.toast(`Player ${newPlayer} already exists!`, "Add new player", 5);
+    } else {
+      ss.toast(`Player ${newPlayer} added successfully`, "Add new player", 5);
+      ss.getSheetByName('Admin')
+        .getRange(nameField)
+        .clear();
+    }
+  } else {
+    ss.toast(`No Player name was entered!`, "Add new player", 5);
+  }
+}
+
+
+/**
  * Determine which players we have loaded that have not played a round so they can
  * be culled from the database 
  */
@@ -62,6 +96,8 @@ function calcFirstPlayerTournament() {
  * Get the week number for this week
  * 
  * @return {number} Weeknumber The week number for the current week
+ * 
+ * TODO - remove as we are not using it
  */
 function getCurrentWeekNumber() { 
   let currentDate = new Date();

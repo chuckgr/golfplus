@@ -8,8 +8,9 @@
  */ 
 class Players {
   constructor() {
-    this._playerData = SpreadsheetApp.getActiveSpreadsheet()
-      .getSheetByName('Players')
+    this._playerSheet = SpreadsheetApp.getActiveSpreadsheet()
+      .getSheetByName('Players');
+    this._playerData = this._playerSheet
       .getDataRange()
       .getValues();
     this._data = new Array();
@@ -23,6 +24,24 @@ class Players {
    */ 
   getPlayers() {
     return this._data;
+  }
+
+  /**
+   * Add a new player to the database of players
+   * 
+   * @param {string} player to add to the player list
+   */
+  add(player) {
+    let rc = 0;
+    if (!this._data.find(p => p == player.trim())) {
+      let dataRange = this._playerSheet.getDataRange();
+      this._playerSheet.getRange(dataRange.getRow(), 1, 1, 1).setValue(player.trim());
+      this._playerSheet.sort(1);
+    } else {
+      // Already in database
+      rc = -1;
+    }
+    return rc;
   }
 
   /**
