@@ -21,20 +21,47 @@ function adminAddPlayer() {
     .getSheetByName('Admin')
     .getRange(nameField)
     .getValue();
+  console.log(`Player to be added "${newPlayer}"`);
   if (newPlayer) {
     let plrs = new Players();
     result = plrs.add(newPlayer);
+    console.log(`Result of add "${result}"`);
     if (result == -1) {
       ss.toast(`Player ${newPlayer} already exists!`, "Add new player", 5);
     } else {
       ss.toast(`Player ${newPlayer} added successfully`, "Add new player", 5);
       ss.getSheetByName('Admin')
         .getRange(nameField)
-        .clear();
+        .clearContent();
     }
   } else {
-    ss.toast(`No Player name was entered!`, "Add new player", 5);
+    ss.toast(`No Player name was found!`, "Add new player", 5);
   }
+}
+
+/**
+ * Determine if everyone that has a round is in the Players sheet
+ */
+function playersMissingFromSettings() {
+  let plrs = new PlayerRounds();
+  const players = new Players();
+  let missingGolfers = [];
+  let fndPlayer = new Map();
+  let cnt = 0;
+
+  // Loop for all of the players in database
+  for (const p of plrs) { 
+    if (fndPlayer.has(p.getName())) {
+      fndPlayer.set(p.getName(), fndPlayer.get(p.getName())+1);
+    } else {
+      fndPlayer.set(p.getName(), 1);
+    }
+  }
+  players.getPlayers().forEach(p => {
+    fndPlayer.has(p) ? cnt++ : missingGolfers.push(p);
+  });
+
+  console.log(`${JSON.stringify(missingGolfers)}`);
 }
 
 

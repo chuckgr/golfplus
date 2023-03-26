@@ -13,6 +13,43 @@ function test_pointsBoard() {
 }
 
 /**
+ * Lets create a new way to sort out the leaderboard data in Tournament class, currently we use the player list and only
+ * allow a score if their name is in the player list... this is not right.
+ */
+function test_leaderboardRewrite() {
+  let currentTourny = tournaments.getTournamentById(23.09);
+  let rounds = [];
+  let playerMap = new Map();  // key=name, value=[r1,r2,r3,r4]
+  let leaderboard = [];
+  const pr = new PlayerRounds();
+
+  // Get the records for each of the tournament rounds and the course data for the footer
+  currentTourny.rounds.forEach((r) => {
+    rounds = [...rounds, ...pr.getRoundsByNumber(r.number)];
+  });
+
+  // Loop for all of the rounds logged for this tournament
+  let tmpPlr = [];
+  rounds.forEach(r => {
+    if (playerMap.has(r.getName())) {
+      tmpPlr = playerMap.get(r.getName());
+    } else {
+      tmpPlr = [999,999,999,999];
+    }
+    tmpPlr[r.getRound()-1] = r.getScore();
+    playerMap.set(r.getName(), tmpPlr);
+  });
+
+  // Convert from a map to array for leaderboard
+  for (const [name, scores] of playerMap) {
+    leaderboard.push([name, ...scores]);
+  }
+
+  leaderboard.forEach(r => console.log(`${r}`));
+}
+
+
+/**
  * Get the value for the admin sheet
  */
 function test_getValue() {
@@ -31,8 +68,8 @@ function test_getValue() {
  */
 function test_addPlayer() {
   let plyrs = new Players();
-  //console.log(`Add new player "Tiger Woods" rc=${plyrs.add("Tiger Woods")}`);
-  console.log(`Add existing player "Chuck Grieshaber" rc=${plyrs.add("Chuck Grieshaber")}`);
+  console.log(`Add new player "Landon Davis" rc=${plyrs.add("Landon Davis")}`);
+  //console.log(`Add existing player "Chuck Grieshaber" rc=${plyrs.add("Chuck Grieshaber")}`);
 }
 
 /**

@@ -27,7 +27,7 @@ class Leaderboard {
     this._sheetName = `Leaderboard`;
     this._leaderboardSheet = null;
     this._headerTitle = [["Name", "Round 1", "Round 2", "Round 3", "Round 4", "Total", "+/-"]];
-    this._footerValues = [["Course"],["Par"],["Date"],["Tees"], ["Pins"], ["Greens"],["Wind"],["Level"]];
+    this._footerValues = [["Course"],["Par"],["Date"],["Difficulty"],["Tees"], ["Pins"],["Wind"],["Green Speed"]];
 
     // Everything will be based off the header row/col
     this._numCols = 7;
@@ -208,15 +208,16 @@ class Leaderboard {
        .setBorder(true, false, false, false, false, false);
     
     // Get the data for the courses and add to footer
+    // TODO - update the list to be consistent witht the game order/words
     tournaments.getTournamentById(this._tournyNumber).rounds.forEach((r) => {
       this._footerValues[0].push(r.course);
       this._footerValues[1].push(Courses.getPar(r.course));
       this._footerValues[2].push(r.date);
-      this._footerValues[3].push(r.tees);
-      this._footerValues[4].push(r.pins);
-      this._footerValues[5].push(r.greens);
+      this._footerValues[3].push(r.level);
+      this._footerValues[4].push(r.tees);
+      this._footerValues[5].push(r.pins);
       this._footerValues[6].push(r.wind);
-      this._footerValues[7].push(r.level);
+      this._footerValues[7].push(r.greens);
     });
 
     // Add the footer data

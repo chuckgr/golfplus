@@ -35,7 +35,7 @@ class Players {
     let rc = 0;
     if (!this._data.find(p => p == player.trim())) {
       let dataRange = this._playerSheet.getDataRange();
-      this._playerSheet.getRange(dataRange.getRow(), 1, 1, 1).setValue(player.trim());
+      this._playerSheet.getRange(dataRange.getRow()+1, 1, 1, 1).setValue(player.trim());
       this._playerSheet.sort(1);
     } else {
       // Already in database

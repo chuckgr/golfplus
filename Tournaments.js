@@ -112,16 +112,16 @@ class Tournaments {
    * @param {number} tournament to return the course data for
    */
   getCourseArray(tournament) {
-    let retAry = [["Course"],["Par"],["Date"],["Tees"], ["Pins"], ["Greens"],["Wind"],["Level"]];
+    let retAry = [["Course"],["Par"],["Date"],["Difficulty"],["Tees"], ["Pins"],["Wind"],["Green Speed"]];
     this.getTournamentById(tournament).rounds.forEach((r) => {
       retAry[0].push(r.course);
       retAry[1].push(Courses.getPar(r.course));
       retAry[2].push(r.date);
-      retAry[3].push(r.tees);
-      retAry[4].push(r.pins);
-      retAry[5].push(r.greens);
+      retAry[4].push(r.tees);
+      retAry[5].push(r.pins);
+      retAry[7].push(r.greens);
       retAry[6].push(r.wind);
-      retAry[7].push(r.level);
+      retAry[3].push(r.level);
     });
     return retAry;
   }
