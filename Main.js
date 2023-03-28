@@ -164,32 +164,31 @@ function buildPointsBoard() {
  */
 function buildLeaderBoard(currTourny) {
   let rounds = [];
+  let playerMap = new Map();  // key=name, value=[r1,r2,r3,r4]
   let leaderboard = [];
-  let found = false;
-  let playerName;
-  let playerScores = new Array(4);
   const pr = new PlayerRounds();
-  const players = new Players();  
 
   // Get the records for each of the tournament rounds and the course data for the footer
   currTourny.rounds.forEach((r) => {
     rounds = [...rounds, ...pr.getRoundsByNumber(r.number)];
   });
 
-  // Get the records for the players in the player database
-  let playerList = players.getPlayers();
-  playerList.forEach( (p,i) => {
-    if (found) { leaderboard.push([playerName, ...playerScores]);}
-    playerName = p;
-    found = false;
-    // Preload scores so sort will work for missing scores
-    playerScores = [999, 999, 999, 999];
-    rounds.forEach((r) => {
-      if (r.getName().trim() == p.trim()) {
-        found = true;
-        playerScores[r.getRound()-1] = r.getScore();
-      }
-    });
+  // Loop for all of the rounds logged for this tournament
+  let tmpPlr = [];
+  rounds.forEach(r => {
+    if (playerMap.has(r.getName())) {
+      tmpPlr = playerMap.get(r.getName());
+    } else {
+      tmpPlr = [999,999,999,999];
+    }
+    tmpPlr[r.getRound()-1] = r.getScore();
+    playerMap.set(r.getName(), tmpPlr);
   });
+
+  // Convert from a map to array for leaderboard
+  for (const [name, scores] of playerMap) {
+    leaderboard.push([name, ...scores]);
+  }
+
   return leaderboard;
 }

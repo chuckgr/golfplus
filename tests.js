@@ -13,6 +13,15 @@ function test_pointsBoard() {
 }
 
 /**
+ * Test getLeaderboardData in Tournament class
+ */
+function test_getLeaderboardData() {
+  let res = tournaments.getTournamentById(23.10);
+  let data = res.leaderboardData;
+  data.forEach(r => console.log(`${r}`));
+}
+
+/**
  * Lets create a new way to sort out the leaderboard data in Tournament class, currently we use the player list and only
  * allow a score if their name is in the player list... this is not right.
  */
