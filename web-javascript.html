@@ -213,10 +213,18 @@ function loadTableData(data){
    *  Loop for all of the table data and course data. add TD elements to TR elements
    */
   [...tableData, ...courseData].forEach((r,i) => {
-    // Create a blank column
+    // Column for player position
     row = createTr();
-    td = document.createElement('tr');
-    td.classList.add('s0');
+    td = document.createElement('td');
+    if (i<limit) {
+      i%2==0 ? td.classList.add('s4') : td.classList.add('s8');
+      td.innerHTML = i+1;
+      if (i==limit-1) {
+        i%2==0 ? td.classList.add('s13wb-r') : td.classList.add('s2ybbb');
+      }
+    } else {
+      td.classList.add('s0');
+    }
     row.appendChild(td);
 
     // Now loop for all the data records
@@ -308,7 +316,7 @@ function createTable(type) {
     stylesIdx = 1;
     cols = 7;
   }
-  let thStyles = [["0px", "140px", "93px", "93px", "93px", "93px", "37px", "43px"],
+  let thStyles = [["30px", "140px", "93px", "93px", "93px", "93px", "37px", "43px"],
                   ["0px", "100px", "136px", "50px", "50px", "50px", "80px"]];
   let table = document.createElement('table');
   table.id = tableId;
@@ -323,7 +331,7 @@ function createTable(type) {
   let th = document.createElement('th');
   th.classList.add("row-headers-background");
   tr.appendChild(th);
-  //let td;
+
   [...Array(cols).keys()].forEach(i => {
     th = document.createElement('th');
     th.style.width = `${thStyles[stylesIdx][i]}`;
@@ -335,7 +343,7 @@ function createTable(type) {
   let tbody = document.createElement('tbody');
   tbody.id = bodyId;
 
-  tbody.appendChild(createBlankRow());
+  //tbody.appendChild(createBlankRow());
   tbody.appendChild(createTitle(type));
   tbody.appendChild(createHeader(type));
   table.appendChild(tbody);
@@ -374,10 +382,10 @@ function createHeader(type) {
     arrayIdx = 1;
   } 
 
-  let labels  = [["", "Name", "Round 1", "Round 2", "Round 3", "Round4", "Total", "+/-"],
+  let labels  = [["Pos", "Name", "Round 1", "Round 2", "Round 3", "Round4", "Total", "+/-"],
                  ["", "Rank", "Name", "Points", "Events", "# Wins", "Top Three"]];
-  let classes = [["s0", "s2", "s3", "s3", "s3", "s3", "s3", "s3"],
-                 ["p0", "p1", "p1", "p1", "p1", "p1", "p1"]];
+  let classes = [["s2", "s2", "s3", "s3", "s3", "s3", "s3", "s3"],
+                 ["p2", "p1", "p1", "p1", "p1", "p1", "p1"]];
   let tr = document.createElement('tr');
   tr.style.height = "20px";
   let th = createRowTh();
@@ -394,17 +402,17 @@ function createHeader(type) {
  * 
  * @return {Element} tr element with the header
  */
-function createTitle(type) {
+function createTitle(type, text) {
   let title = "Generated Golf+ Leaderboard";
   let titleId = "tournyName";
-  let blankColClass = "s0";
+  let blankColClass = "s1";
   let titleClass = "s1";
   let colSpan = "7";
   if (type=="pointsboard") {
     title = "Golf+ Fun Tournaments Points Leaderboard";
     titleId = "pointsName";
     titleClass = "p0";
-    blankColClass = "p0";
+    blankColClass = "p2";
     colSpan = "6";
   }
   let tr = document.createElement('tr');
