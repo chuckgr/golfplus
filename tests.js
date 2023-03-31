@@ -13,6 +13,28 @@ function test_pointsBoard() {
 }
 
 /**
+ * 
+ */
+function test_multiArray() {
+  let currTourny = tournaments.getTournamentById(23.04);
+  let [date1, date2, date3, date4] = currTourny.tournamentDates;
+  console.log(date1);
+  console.log(date2);
+  console.log(date3);
+  console.log(date4);
+  let oneDay = (24 * 60 * 60 * 1000);
+  let startDate = new Date(date1).toLocaleDateString();
+  let endDate = new Date(new Date(date4).getTime()+(7*oneDay)).toLocaleDateString();
+  let dateString = `${startDate} - ${endDate}`;
+  console.log(dateString);
+
+  let courseData = tournaments.getCourseArray(23.10);
+  let newCourseData = courseData.splice(2,1);
+  console.log(`${JSON.stringify(newCourseData)}`);
+  console.log(`${JSON.stringify(courseData)}`);
+}
+
+/**
  * Test getLeaderboardData in Tournament class
  */
 function test_getLeaderboardData() {

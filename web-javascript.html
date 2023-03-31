@@ -290,6 +290,9 @@ function loadTableData(data){
   // Add the tourny name to the title
   let titleElem = document.getElementById("tournyName").innerHTML = data.tournyData.name;
 
+  // Add the tourny dates to the title
+  let tournyDateElem = document.getElementById("tournyDates").innerHTML = data.tournyData.tournyDates;
+
   // Add the last updated to the bottom of the table
   let lastUp = createLastUpdated(data.tournyData.lastUpdate);
   table.appendChild(lastUp);
@@ -345,6 +348,7 @@ function createTable(type) {
 
   //tbody.appendChild(createBlankRow());
   tbody.appendChild(createTitle(type));
+  tbody.appendChild(createDateTitle(type))
   tbody.appendChild(createHeader(type));
   table.appendChild(tbody);
   
@@ -433,6 +437,42 @@ function createTitle(type, text) {
 }
 
 /**
+ * Create the header for the table
+ * 
+ * @return {Element} tr element with the header
+ */
+function createDateTitle(type, text) {
+  let title = text;
+  let titleId = "tournyDates";
+  let blankColClass = "s1";
+  let titleClass = "s1s";
+  let colSpan = "7";
+  if (type=="pointsboard") {
+    title = "";
+    titleId = "pointsDates";
+    titleClass = "p0";
+    blankColClass = "p2";
+    colSpan = "6";
+  }
+  let tr = document.createElement('tr');
+  tr.style.height = "20px";
+  let th = createRowTh();
+  tr.appendChild(th);
+  let td = document.createElement('td');
+  td.classList.add(blankColClass);
+  tr.appendChild(td);
+  td = document.createElement('td');
+  td.id = titleId;
+  td.classList.add(titleClass);
+  td.colSpan = colSpan;
+  td.innerHTML = title;
+  
+  tr.appendChild(td);
+  return tr;
+}
+
+
+/**
  * Create the last updated label for the table
  * 
  * @param  {number} Date in milliseconds
@@ -444,7 +484,7 @@ function createLastUpdated(date) {
   let th = createRowTh();
   tr.appendChild(th);
   let td = document.createElement('td');
-  td.classList.add("s0");
+  td.classList.add("s8lu");
   tr.appendChild(td);
   td = document.createElement('td');
   td.id = "lastUpdated";

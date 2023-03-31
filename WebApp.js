@@ -6,7 +6,8 @@
 function doGet(e) {
     return HtmlService
          .createTemplateFromFile('LeaderboardTemplate')
-         .evaluate();
+         .evaluate()
+         .setTitle('Golf+ Fun Tournaments');
 }
 
 /**
@@ -22,7 +23,6 @@ function include(filename) {
  * before it is returned to the web client
  */
 function getData(options) {
-  let currTourny;
   let tnums = tournaments.getNumbers();
   let tnum = tnums[tnums.length-1];
 
@@ -51,7 +51,9 @@ function getLeaderboardData(options) {
   let tnums = tournaments.getNumbers();
   let tnum = tnums[tnums.length-1];
 
-  // Check the request 
+  /** 
+   * Check the request 
+   */
   switch(options.request) {
     case 'leaderboard':
       if (options.number !== 'current') {
@@ -68,7 +70,9 @@ function getLeaderboardData(options) {
   // Using the tournament number get that tournament object
   let data = currTourny.leaderboardData;
 
-  // Calculate the total score (with bumpers for sorting) and score to par
+  /**
+   * Calculate the total score (with bumpers for sorting) and score to par
+   */ 
   let diffToPar = 0;
   let totalScore = 0;
   let courseData = tournaments.getCourseArray(tnum);
@@ -90,7 +94,9 @@ function getLeaderboardData(options) {
   // Sort the array
   data.sort((a,b) => a[5]-b[5]);
 
-  // Normalize the data after the sort to remove the bumpers
+  /**
+   * Normalize the data after the sort to remove the bumpers
+   */
   data.forEach((r,i) =>{
     r.forEach((c,j) => {
       if (c==999) {
@@ -100,7 +106,9 @@ function getLeaderboardData(options) {
     });
   });
 
-  // Turn date obj to date string, can't send Date obj
+  /**
+   * Turn date obj to date string, can't send Date obj
+   */
   let courseDates = courseData[2].map(d => {
     if (d != 'Date') {
       return new Date(d).toLocaleDateString();
@@ -109,8 +117,12 @@ function getLeaderboardData(options) {
     }
   });
   courseData[2] = courseDates;
+  // Remove the dates 
+  courseData.splice(2,1);
 
-  // Get the tournament names/valiues for the dropdown selection
+  /**
+   * Get the tournament names/valiues for the dropdown selection
+   */
   let tournys = tournaments.getTournaments();
   let tournyNameValues = [];
   tournys.forEach(t => {
@@ -118,9 +130,20 @@ function getLeaderboardData(options) {
   });
   tournyNameValues.sort((a,b) => b[0]-a[0]);
 
+  /**
+   * Get the start and end dates for the tournament
+   */
+  let [date1, date2, date3, date4] = currTourny.tournamentDates;
+  let oneDay = (24 * 60 * 60 * 1000);
+  let dateString = `${new Date(date1).toLocaleDateString()} - ${new Date(new Date(date4).getTime()+(7*oneDay)).toLocaleDateString()}`;
+
+  /**
+   * Package up the data to return to the web client
+   */
   let tournamentData = {"name": currTourny.name, 
                         "lastUpdate": currTourny.latestRoundDate,
-                        "nameValues": tournyNameValues};
+                        "nameValues": tournyNameValues,
+                        "tournyDates": dateString};
   
   // Return the reults with the original request, table data, table for the courses
   return {"options":options, "data":data, "courseData":courseData, "tournyData":tournamentData};
