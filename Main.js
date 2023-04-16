@@ -139,7 +139,7 @@ function selectTournament() {
  */
 function tournamentByNumber(number) {
   let currentTourny = tournaments.getTournamentById(Number(number));
-  if (typeof currentTourny === "object") {
+  if (currentTourny instanceof Tournament) {
     const lbData = buildLeaderBoard(currentTourny);
     const lb = new Leaderboard(lbData);
     lb.create(currentTourny.number);

@@ -23,8 +23,12 @@ function include(filename) {
  * before it is returned to the web client
  */
 function getData(options) {
+  //console.log(`getData`);
   let tnums = tournaments.getNumbers();
   let tnum = tnums[tnums.length-1];
+  if ('userInfo' in options) {
+    console.log(options.userInfo);
+  }
 
   // Check the request 
   switch(options.request) {
@@ -33,6 +37,7 @@ function getData(options) {
         tnum = Number(options.number);
       } 
       currTourny = tournaments.getTournamentById(tnum);
+      //console.log(`switch on leaderboard`);
       return getLeaderboardData(options);
       break;
     case 'pointsboard':
@@ -52,7 +57,9 @@ function getLeaderboardData(options) {
   let tnum = tnums[tnums.length-1];
 
   /** 
-   * Check the request 
+   * Check the request
+   * 
+   * TODO - remove the switch the next time this is edited since the check is being done in getData() function 
    */
   switch(options.request) {
     case 'leaderboard':
@@ -60,6 +67,7 @@ function getLeaderboardData(options) {
         tnum = Number(options.number);
       } 
       currTourny = tournaments.getTournamentById(tnum);
+      //console.log(`switch on leaderboard get currTourny`);
       break;
     case 'pointsboard':
       break;
@@ -137,6 +145,7 @@ function getLeaderboardData(options) {
   let oneDay = (24 * 60 * 60 * 1000);
   let dateString = `${new Date(date1).toLocaleDateString()} - ${new Date(new Date(date4).getTime()+(7*oneDay)).toLocaleDateString()}`;
 
+  //console.log(`package up the data`);
   /**
    * Package up the data to return to the web client
    */

@@ -9,7 +9,6 @@
  *  The following functions are called from the Admin sheet
  * ---------------------------------------------------------
  */
-
 /**
  * Add a new player to the player database. This is call by pressing the button on the admin screen.
  */
@@ -36,6 +35,21 @@ function adminAddPlayer() {
     }
   } else {
     ss.toast(`No Player name was found!`, "Add new player", 5);
+  }
+}
+
+/**
+ * Loop through rounds to find player not in player sheet
+ */
+function roundsNoPlayer() {
+  let plrs = new PlayerRounds();
+  const players = new Players().getPlayers();
+  let plyrMap = new Map();
+  
+  for (r of plrs) {
+    if (players.findIndex(p => p == r.getName()) < 0) {
+      console.log(`${r.getName()} not found`);
+    }
   }
 }
 

@@ -78,7 +78,6 @@ function updateTable(data) {
       buildLeaderboard(data);
       break;
     case 'pointsboard':
-      console.log(`updateTable:pointsboard`);
       buildPointsboard(data);
       break;
     case 'stats':
@@ -219,6 +218,7 @@ function loadTableData(data){
     if (i<limit) {
       i%2==0 ? td.classList.add('s4') : td.classList.add('s8');
       td.innerHTML = i+1;
+      // Bottom row of player data gets a bottom border
       if (i==limit-1) {
         i%2==0 ? td.classList.add('s13wb-r') : td.classList.add('s2ybbb');
       }
@@ -577,19 +577,55 @@ function show(name) {
 }
 
 /**
+ * GeoLocation wrapped in a async function. After the location is obtained or rejected by the user call the loadData()
+ * method with the request object to kick off the first screen.
+ */
+async function getGeoLocation() {
+  let request = {'request':'leaderboard', 'number':'current'};
+  let result = {"location": [0, 0], "code":-99, "browserInfo":navigator.userAgent};
+
+  try {
+    const position = await getCurrentPosition()
+    result.location = [position.coords.latitude, position.coords.longitude];
+    result.code = 0;
+  } catch(err) {
+    console.log(err);
+    result.code = -1;
+  }
+
+  // Save the location info, if any, in the request
+  request.userInfo = result;
+  // Now load the data
+  loadData(request);
+
+  function getCurrentPosition() {
+    return new Promise( (resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(
+        position => resolve(position),
+          error => reject(error)
+      )
+    })
+  }
+
+  //return result;
+}
+
+/**
  * ----------------
  *      Main
  * ----------------
  */
-// Save the user agent so we can get stats on how people are using the web interface TODO
-//let  ua= navigator.userAgent;
-
 // Show a loading screen before data is loaded
 show('loading');
 
+// Get the position of the user and then load data
+getGeoLocation();
+
 // Request the data for the current tournament
-let request = {'request':'leaderboard', 'number':'current'}
-loadData(request);
+//let request = {'request':'leaderboard', 'number':'current', 'userInfo':getGeoLocation()};
+//let request = {'request':'leaderboard', 'number':'current'};
+//console.log('Call loadData()');
+//loadData(request);
 
 
 </script>

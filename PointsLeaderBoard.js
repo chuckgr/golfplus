@@ -233,8 +233,7 @@ class PointsLeaderboard {
   }
 
   /**
-   * Return the tounaments in this points leaderboard.  Will start off with pre-defined
-   * hard coded torunament numbers, then we will put them in a setting
+   * Return the tounaments in this points leaderboard, the tournaments included are defined in the Setting sheet
    * 
    * @return {array} Array of tournament numbers
    */

@@ -13,6 +13,25 @@ function test_pointsBoard() {
 }
 
 /**
+ * Test getting all the players with at least one round
+ */
+function test_getPlayersWithARound() {
+  const pr = new PlayerRounds();
+  let plyers = new Set();
+  let pArray = [];
+
+  // Loop for all of the rounds
+  for (r of pr) {
+    plyers.add(r.getName());
+  }
+
+  plyers.forEach( v => pArray.push(v));
+  console.log(`${JSON.stringify(pArray)}`);
+  let bArray = pArray.sort((a,b) => a > b);
+  console.log(`${JSON.stringify(pArray)}`);
+}
+
+/**
  * 
  */
 function test_multiArray() {
@@ -456,12 +475,19 @@ function test_getTournyName() {
   console.log(`Name=${tourny.name}`);
   console.log(`"${tournaments.getTournamentNameById(23.03)}"`);
 }
+
 /**
  * Test 'instanceof' keyword on my classes
  */
 function test_instanceOf() {
   let lb = new Leaderboard();
   console.log(`is lb an instanceof LeaderBoard class? ${lb instanceof Tournament}`);
+  let currentTourny = tournaments.getTournamentById(Number(23.11));
+  if (currentTourny instanceof Tournament) {
+    console.log(`currentTourny is an instance of Tournament`);
+  } else {
+    console.log(`NOT an instance of `);
+  }
 }
 
 /**

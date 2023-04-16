@@ -5,6 +5,7 @@ class Backup {
   constructor() {
     this._backupFileName = `${SpreadsheetApp.getActiveSpreadsheet().getName()} backup`;
     this._backupSheetName = 'Backup';
+    this._logSheetName = "Log"
     this._ss = null;
     this._golfPlusDirectoryID = '1PUUa99wncEhzpMHdnGvpWDgXsLTB7Ran';
   }
@@ -58,7 +59,7 @@ class Backup {
   add(record) {
     let bkupSheet = this._ss.getSheetByName(this._backupSheetName);
     bkupSheet  
-      .getRange(bkupSheet.getLastRow(), 1, 1, record.length)
+      .getRange(bkupSheet.getLastRow()+1, 1, 1, record.length)
       .setValues([record]); 
   }
 
