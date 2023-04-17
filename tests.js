@@ -13,6 +13,42 @@ function test_pointsBoard() {
 }
 
 /**
+ * Test getting all the players rounds
+ */
+function test_getPlayerRounds() {
+  const pr = new PlayerRounds();
+  let plyers = new Map();
+  let pArray = [];
+
+  // Loop for all of the rounds
+  for (const r of pr) {
+    if (plyers.has(r.getName())) {
+      pArray = plyers.get(r.getName());
+      pArray.push(r);
+    } else {
+      pArray.push(r);
+    }
+    plyers.set(r.getName(), pArray);
+    pArray = [];
+  }
+
+  plyers.forEach( (k,v) => { 
+    console.log(`>> ${v}`);
+    k.sort((a,b) => a.getTimeStamp() - b.getTimeStamp());
+    k.forEach(r => console.log(` ${new Date(r.getTimeStamp()).toLocaleDateString()} \t${tournaments.getTournamentNameById(r.getNumber())}  \t${r.getScore()}`));
+  });
+
+}
+
+/**
+ * Test getting the player lisrt from the PlayerRounds class
+ */
+function test_getPlayerListFromPRS() {
+  const prs = new PlayerRounds();
+  console.log(`${JSON.stringify(prs.getPlayers())}`);
+}
+
+/**
  * Test getting all the players with at least one round
  */
 function test_getPlayersWithARound() {
@@ -26,8 +62,9 @@ function test_getPlayersWithARound() {
   }
 
   plyers.forEach( v => pArray.push(v));
-  console.log(`${JSON.stringify(pArray)}`);
-  let bArray = pArray.sort((a,b) => a > b);
+  pArray.sort();
+
+  console.log(`${pArray.length}`);
   console.log(`${JSON.stringify(pArray)}`);
 }
 

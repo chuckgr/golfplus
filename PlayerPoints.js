@@ -1,5 +1,5 @@
 /**
- * Contains the tourname data for a player to calculate the FedEx points
+ * Contains the tournament data for a player to calculate the FedEx points
  * 
  * @param {array} - Parameters for this round in the passed object
  *                   {name}       - Player name

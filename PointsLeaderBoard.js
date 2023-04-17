@@ -185,7 +185,7 @@ class PointsLeaderboard {
       let tournyRes = playerRounds.filter(PlayerRound.NUMBER, t);
       let plyrResults;
       // Loop for all players (players is a global Players object)
-      for (let p of players) {
+      playerRounds.getPlayers().forEach(p => {
         // Grab all records from tournament for this player
         plyrResults = tournyRes.filter(PlayerRound.PLAYER, p);
         // We only count if there are 4 rounds played
@@ -197,7 +197,7 @@ class PointsLeaderboard {
           totalByPlayer.push({"name": p, "score": total});
         }    
         total = 0;
-      }
+      });
       totalByPlayer.sort((a, b) => parseInt(a.score) - parseInt(b.score));
       fedex.set(t, totalByPlayer);
       totalByPlayer = [];

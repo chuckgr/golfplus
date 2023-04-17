@@ -104,6 +104,22 @@ class PlayerRounds {
   }
 
   /**
+   * Get an array of all of the players that have a round logged
+   * 
+   * @return {Array} Array of all of the players with at leaset one round
+   */
+  getPlayers() {
+    let plyers = new Set();
+    let pArray = [];
+    this._rounds.forEach(r => {
+      plyers.add(r.getName());
+    });
+    plyers.forEach( v => pArray.push(v));
+    pArray.sort();
+    return pArray;
+  }
+
+  /**
    * Make this object implenent the iterator interface so we can loop over the list
    */
   [Symbol.iterator]() {
