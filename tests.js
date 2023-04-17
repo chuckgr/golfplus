@@ -13,6 +13,14 @@ function test_pointsBoard() {
 }
 
 /**
+ * Test getNumberOfEvents() method in PointsLeaderBoard class
+ */
+function test_getNumberOfEvents() {
+  const pb = new PointsLeaderboard();
+  console.log(`Number of events = ${pb.getNumberOfEvents()}`);
+}
+
+/**
  * Test getting all the players rounds
  */
 function test_getPlayerRounds() {

@@ -50,9 +50,7 @@ function pointsSelect() {
   show("loading");
 
   // Request the data from the server
-  console.log(`before loadData`);
   loadData(request);
-  console.log(`after loadData`);
 }
 
 /**
@@ -142,6 +140,8 @@ function loadPointsData(data) {
     table.appendChild(row);
   });
 
+  // Add the tourny dates to the title
+  document.getElementById("pointsDates").innerHTML = `Through ${data.pointsEvents} events`;
 }
 
 /**
@@ -450,7 +450,7 @@ function createDateTitle(type, text) {
   if (type=="pointsboard") {
     title = "";
     titleId = "pointsDates";
-    titleClass = "p0";
+    titleClass = "p0s";
     blankColClass = "p2";
     colSpan = "6";
   }

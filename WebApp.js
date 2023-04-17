@@ -41,7 +41,8 @@ function getData(options) {
       return getLeaderboardData(options);
       break;
     case 'pointsboard':
-      return {"options": options, "pointsData":new PointsLeaderboard().getData()};
+      const plb = new PointsLeaderboard();
+      return {"options": options, "pointsData":plb.getData(), "pointsEvents":plb.getNumberOfEvents()};
       break;
     case 'stats':
       break;

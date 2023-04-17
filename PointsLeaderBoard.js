@@ -108,7 +108,6 @@ class PointsLeaderboard {
     
     // Look at each tournament and calculate points
     tournyData.forEach( (v,k,m) => {
-      //console.log(`## New Tourny ${k} ##`);
       // Loop for all the tournament data that is already sorted
       v.forEach( (t,i) => {
         // See if we have this player yet
@@ -129,28 +128,21 @@ class PointsLeaderboard {
         if (i!=0) {
           if (seen[t.score]) {
             scoreIdx--;
-            //console.log(`1 dup ${t.name} ${t.score} idx:${scoreIdx} point:${points[Math.min(scoreIdx,3)]}`);
             pp.points = pp.points + points[Math.min(scoreIdx,3)];
-            //pp.topfive = pp.topfive+1; 
             if (scoreIdx==0) {
-              //console.log(`1 win ${t.name}`);
               pp.wins = pp.wins+1;
             } 
             scoreIdx++;
           }
           else { 
             seen[t.score] = true;
-            //console.log(`2 no dup ${t.name} ${t.score} idx:${scoreIdx} points:${points[Math.min(scoreIdx,3)]}`);
             pp.points = pp.points + points[Math.min(scoreIdx,3)];
-            //scoreIdx < 3 ? pp.topfive = pp.topfive+1 :  
             scoreIdx++;
           }
         } else {
           seen[t.score] = true;
           pp.wins = pp.wins+1;
-          //console.log(`Winner ${t.name} ${t.score} idx:${scoreIdx} points:${points[Math.min(scoreIdx,3)]}`);
           pp.points = pp.points + points[0];
-          //pp.topfive = pp.topfive+1;
           scoreIdx++;
         }
 
@@ -239,6 +231,15 @@ class PointsLeaderboard {
    */
   getTournamentNumbers() {
     return this._tournaments;
+  }
+
+  /**
+   * Return the number of events for this points board
+   * 
+   * @return {number} Number of tournaments for this pointsboard
+   */
+  getNumberOfEvents() {
+    return this._tournaments.length;
   }
 
   /**
