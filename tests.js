@@ -2,7 +2,7 @@
  * Tournament by number
  */
 function test_tournyByNumber() {
-  tournamentByNumber(23.06);
+  tournamentByNumber(23.13);
 }
 
 /**
@@ -10,6 +10,15 @@ function test_tournyByNumber() {
  */
 function test_pointsBoard() {
   let plb = new PointsLeaderboard();
+}
+
+/**
+ * 
+ */
+function test_lessThan4() {
+  let ts = new Tournaments();
+  let t = ts.getTournamentById(23.13);
+  console.log(`Number of tournaments ${ts.toString()}`);
 }
 
 /**

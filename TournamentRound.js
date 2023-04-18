@@ -55,7 +55,7 @@ class TournamentRound {
              this._wind != "" &&
              this._level != "" &&
              this._name != "" &&
-             this.status != ""
+             this._status != ""
              );
   }
 

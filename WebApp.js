@@ -37,7 +37,6 @@ function getData(options) {
         tnum = Number(options.number);
       } 
       currTourny = tournaments.getTournamentById(tnum);
-      //console.log(`switch on leaderboard`);
       return getLeaderboardData(options);
       break;
     case 'pointsboard':
@@ -142,9 +141,9 @@ function getLeaderboardData(options) {
   /**
    * Get the start and end dates for the tournament
    */
-  let [date1, date2, date3, date4] = currTourny.tournamentDates;
+  let dates = currTourny.tournamentDates;
   let oneDay = (24 * 60 * 60 * 1000);
-  let dateString = `${new Date(date1).toLocaleDateString()} - ${new Date(new Date(date4).getTime()+(7*oneDay)).toLocaleDateString()}`;
+  let dateString = `${new Date(dates[0]).toLocaleDateString()} - ${new Date(new Date(dates[dates.length-1]).getTime()+(7*oneDay)).toLocaleDateString()}`;
 
   //console.log(`package up the data`);
   /**

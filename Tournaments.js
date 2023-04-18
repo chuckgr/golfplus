@@ -48,6 +48,7 @@ class Tournaments {
    * Get tournament by ID
    */
   getTournamentById(id) {
+    let tmpT = this._tournaments;
     return this._tournaments.get(id);
   }
 
