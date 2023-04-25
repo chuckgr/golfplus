@@ -18,6 +18,7 @@ class PlayerPoints {
     this._events = 0;
     this._numWins = 0;
     this._numTopFive = 0;
+    this._matchPlayWins = 0;
   }
   
   /**
@@ -29,6 +30,7 @@ class PlayerPoints {
   get name() { return this._name}
   get wins()  { return this._numWins;}
   get topfive()  { return this._numTopFive;}
+  get matchPlayWins() { return this._matchPlayWins;}
 
   /**
    * Define the status field setters
@@ -38,18 +40,19 @@ class PlayerPoints {
   set events(events)  { this._events = events;}
   set wins(numWins)  { this._numWins = numWins;}
   set topfive(numTopFive)  { this._numTopFive = numTopFive;}
+  set matchPlayWins(matchPlayWins)  { this._matchPlayWins = matchPlayWins;}
 
   /**
    * Output the data in an array
    */
   toArray() {
-    return [this._rank, this._name, this._points, this._events, this._numWins, this._numTopFive];
+    return [this._rank, this._name, this._points, this._events, this._numWins, this._numTopFive, this._matchPlayWins];
   }
 
   /**
    * Print the record out
    */
   toString() {
-    return `${this._rank} ${this._name} ${this._points} ${this._events} ${this._numWins} ${this._numTopFive}`;
+    return `${this._rank} ${this._name} ${this._points} ${this._events} ${this._numWins} ${this._numTopFive} ${this._matchPlayWins}`;
   }
 }

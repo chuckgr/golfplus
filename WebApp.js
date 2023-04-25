@@ -19,6 +19,18 @@ function include(filename) {
 }
 
 /**
+ * Function will load an image from Google Drive to be loaded by the webapp
+ */
+function loadImageBytes(){
+  //let id = "1rMWsn5-6VXxUzYtu7XbK3u7e6ODAuTcC"
+  let id = "1__dNiEx3vdPH_SHQJw9igHyYJWY2iLt0" // TPC Scotsdale
+  let bytes = DriveApp.getFileById(id)
+    .getBlob()
+    .getBytes();
+  return Utilities.base64Encode(bytes);
+}
+
+/**
  * Get the table data to display, includes calculating the score and score to par 
  * before it is returned to the web client
  */

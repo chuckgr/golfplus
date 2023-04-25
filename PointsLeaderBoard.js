@@ -105,6 +105,8 @@ class PointsLeaderboard {
     let tmpPP;
     let seen = {}; 
     let scoreIdx = 0;
+    let matchPlayPoints = 10;
+    let mpWins = settings.getSetting('MATCHPLAYWINNERS').value;
     
     // Look at each tournament and calculate points
     tournyData.forEach( (v,k,m) => {
@@ -116,6 +118,12 @@ class PointsLeaderboard {
           pp = this._tableData[tmpPP];
         } else {
           pp = new PlayerPoints(t);
+          // Add in the match play points, if any
+          mpWins.forEach( mp => {
+            if (pp.name == mp) {
+              pp.points = pp.points + matchPlayPoints;
+            }
+          });
         }
 
         // Increment events and determine if top three
@@ -257,7 +265,7 @@ class PointsLeaderboard {
 
     let pointsIdx = -1;
     settings[0].forEach((name,i) => {
-      if (name == "PointsTournaments" ) pointsIdx = i;
+      if (name == "Points Tournaments" ) pointsIdx = i;
     });
 
     settings.forEach((s,i) => {

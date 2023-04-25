@@ -1,5 +1,5 @@
 /**
- * Class for a NameValueSetting
+ * Class for a DateSetting
  * 
  * @param {object} - Parameters for this setting in the passed object
  *                   {name}         - Name of this setting
@@ -12,7 +12,7 @@
  * Code can be used freely as long as the copyright statement is kept with 
  * all code used and the code is not used in a commercial product. 
  */
-class NameValueSetting extends Setting {
+class DateSetting extends Setting {
   constructor(data) {
     super(data);
   }

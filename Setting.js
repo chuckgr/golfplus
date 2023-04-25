@@ -1,7 +1,7 @@
 /**
  * Base class for a setting, each type will have it's own class
  * 
- * @param {object} - Parameters for this setting in the passed object
+ * @param {object} - options - Parameters for this setting in the passed object
  *                   {name}         - Name of this setting
  *                   {displayName}  - Text to display for the setting
  *                   {type}         - Type of setting
@@ -13,49 +13,53 @@
  * all code used and the code is not used in a commercial product. 
  */
 class Setting {
-  constructor(data) {
-    this._data = data;
+  constructor(options) {
+    this._name = options.name;
+    this._displayName = options.displayName;
+    this._type = options.type;
+    this._required = options.required;
+    this._value = options.data;
   }
   
   /**
-  * Get the nme of this setting
+  * Get the name of this setting
   */
   get name() {
-    return this._data.name;  
+    return this._name;  
   }
 
   /**
    * Get the display name
    */
   get displayName() {
-    return this._data.displayName;
+    return this._displayName;
   }
 
   /**
    * Get the type
    */
   get type() {
-    return this._data.type;
+    return this._type;
   }
 
   /**
-   * Get the torunament round
+   * Get the require flag
    */
   get required() {
-    return this._data.required;
+    return this._required;
   }
 
   /**
    * Get the value of the setting
    */
   get value() {
-    return this._data.value;
+    return this._value;
   }
   
   /**
    * Print the record out
    */
   toString() {
-    return `${this._data.name} ${this._data.displayName} ${this._data.type} ${this._data.required} ${this.__data.value}`
+    return `${this._name} ${this._displayName} ${this.type} ${this.required} ${this.value}`
   }
 }

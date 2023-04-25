@@ -18,6 +18,7 @@
 /** 
  * Globals
  */ 
+const settings = new Settings();
 const players = new Players();
 const courses = new Courses();
 const tournaments = new Tournaments();

@@ -13,6 +13,18 @@ function test_pointsBoard() {
 }
 
 /**
+ * Test new Settings class
+ */
+function test_settingsClass() {
+  let settings = new Settings();
+  //settings.getSetting
+  console.log(`getSetting() ${JSON.stringify(settings.getSetting('MATCHPLAYWINNERS').value)}`);
+  console.log(`getSetting() ${JSON.stringify(settings.getSetting('PLAYERS').value)}`);
+  console.log(`getSetting() ${JSON.stringify(settings.getSetting('ROUNDDATES').value)}`);
+  console.log(`getSetting() ${JSON.stringify(settings.getSetting('TOURNAMENTNUMBERS').value)}`);
+}
+
+/**
  * 
  */
 function test_lessThan4() {
