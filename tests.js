@@ -10,6 +10,7 @@ function test_tournyByNumber() {
  */
 function test_pointsBoard() {
   let plb = new PointsLeaderboard();
+  plb.build();
 }
 
 /**

@@ -301,7 +301,7 @@ class PointsLeaderboard {
       .getRange(this._dataRowStart,this._dataColStart, dataAry.length, dataAry[0].length)
       .setFontFamily(this._fontName)
       .setFontSize(this._dataFontSize)
-      .setHorizontalAlignments(createValueArray(dataAry.length, 6, "center"))
+      .setHorizontalAlignments(createValueArray(dataAry.length, dataAry[0].length, "center"))
       .setValues(dataAry);
 
     sheet
