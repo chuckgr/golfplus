@@ -23,6 +23,7 @@ class Courses {
   static get WOLFCREEK() { return "Wolf Creek";}
   static get SCOTTSDALE() { return "TPC Scottsdale";}
   static get SAWGRASS() { return "TPC Sawgrass";}
+  static get YALE() { return "Yale";}
 
   /**
    *  Return the map names in an array
@@ -38,7 +39,8 @@ class Courses {
             Courses.VALHALLA, 
             Courses.WOLFCREEK,
             Courses.SCOTTSDALE,
-            Courses.SAWGRASS
+            Courses.SAWGRASS,
+            Courses.YALE
             ];
   }
 
@@ -63,7 +65,8 @@ class Courses {
        "Wolf Creek":72,
        "Pebble Beach":72,
        "TPC Scottsdale":71,
-       "TPC Sawgrass":72
+       "TPC Sawgrass":72,
+       "Yale":70
       };
     return this._par[course];
   }
