@@ -23,6 +23,7 @@ class Courses {
   static get WOLFCREEK() { return "Wolf Creek";}
   static get SCOTTSDALE() { return "TPC Scottsdale";}
   static get SAWGRASS() { return "TPC Sawgrass";}
+  static get SOUTHWIND() { return "TPC Southwind";}
   static get YALE() { return "Yale";}
 
   /**
@@ -40,6 +41,7 @@ class Courses {
             Courses.WOLFCREEK,
             Courses.SCOTTSDALE,
             Courses.SAWGRASS,
+            Courses.SOUTHWIND,
             Courses.YALE
             ];
   }
@@ -66,6 +68,7 @@ class Courses {
        "Pebble Beach":72,
        "TPC Scottsdale":71,
        "TPC Sawgrass":72,
+       "TPC Southwind":71,
        "Yale":70
       };
     return this._par[course];

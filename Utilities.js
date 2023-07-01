@@ -114,6 +114,52 @@ function playersWithNoRounds() {
 }
 
 /**
+ * Create a sheet that contains all of the courses played in the tournament so far
+ */
+function findCoursesPlayed() {
+  let t = new Tournaments();
+  let coursesPlayed = new Map();
+  let ta = t.getTournaments();
+  let rounds = [];
+  let rData = {};
+  let tmpData = {};
+  console.log(`Course.  Times Played.  last Played`);
+  ta.forEach(t => {
+    rounds = t.rounds;
+    rounds.forEach(r => {
+      if (coursesPlayed.has(r.course)) {
+        tmpData = coursesPlayed.get(r.course);
+        tmpData.count = tmpData.count+1;
+        tmpData.date = Math.max(tmpData.date, r.date);
+        //console.log(`r.course= ${r.course} r.date= ${r.date}`);
+        //tmpData.date = Math.max(tmpData.date.getTime(), r.date.getTime());
+        coursesPlayed.set(r.course, tmpData);
+      } else {
+        coursesPlayed.set(r.course, {"count":1, "date":r.date});
+      }
+    });
+  }); 
+
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sn = `Courses Played`;
+  let _coursesPlayedSheet = ss.getSheetByName(sn);
+  if (_coursesPlayedSheet == null) {
+    _coursesPlayedSheet = ss.insertSheet(sn);
+  }
+
+  let courseAry = [["Course", "Times Played", "Last played"]];
+  for (const [key, value] of coursesPlayed) {
+    courseAry.push([key, value.count, new Date(value.date).toLocaleDateString()]);
+  }
+  // Add the missing players
+  _coursesPlayedSheet
+    .getRange(1,2,courseAry.length, 3)
+    .clear()
+    .setValues(courseAry);
+   
+}
+
+/**
  * Determine the Tournament that a player first participated in
  */
 function calcFirstPlayerTournament() {

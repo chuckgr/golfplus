@@ -1,4 +1,36 @@
 /**
+ * Test creating data for reports
+ */
+function test_reports() {
+  let t = new Tournaments();
+  let coursesPlayed = new Map();
+  let ta = t.getTournaments();
+  let rounds = [];
+  let rData = {};
+  let tmpData = {};
+  console.log(`Course.  Times Played.  last Played`);
+  ta.forEach(t => {
+    rounds = t.rounds;
+    rounds.forEach(r => {
+      if (coursesPlayed.has(r.course)) {
+        tmpData = coursesPlayed.get(r.course);
+        tmpData.count = tmpData.count+1;
+        tmpData.date = Math.max(tmpData.date, r.date);
+        //console.log(`r.course= ${r.course} r.date= ${r.date}`);
+        //tmpData.date = Math.max(tmpData.date.getTime(), r.date.getTime());
+        coursesPlayed.set(r.course, tmpData);
+      } else {
+        coursesPlayed.set(r.course, {"count":1, "date":r.date});
+      }
+    });
+  }); 
+
+  for (const [key, value] of coursesPlayed) {
+    console.log(`${key}  \t${value.count} \t${new Date(value.date).toLocaleDateString()}`);
+  } 
+}
+
+/**
  * Tournament by number
  */
 function test_tournyByNumber() {
