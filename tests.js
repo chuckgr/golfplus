@@ -1,4 +1,39 @@
 /**
+ * test getting player data from Players class
+ */
+function test_playerByName() {
+  let player = players.getPlayerData("Chuck Grieshaber")[0];
+  console.log(`Player: ${player.name} username ${player.userName} ${JSON.stringify(player)}`);
+}
+
+/**
+ * test new Player class
+ */
+function test_playerClass() {
+  let ps = new Players();
+  const plrs = ps.getPlayers();
+  let plrData = [];
+  plrData.push("Chuck Grieshaber");
+  plrData.push("chuckgrieshaber");
+  plrData.push(-1);
+  let p = new Player(plrData);
+  console.log(`${p.toString()}`);
+  plrData = [];
+  plrData.push("Jason Lipman");
+  plrData.push("jlip32");
+  plrData.push(-1);
+  p = new Player(plrData);
+  console.log(`${p.toString()}`);
+  plrData = [];
+  plrData.push("Chris Wilder");
+  plrData.push("Movermafia");
+  plrData.push(13.3);
+  p = new Player(plrData);
+  console.log(`${p.toString()}`);
+}
+
+
+/**
  * Test creating data for reports
  */
 function test_reports() {
@@ -190,8 +225,13 @@ function test_leaderboardRewrite() {
   });
 
   // Convert from a map to array for leaderboard
+  let playerData = [];
+  let newName ="";
   for (const [name, scores] of playerMap) {
-    leaderboard.push([name, ...scores]);
+    playerData = players.getPlayerData(name)[0];
+    console.log(`playerData: ${playerData.userName}`);
+    playerData.userName == "" ?  newName=name : newName = `${name} (${playerData.userName})`;
+    leaderboard.push([newName, ...scores]);
   }
 
   leaderboard.forEach(r => console.log(`${r}`));

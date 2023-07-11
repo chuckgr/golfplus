@@ -14,8 +14,9 @@ class Players {
       .getDataRange()
       .getValues();
     this._data = new Array();
+    let plrObj = {};
     this._playerData.forEach((d) => {
-      this._data.push(d[0].trim());
+      this._data.push(new Player(d));
     })
   }
   
@@ -42,6 +43,16 @@ class Players {
       rc = -1;
     }
     return rc;
+  }
+
+  /**
+   * Get the player data (name, username, handicap) for the passed player name
+   * 
+   * @param {string} Name of the player to get the data for
+   * @return {object} Object with the player data: name, username, handicap
+   */
+  getPlayerData(player) {
+    return this._data.filter(p => p.name == player);
   }
 
   /**

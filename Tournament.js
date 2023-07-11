@@ -104,9 +104,13 @@ class Tournament {
       playerMap.set(r.getName(), tmpPlr);
     });
 
-    // Convert from a map to array for leaderboard
+    // Convert from a map to array for leaderboard and add username
+    let playerData = [];
+    let newName = "";
     for (const [name, scores] of playerMap) {
-      leaderboard.push([name, ...scores]);
+      playerData = players.getPlayerData(name)[0];
+      playerData.userName == "" ?  newName = name : newName = `${name} (@${playerData.userName})`;
+      leaderboard.push([newName, ...scores]);
     }
 
     return leaderboard;

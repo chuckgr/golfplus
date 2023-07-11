@@ -319,8 +319,9 @@ function createTable(type) {
     stylesIdx = 1;
     cols = 7;
   }
-  let thStyles = [["30px", "140px", "93px", "93px", "93px", "93px", "37px", "43px"],
-                  ["0px", "100px", "136px", "50px", "50px", "50px", "80px"]];
+  // These will define the widths of the columns in the table
+  let thStyles = [["30px", "240px", "93px", "93px", "93px", "93px", "37px", "43px"],
+                  ["0px", "100px", "236px", "50px", "50px", "50px", "80px"]];
   let table = document.createElement('table');
   table.id = tableId;
   table.classList.add("waffle");
