@@ -131,8 +131,6 @@ function findCoursesPlayed() {
         tmpData = coursesPlayed.get(r.course);
         tmpData.count = tmpData.count+1;
         tmpData.date = Math.max(tmpData.date, r.date);
-        //console.log(`r.course= ${r.course} r.date= ${r.date}`);
-        //tmpData.date = Math.max(tmpData.date.getTime(), r.date.getTime());
         coursesPlayed.set(r.course, tmpData);
       } else {
         coursesPlayed.set(r.course, {"count":1, "date":r.date});

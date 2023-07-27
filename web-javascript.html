@@ -10,6 +10,20 @@
  */
 
 /**
+ * This loads the image from Drive via apps script function
+ * background-image: url(http://drive.google.com/uc?export=view&id=1rMWsn5-6VXxUzYtu7XbK3u7e6ODAuTcC)
+ */
+/*
+google.script.run
+  .withSuccessHandler( function(bytes){ showImage(bytes) })
+  .loadImageBytes();
+
+// Load the image bytes to the DOM img element
+function showImage(bytes){
+  document.getElementById("banner").src = "data:image/png;base64," + bytes; 
+}
+*/
+/**
  * Request the data from the server 
  */
 async function loadData(options) {
