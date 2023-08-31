@@ -156,6 +156,24 @@ function loadPointsData(data) {
 
   // Add the tourny dates to the title
   document.getElementById("pointsDates").innerHTML = `Through ${data.pointsEvents} events`;
+
+  // Add the info paragraph to explain how it all goes down
+  addPointsDescription();
+}
+
+/**
+ * Add in a paragraph on how the points work
+ */
+function addPointsDescription() {
+  const pointsDiv = document.getElementById("pointsInnerDiv");
+  let descriptionText = `<p class="description">Points are awarded by the position you finished in each tournament. 
+    You must complete all four rounds to be eligible to collect any points. Points are awarded as follows:</p>
+    <ol><li>8 points for 1st</li><li>6 points for 2nd</li><li>4 points for 3rd place</li><li>1 point for completing all rounds 
+    (and not finishing top three)</li></ol>
+    <p class="description">In the event of ties, each player will receive the points for the position they tied for.</p>`;
+  let descriptionDiv = document.createElement("div");
+  descriptionDiv.innerHTML = descriptionText;
+  pointsDiv.appendChild(descriptionDiv);
 }
 
 /**
@@ -310,6 +328,39 @@ function loadTableData(data){
   // Add the last updated to the bottom of the table
   let lastUp = createLastUpdated(data.tournyData.lastUpdate);
   table.appendChild(lastUp);
+}
+
+/**
+ * Build the stats page
+ * 
+ * @param {object} data object with the point leaderboard table data
+ */
+function buildStatsPage(data) {
+  // Get the div for the table and make sure we remove any children to recreate the table
+  let pointsDiv = document.getElementById("statsDiv");
+  let pointsInnerDiv = document.getElementById("statsInnerDiv");
+  if (pointsInnerDiv) {
+    let plbtable = document.getElementById("statsInnerDiv");
+    pointsDiv.removeChild(plbtable);
+  }
+
+  // Create the table for adding the data
+  createTable("statsPage");
+
+  // Now load up the data
+  loadStatsData(data);
+
+  // Show the screen
+  show("statsPage");
+}
+
+/**
+ * Load the stats page
+ * 
+ * @param {object} Data object for the stats
+ */
+function loadStatsData(data) {
+
 }
 
 /**

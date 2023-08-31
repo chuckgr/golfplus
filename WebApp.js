@@ -20,10 +20,16 @@ function include(filename) {
 
 /**
  * Function will load an image from Google Drive to be loaded by the webapp
+ * 
+ * @param {string} ID of the image file to load from Drive, if not provided 
+ *                  a default image will be used
  */
-function loadImageBytes(){
-  //let id = "1rMWsn5-6VXxUzYtu7XbK3u7e6ODAuTcC"
-  let id = "1__dNiEx3vdPH_SHQJw9igHyYJWY2iLt0" // TPC Scotsdale
+function loadImageBytes(imageId) {
+  const defaultId = "1__dNiEx3vdPH_SHQJw9igHyYJWY2iLt0" // TPC Scotsdale
+  if (imageId === null || imageId === undefined) {
+    imageId = defaultId;
+  } 
+
   let bytes = DriveApp.getFileById(id)
     .getBlob()
     .getBytes();
