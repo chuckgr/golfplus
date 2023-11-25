@@ -41,19 +41,27 @@ function loadImageBytes(imageId) {
  * before it is returned to the web client
  */
 function getData(options) {
-  //console.log(`getData`);
+  //console.log(`getData: ${JSON.stringify(getData)}`);
   let tnums = tournaments.getNumbers();
   let tnum = tnums[tnums.length-1];
-  if ('userInfo' in options) {
-    console.log(options.userInfo);
-  }
 
-  // Check the request 
+  /**  Check the request */
   switch(options.request) {
     case 'leaderboard':
+
+      /** Save the location information of the user */
+      if (options.hasOwnProperty('userInfo')) {
+        if (options.userInfo.hasOwnProperty('location')) {
+          saveLocation(options.userInfo.location);
+        }
+      }
+
+      /** Check if it's for current tourny or previous one  */
       if (options.number !== 'current') {
         tnum = Number(options.number);
       } 
+
+      /** Get the tournament object to gather data from */
       currTourny = tournaments.getTournamentById(tnum);
       return getLeaderboardData(options);
       break;
@@ -174,4 +182,15 @@ function getLeaderboardData(options) {
   
   // Return the reults with the original request, table data, table for the courses
   return {"options":options, "data":data, "courseData":courseData, "tournyData":tournamentData};
+}
+
+/**
+ * Add the location information to the backup file
+ * 
+ * @param {array} - Array with the long,lat of the users browser
+ */
+function saveLocation(location) {
+  let bkup = new Backup();
+  bkup.open();
+  bkup.addLocation(location);
 }

@@ -80,6 +80,18 @@ class Tournaments {
   }
 
   /**
+   * Get the tournament in progress
+   */
+  getInprogressTournament() {
+    let inprogress; 
+    this._tournaments.forEach(t => {if (t.status == "In Progress") {
+      inprogress = t;
+      }
+    });
+    return inprogress;
+  }
+
+  /**
    * Get all of the tournament numbers 
    */
   getNumbers() {

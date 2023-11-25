@@ -27,6 +27,7 @@ class Courses {
   static get YALE() { return "Yale";}
   static get OLYMPIAFIELDS() { return "Olympia Fields";}
   static get EASTLAKE() { return "East Lake";}
+  static get OLDCOURSE() { return "Old Course";}
 
   /**
    *  Return the map names in an array
@@ -46,7 +47,8 @@ class Courses {
             Courses.SOUTHWIND,
             Courses.YALE,
             Courses.OLYMPIAFIELDS,
-            Courses.EASTLAKE
+            Courses.EASTLAKE,
+            Courses.OLDCOURSE
             ];
   }
 
@@ -75,7 +77,8 @@ class Courses {
        "TPC Southwind":71,
        "Yale":70,
        "Olympia Fields":70,
-       "East Lake":70
+       "East Lake":70,
+       "Old Course":72
       };
     return this._par[course];
   }

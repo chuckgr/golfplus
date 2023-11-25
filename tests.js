@@ -1,4 +1,134 @@
 /**
+ * Test saving the location information to backup file
+ */
+function test_locationSave() {
+  let location = [ 38.0084519, -84.7723677 ];
+  //const locRec = [new Date().toLocaleDateString(), location[0].toString(), location[1].toString()];
+  //console.log(`${locRec}`);
+  let bkup = new Backup();
+  bkup.open();
+  bkup.addLocation(location);
+}
+
+/**
+ * test getting torunaments in progress
+ */
+function test_inprogress() {
+  let ip = tournaments.getInprogressTournament();
+  console.log(`Tournament ${ip._number} - ${ip._name}\n`);
+  ip._rounds.forEach((r,i) => {
+    console.log(`Round ${i+1} - ${r._course}, ${r._tees} tees, ${r._pins} pins, ${r._wind} wind, ${r._greens} greens, ${r._level}\n`);
+  });
+  //console.log(ip);
+}
+
+/**
+ * Test getting items from object using array index
+ */
+function test_getObjFromAry() {
+  const data =[
+    ["Course","Olympia Fields","TPC Sawgrass"],
+    ["Par",70,72],
+    ["Difficulty","Amateur","Amateur"],
+    ["Tees","Front","Middle"],
+    ["Pins","Medium","Easy"],
+    ["Wind","High","Low"],
+    ["Green Speed","Pro","Pro"]
+  ];
+  const titles = ["Tees", "Pins", "Wind", "Green Speed"];
+  const teeLocation = {
+    "Front":`<svg width="8" height="20" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 27">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M.36 0c3.67.53 7.4.53 11.08 0v1.88L8.86 4.65a4.7 4.7 0 0 0-1.26 3.6H4.2a5.4 5.4 0 0 0-1.38-3.6A93.1 93.1 0 0 1 .36 1.88V0Z" fill="#C44242"></path>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M4.2 7.6h3.4v14.2l-1.7 4.8-1.7-4.8V7.6Z" fill="#C44242"></path>
+    </svg>`,
+    "Middle":`<svg width="8" height="20" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 27">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M.36 0c3.67.53 7.4.53 11.08 0v1.88L8.86 4.65a4.7 4.7 0 0 0-1.26 3.6H4.2a5.4 5.4 0 0 0-1.38-3.6A93.1 93.1 0 0 1 .36 1.88V0Z" fill="white"></path>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M4.2 7.6h3.4v14.2l-1.7 4.8-1.7-4.8V7.6Z" fill="white"></path>
+    </svg>`,
+    "Back": `<svg width="8" height="20" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 27">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M.36 0c3.67.53 7.4.53 11.08 0v1.88L8.86 4.65a4.7 4.7 0 0 0-1.26 3.6H4.2a5.4 5.4 0 0 0-1.38-3.6A93.1 93.1 0 0 1 .36 1.88V0Z" fill="black"></path>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M4.2 7.6h3.4v14.2l-1.7 4.8-1.7-4.8V7.6Z" fill="black"></path>
+    </svg>`
+    };
+    const pinLocation = {
+      "Easy": `<svg width="13" height="20" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 27">
+        <path d="M0 5.22 10.92 0v23.95h2.73v-2.3c2.44.46 4.09 1.31 4.09 2.3 0 1.47-3.66 2.66-8.19 2.66-4.52 0-8.19-1.2-8.19-2.66 0-1.32 2.96-2.41 6.83-2.62V9.29L0 5.22Z" fill="#C44242"></path>
+    </svg>`,
+      "Medium": `<svg width="13" height="20" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 27">
+        <path d="M0 5.22 10.92 0v23.95h2.73v-2.3c2.44.46 4.09 1.31 4.09 2.3 0 1.47-3.66 2.66-8.19 2.66-4.52 0-8.19-1.2-8.19-2.66 0-1.32 2.96-2.41 6.83-2.62V9.29L0 5.22Z" fill="white"></path>
+    </svg>`,
+      "Hard": `<svg width="13" height="20" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 27">
+        <path d="M0 5.22 10.92 0v23.95h2.73v-2.3c2.44.46 4.09 1.31 4.09 2.3 0 1.47-3.66 2.66-8.19 2.66-4.52 0-8.19-1.2-8.19-2.66 0-1.32 2.96-2.41 6.83-2.62V9.29L0 5.22Z" fill="black"></path>
+    </svg>`
+    };
+    const windSpeed = {
+      "Low":` <svg width="13" height="20" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 27">
+        <path d="M0 5.22 10.92 0v23.95h2.73v-2.3c2.44.46 4.09 1.31 4.09 2.3 0 1.47-3.66 2.66-8.19 2.66-4.52 0-8.19-1.2-8.19-2.66 0-1.32 2.96-2.41 6.83-2.62V9.29L0 5.22Z" fill="#C44242"></path>
+    </svg>`,
+      "Moderate": `<svg width="18" height="10" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 66 38">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="m3.8 8.63-2.35-2.6a3.5 3.5 0 0 0 4.67 5.21h.01v-.01M3.8 8.63l2.35 2.6m-2.35-2.6-2.34-2.6.01-.01.02-.02a7.74 7.74 0 0 1 .74-.6 26.3 26.3 0 0 1 8.8-4.21c6.03-1.6 14.3-1.5 23.74 4.43 7.7 4.84 13.96 4.72 18.22 3.6a19.33 19.33 0 0 0 6.35-3.02 8.6 8.6 0 0 0 .34-.27l-.01.01h.01a3.5 3.5 0 0 1 4.67 5.2l-2.32-2.57 2.32 2.58h-.01l-.02.02a5.82 5.82 0 0 1-.21.18c-.13.11-.3.26-.53.43a26.33 26.33 0 0 1-8.8 4.21c-6.03 1.59-14.3 1.49-23.74-4.44-7.7-4.84-13.97-4.72-18.21-3.6a19.3 19.3 0 0 0-6.36 3.02 8.51 8.51 0 0 0-.34.27m53.54-5.3L62 8.55l-2.34-2.6ZM3.8 29.62l-2.35-2.6a3.5 3.5 0 0 0 4.67 5.21h.01v-.01m-2.34-2.6 2.35 2.6m-2.35-2.6-2.34-2.6.01-.01.02-.02a10.44 10.44 0 0 1 .74-.6 26.31 26.31 0 0 1 8.8-4.21c6.03-1.6 14.3-1.5 23.74 4.44 7.7 4.83 13.96 4.71 18.22 3.59a19.32 19.32 0 0 0 6.35-3.02l.3-.22.04-.05-.01.01h.01a3.5 3.5 0 0 1 4.67 5.2l-2.32-2.56 2.32 2.57-.01.01-.02.02a5.82 5.82 0 0 1-.21.18l-.53.42a26.33 26.33 0 0 1-8.8 4.21c-6.03 1.59-14.3 1.49-23.74-4.44-7.7-4.84-13.97-4.72-18.21-3.6a19.3 19.3 0 0 0-6.36 3.02 8.38 8.38 0 0 0-.34.27m53.54-5.3 2.34 2.6-2.34-2.6Z" fill="white"></path>
+    </svg>`,
+      "High": `<svg width="18" height="20" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 26">
+        <path d="M1.6 13.32c3.35-3.03 7.42-3.03 12.2-.02 4.79 3.02 8.85 3.02 12.2-.01M1.6 4.5c3.35-3.04 7.42-3.04 12.2-.02 4.79 3.01 8.85 3 12.2-.02M1.6 22.15c3.35-3.03 7.42-3.04 12.2-.02 4.79 3.02 8.85 3.01 12.2-.02" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>`
+    };
+    const greenSpeed = {
+      "Fast":`<svg width="35" height="20" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 26">
+        <path d="M7 17c0-1.1.9-2 2-2h9a2 2 0 1 1 0 4H9a2 2 0 0 1-2-2Z" fill="#fff"></path>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M35 26a13 13 0 1 0 0-26 13 13 0 0 0 0 26Zm2.9-8.6c-.3 0-.5 0-.8.2-1.1.6-1.6 2-1 3a2.2 2.2 0 0 0 3.7.6c-1 .1-1.8-.4-2.3-1.2-.4-1-.2-2 .4-2.6Zm-4-6.4c-.3 0-.5.2-.8.4-1 1-1.2 2.5-.3 3.6a2.4 2.4 0 0 0 4-.4c-.9.3-2 0-2.6-.8-.7-.8-.8-2-.3-2.8Zm-2.5 7.2c-.3 0-.5.2-.8.3-1 .7-1.3 2.2-.6 3.2a2.2 2.2 0 0 0 3.7 0c-.8.3-1.8 0-2.3-.9-.6-.8-.5-1.8 0-2.6Zm-4.8-9.6.6-.5c-.3.9 0 1.9.7 2.5.8.6 1.8.7 2.6.2l-.4.7c-.8 1-2.2 1.2-3.2.4-1-.8-1.1-2.3-.3-3.3Zm-.6 5.2-.7.5c-.8 1-.8 2.4.2 3.3a2.2 2.2 0 0 0 3.6-.9c-.8.4-1.8.3-2.6-.3-.7-.7-.9-1.7-.5-2.6Z" fill="#fff"></path>
+        <path d="M0 24c0 1.1.9 2 2 2h23.5c-1.5-.5-2-1-3-2-.6-.6-1.5-2-1.5-2H2a2 2 0 0 0-2 2ZM14 10c0-1.1.9-2 2-2h2a2 2 0 1 1 0 4h-2a2 2 0 0 1-2-2ZM3 10c0-1.1.8-2 1.8-2h5.4c1 0 1.8.9 1.8 2s-.8 2-1.8 2H4.8c-1 0-1.8-.9-1.8-2Z" fill="#fff"></path>
+    </svg>`,
+      "Pro":`<svg width="35" height="20" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49 29">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="m7.9 2 .1.3L8 2Zm23.7-.8C26.8-1 22.8.2 17.1 2l-1 .4c-6.1 1.8-7.7.6-8 0 3.1 7 9.5 4.6 9.5 4.6S16 10 13 11C6.4 12.9 0 9.2 0 9.2s.7 5.1 4.4 8.3c3.8 3.2 10.8 2 10.8 2s-2 .6-4.6 2c-3.1 1.6-4.9 5.4-4.9 5.4S9.6 24 14.3 25c3 .5 4 1 5.7 1.6l3.7 1.4c3.3 1 8.3.9 8.3.9s-1.8-.2-2.9-.6a8.7 8.7 0 0 1-3.5-2c-1.2-1-2.4-2.8-3.7-4-2.5-2-5-1.4-6.5-.6 2.3-2.8 4.6-4.6 6.2-5.5-6.4 3.2-11.7 0-13.6-2.2.8.8 4.8 2 9.8-3L19 10c4.1-4.1 8-8.4 12.5-8.7Z" fill="#fff"></path>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M36 28a13 13 0 1 0 0-26 13 13 0 0 0 0 26Zm2.9-8.6c-.3 0-.5 0-.8.2-1.1.6-1.6 2-1 3a2.2 2.2 0 0 0 3.7.6c-1 .1-1.8-.4-2.3-1.2-.4-1-.2-2 .4-2.6Zm-4-6.4c-.3 0-.5.2-.8.4-1 1-1.2 2.5-.3 3.6a2.4 2.4 0 0 0 4-.4c-.9.3-2 0-2.6-.8-.7-.8-.8-2-.3-2.8Zm-2.5 7.2c-.3 0-.5.2-.8.3-1 .7-1.3 2.2-.6 3.2a2.2 2.2 0 0 0 3.7 0c-.8.3-1.8 0-2.3-.9-.6-.8-.5-1.8 0-2.6Zm-4.8-9.6.6-.5c-.3.9 0 1.9.7 2.5.8.6 1.8.7 2.6.2l-.4.7c-.8 1-2.2 1.2-3.2.4-1-.8-1.1-2.3-.3-3.3Zm-.6 5.2-.7.5c-.8 1-.8 2.4.2 3.3a2.2 2.2 0 0 0 3.6-.9c-.8.4-1.8.3-2.6-.3-.7-.7-.9-1.7-.5-2.6Z" fill="#fff"></path>
+    </svg>`
+    };
+
+  data.forEach((r,i) => { 
+    if (titles.includes(r[0])) {
+      console.log(`r=${r} r[1]=${r[1]}`);
+      let loc = "";
+      let ary = [];
+      switch(r[0]) {
+        case "Tees":
+          ary = teeLocation;
+          break;
+        case "Pins":
+          ary = pinLocation;
+          break;
+        case "Wind":
+          ary = windSpeed;
+          break;
+        case "Green Speed":
+          ary = greenSpeed;
+          break;
+        default:
+          ary = teeLocation;
+          break;
+      }
+
+      r.forEach((c,j) => {
+        if (j>0) {
+          loc = r[j];
+          console.log(`loc=${loc} ary[loc]= ${ary[loc]}`);
+        }
+      });
+
+/*
+      r.forEach((c,j) => {
+        if (j>0) {
+          loc = r[j];
+          console.log(`loc=${loc} teeLocation[loc]= ${teeLocation[loc]}`);
+        }
+      });
+      */
+    }
+  });
+
+}
+
+
+/**
  * test getting player data from Players class
  */
 function test_playerByName() {
@@ -542,9 +672,11 @@ function test_createScoreToPar() {
 function test_incrementalBackup() {
   let record = JSON.parse('["1/1/2021 22:49:36","1/1/2021","22.01","1","Bob Dylan","77"]');
   let bk = new Backup();
-  if (bk.findFile(bk.fileName)) {
-    bk.add(record);
-  }
+  bk.open();
+  bk.add(record);
+  //if (bk.findFile(bk.fileName)) {
+  //  bk.add(record);
+  //}
 }
 
 /**

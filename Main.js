@@ -18,7 +18,7 @@
 /** 
  * Globals
  */ 
-const version = "1.0.15"
+const version = "1.0.18"
 const settings = new Settings();
 const players = new Players();
 const courses = new Courses();
@@ -64,12 +64,13 @@ function postFormSubmit(e) {
 
   // Make a backup of the form responses 
   let backup = new Backup();
-  let backupSS = backup.findFile(backup.fileName);
-  if (!backupSS) {
+  //let backupSS = backup.findFile(backup.fileName);
+  let backupSS = backup.open();
+  //if (!backupSS) {
     let formRespSheet = SpreadsheetApp.getActive().getSheetByName('Form Responses');
-    backupSS = backup.createFile(backup.fileName);
-    backup.fullBackup(formRespSheet);
-  }
+    //backupSS = backup.createFile(backup.fileName);
+    //backup.fullBackup(formRespSheet);
+  //}
   backup.add(e.values);
 
   // Recreate the leaderboard on form submit
