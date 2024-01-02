@@ -246,15 +246,20 @@ function loadTableData(data){
   let red = 0;
   let black = 1;
   let scoreToParCol = 6;
+  //let firstScoreCol = 2;
+  //let scoreTemplate = `${plusMinus}${toPar} (${c})`;
   let classSelect = black;
   let table = document.getElementById("lbbody");
   let limit = tableData.length;
   let lastCourseSetting = "";
+
   /**
    *  Loop for all of the table data and course data. add TD elements to TR elements
    */
   [...tableData, ...courseData].forEach((r,i) => {
-    // Column for player position
+    /** 
+     * Create a Column for player position
+     */
     row = createTr();
     td = document.createElement('td');
     if (i<limit) {
@@ -269,7 +274,9 @@ function loadTableData(data){
     }
     row.appendChild(td);
 
-    // Now loop for all the data records
+    /** 
+     * Now loop for all the data records
+     */
     r.forEach((c,j) => {
       td = document.createElement('td');
 
@@ -291,7 +298,7 @@ function loadTableData(data){
             classSelect = black;
           }
         } 
-        // Even/odd row TODO - pick class on under/over par
+        // Even/odd row with correct class
         if (i%2 == 0) {
           if (i==limit-1) {
             td.classList.add(bottomEvenRowClasses[classSelect][j]);
@@ -310,19 +317,33 @@ function loadTableData(data){
         // Clear out the 0 scores...
         c==0 ? c="" : c=c;
 
-        // Add parens for score to par
+        /**
+         *  Add parens for score to par
+         */
         if (j==scoreToParCol) {
           c>0 ? c = `(+${c})` : c=`(${c})`;
           c==`()` ? c = `E` : c=c;
         } 
 
+        /** 
+         * Add +/- for each player score
+         */
+        if (j>0 && j<5 && c!=0) {
+          let tmp;
+          parseInt(c) < parseInt(courseData[parIndex][j]) ? 
+          tmp =`-${parseInt(courseData[parIndex][j])-parseInt(c)} (${c})` : 
+          tmp =`+${parseInt(c)-parseInt(courseData[parIndex][j])} (${c})`;
+          if (parseInt(c) == parseInt(courseData[parIndex][j])) tmp = `E (${c})`;
+          c = tmp;
+        }
+
       /**
        * Above the limit, working on Course records now
        */
       } else {
-        td.classList.add(courseClasses[j]);
-        //console.log(`${j} ${c}`);
+        td.classList.add(courseClasses[j]); 
       }
+
       td.innerHTML = c;
       row.appendChild(td);
     });
@@ -702,7 +723,6 @@ function formatCourseData(courseData) {
   let retRec = [];
   courseData.forEach((r,i) => {
     if (titles.includes(r[0])) {
-      //console.log(`r=${r} r[1]=${r[1]}`);
       let loc = "";
       let ary = [];
       switch(r[0]) {

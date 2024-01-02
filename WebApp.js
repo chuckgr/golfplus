@@ -85,7 +85,7 @@ function getLeaderboardData(options) {
   /** 
    * Check the request
    * 
-   * TODO - remove the switch the next time this is edited since the check is being done in getData() function 
+   * TODO - remove the switch at some point since the check is being done in getData() function 
    */
   switch(options.request) {
     case 'leaderboard':
@@ -100,7 +100,7 @@ function getLeaderboardData(options) {
     case 'stats':
       break;
   }
-
+  
   // Using the tournament number get that tournament object
   let data = currTourny.leaderboardData;
 

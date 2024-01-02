@@ -19,7 +19,7 @@ class Player {
     this._name = data[0].trim();
     this._username = data[1].trim() || "";
     this._handicap = data[2] || -1;
-    //console.log(`Player: name ${this._name} username ${this._username} handicap ${this._handicap}`);
+    //console.log(`Player: name- ${this._name} username- ${this._username} handicap- ${this._handicap}`);
   }
   
   /**

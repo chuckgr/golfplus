@@ -47,7 +47,7 @@ function roundsNoPlayer() {
   let plyrMap = new Map();
   
   for (r of plrs) {
-    if (players.findIndex(p => p == r.getName()) < 0) {
+    if (players.findIndex(p => p.name == r.getName()) < 0) {
       console.log(`${r.getName()} not found`);
     }
   }
@@ -72,7 +72,7 @@ function playersMissingFromSettings() {
     }
   }
   players.getPlayers().forEach(p => {
-    fndPlayer.has(p) ? cnt++ : missingGolfers.push(p);
+    fndPlayer.has(p.name) ? cnt++ : missingGolfers.push(p);
   });
 
   console.log(`${JSON.stringify(missingGolfers)}`);
@@ -90,7 +90,8 @@ function playersWithNoRounds() {
   
   // Loop for all of the players in database
   players.getPlayers().forEach( p => { 
-    currPlayerRound = plrs.filter(PlayerRound.PLAYER, p);
+    //currPlayerRound = plrs.filter(PlayerRound.PLAYER, p);
+    currPlayerRound = plrs.filter(PlayerRound.PLAYER, p.name);
     if (currPlayerRound.getNumRounds() == 0) {
       missingGolfers.push([p]);
       console.log(`${p} has no rounds`);
@@ -123,7 +124,7 @@ function findCoursesPlayed() {
   let rounds = [];
   let rData = {};
   let tmpData = {};
-  console.log(`Course.  Times Played.  last Played`);
+  //console.log(`Course.  Times Played.  last Played`);
   ta.forEach(t => {
     rounds = t.rounds;
     rounds.forEach(r => {
@@ -149,7 +150,7 @@ function findCoursesPlayed() {
   for (const [key, value] of coursesPlayed) {
     courseAry.push([key, value.count, new Date(value.date).toLocaleDateString()]);
   }
-  // Add the missing players
+  // Add the table to the sheet
   _coursesPlayedSheet
     .getRange(1,2,courseAry.length, 3)
     .clear()

@@ -112,7 +112,7 @@ class PointsLeaderboard {
     tournyData.forEach( (v,k,m) => {
       // Loop for all the tournament data that is already sorted
       v.forEach( (t,i) => {
-        console.log(`Player: ${t.name}`);
+        //console.log(`Player: ${t.name}`);
         // See if we have this player yet
         tmpPP = this._tableData.findIndex(p => p._name == t.name);
         if (tmpPP != -1) {

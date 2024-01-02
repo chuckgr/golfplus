@@ -28,6 +28,8 @@ class Courses {
   static get OLYMPIAFIELDS() { return "Olympia Fields";}
   static get EASTLAKE() { return "East Lake";}
   static get OLDCOURSE() { return "Old Course";}
+  static get KAPALUA() { return "Kapalua";}
+
 
   /**
    *  Return the map names in an array
@@ -48,7 +50,8 @@ class Courses {
             Courses.YALE,
             Courses.OLYMPIAFIELDS,
             Courses.EASTLAKE,
-            Courses.OLDCOURSE
+            Courses.OLDCOURSE,
+            Courses.KAPALUA
             ];
   }
 
@@ -78,7 +81,8 @@ class Courses {
        "Yale":70,
        "Olympia Fields":70,
        "East Lake":70,
-       "Old Course":72
+       "Old Course":72,
+       "Kapalua":73
       };
     return this._par[course];
   }

@@ -1,4 +1,12 @@
 /**
+ * test the new TournyStats class
+ */
+function test_tournystats() {
+  let ts = new TournyStats();
+  let results = ts._getCoursesPlayed();
+  console.log(`${results}`);
+}
+/**
  * Test saving the location information to backup file
  */
 function test_locationSave() {
@@ -11,7 +19,7 @@ function test_locationSave() {
 }
 
 /**
- * test getting torunaments in progress
+ * test getting tournaments in progress
  */
 function test_inprogress() {
   let ip = tournaments.getInprogressTournament();
@@ -133,7 +141,7 @@ function test_getObjFromAry() {
  */
 function test_playerByName() {
   let player = players.getPlayerData("Chuck Grieshaber")[0];
-  console.log(`Player: ${player.name} username ${player.userName} ${JSON.stringify(player)}`);
+  console.log(`Player: ${player.name} username: ${player.userName} json: ${JSON.stringify(player)}`);
 }
 
 /**
