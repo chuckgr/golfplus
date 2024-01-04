@@ -116,6 +116,8 @@ function playersWithNoRounds() {
 
 /**
  * Create a sheet that contains all of the courses played in the tournament so far
+ * 
+ * TODO - Move this to a class in the main code to be used with the Stats obj
  */
 function findCoursesPlayed() {
   let t = new Tournaments();
@@ -146,10 +148,16 @@ function findCoursesPlayed() {
     _coursesPlayedSheet = ss.insertSheet(sn);
   }
 
-  let courseAry = [["Course", "Times Played", "Last played"]];
+  //let courseAry = [["Course", "Times Played", "Last played"]];
+  let courseAry = [];
   for (const [key, value] of coursesPlayed) {
     courseAry.push([key, value.count, new Date(value.date).toLocaleDateString()]);
   }
+
+  /** Sort the array */
+  courseAry.sort((a,b) => new Date(a[2]).getTime() - new Date(b[2]).getTime()); // Sorts on date, old to new
+  courseAry.unshift(["Course", "Times Played", "Last played"]);
+
   // Add the table to the sheet
   _coursesPlayedSheet
     .getRange(1,2,courseAry.length, 3)

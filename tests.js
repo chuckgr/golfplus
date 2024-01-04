@@ -1,4 +1,48 @@
 /**
+ * Test sourting a multi-dimentioned array (courses played)
+ */
+function test_sortMultiArray() {
+  /** First the courses played and put them in an array */
+  let t = new Tournaments();
+  let coursesPlayed = new Map();
+  let ta = t.getTournaments();
+  let rounds = [];
+  let rData = {};
+  let tmpData = {};
+  //console.log(`Course.  Times Played.  last Played`);
+  ta.forEach(t => {
+    rounds = t.rounds;
+    rounds.forEach(r => {
+      if (coursesPlayed.has(r.course)) {
+        tmpData = coursesPlayed.get(r.course);
+        tmpData.count = tmpData.count+1;
+        tmpData.date = Math.max(tmpData.date, r.date);
+        coursesPlayed.set(r.course, tmpData);
+      } else {
+        coursesPlayed.set(r.course, {"count":1, "date":r.date});
+      }
+    });
+  }); 
+
+  /** Convert Map object to multi-dimentional array */
+  //let courseAry = [["Course", "Times Played", "Last played"]];
+  let courseAry = [];
+  for (const [key, value] of coursesPlayed) {
+    courseAry.push([key, value.count, new Date(value.date).toLocaleDateString()]);
+    /** Print the array */
+    console.log(`${key} ${value.count} ${new Date(value.date).toLocaleDateString()}`);
+  }
+
+  /**
+   * Sort the array
+   */
+  //courseAry.sort((a,b) => a[1] - b[1]); // Sorts on times played, low -> high
+  courseAry.sort((a,b) => new Date(a[2]).getTime() - new Date(b[2]).getTime()); // Sorts on date, old to new
+  courseAry.forEach(c => console.log(`${c[0]} ${c[1]} ${c[2]}`));
+
+}
+
+/**
  * test the new TournyStats class
  */
 function test_tournystats() {

@@ -70,6 +70,8 @@ function getData(options) {
       return {"options": options, "pointsData":plb.getData(), "pointsEvents":plb.getNumberOfEvents()};
       break;
     case 'stats':
+      const stats = new Stats(); 
+      return {"options": options, "statsData":stats.getStats()};
       break;
   }
 }

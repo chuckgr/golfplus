@@ -10,6 +10,239 @@
  */
 
 /**
+ * Classes start here
+ */
+
+/**
+ * Tabe class that will create a new HTML table
+ * 
+ * @param {object} Options object to define the table. Object must contain the following entries
+ *                 - name: Name of the table, name will also be used as a prefix for all ids associated with the table 
+ *                 - cols: Number of columns for the the table
+ *                 - colWidths: Array of css style widths for each column, one per column
+ *                 - title: Title for the table
+ *                 - labels: Array containing the labels for the columns
+ *                 - classes: Array conrtaining the css styles for each columns
+ * @param {array} Data for the body of the table. 2D array with each element having the me number of elements 
+ *                as the numo of cols
+ * @param {string} Element name to anchor this table to.
+ */
+class Table {
+  constructor(options, data, anchor) {
+    console.log(options);
+    this._name = options.name;
+    this._cols = options.cols;
+    this._colWidths = options.colWidths;
+    this._title = options.title;
+    this._labels = options.labels;
+    this._classes = options.classes;
+    this._data = data;
+    this._anchor = anchor;
+    this._tableDivId = `${this._name}Div`;
+    this._innerDivId = `${this._name}innerDiv`;
+    this._bodyId = `${this._name}body`;
+    /** Kick it off */
+    this._createTable();
+  }
+
+  /**
+   * Create the table element and pull in the rest
+   */
+  _createTable() {
+    this._table = document.createElement('table');
+    this._table.id = this._name;
+    this._table.classList.add("waffle");
+    this._table.classList.add("no-grid");
+    this._table.cellSpacing = "0";
+    this._table.cellPadding = "0";
+
+    /** Create the header elements */
+    let thead = document.createElement('thead');
+    let tr = document.createElement('tr');
+    let th = document.createElement('th');
+    th.classList.add("row-headers-background");
+    tr.appendChild(th);
+
+    /** Rip through each column and add in the widths */
+    [...Array(this._cols).keys()].forEach(i => {
+      th = document.createElement('th');
+      th.style.width = `${this._colWidths[i]}`;
+      th.classList.add("s0");
+      tr.appendChild(th);
+    });
+
+    thead.appendChild(tr);
+    this._table.appendChild(thead);
+    let tbody = document.createElement('tbody');
+    tbody.id = this._bodyId;
+    tbody.appendChild(this._createTitle(this._title, this._cols, this._name)); 
+    //tbody.appendChild(this._createTitle())           /** We don't need two lines now but we need to have ability */
+    tbody.appendChild(this._createHeader(this._labels, this._classes));           
+    this._table.appendChild(tbody);
+  
+    let tableDiv = document.getElementById(this._tableDivId);
+    let innerDiv = document.createElement('div');
+    innerDiv.id = this._innerDivId;
+    innerDiv.appendChild(this._table);
+    tableDiv.appendChild(innerDiv);
+  }
+
+  /**
+   * Create the header element
+   * 
+   */
+  _createHeader(labels, classes) {
+    /*
+    let arrayIdx = 0;
+    if (type=="pointsboard") {
+      arrayIdx = 1;
+    } 
+    */
+    //let labels  = [["Pos", "Name", "Round 1", "Round 2", "Round 3", "Round 4", "Total", "+/-"],
+    //             ["", "Rank", "Name", "Points", "Events", "# Wins", "Top Three"]];
+    //let classes = [["s2", "s2", "s3", "s3", "s3", "s3", "s3", "s3"],
+    //             ["p2", "p1", "p1", "p1", "p1", "p1", "p1"]];
+
+
+    let tr = document.createElement('tr');
+    tr.style.height = "20px";
+    let th = this._createRowTh();
+    tr.appendChild(th);
+    // Add the labels
+    [...Array(labels.length).keys()].forEach( (n,i) => {
+      tr.appendChild(this._createHeaderTd(classes[n], labels[n]))
+    });
+    return tr;
+  }
+
+  /**
+   * Create the title of the table
+   */
+  _createTitle(title, cols, name) {
+    let titleId = `${name}TitleLine1`;
+    let blankColClass = "s1";
+    let titleClass = "s1";
+    let colSpan = cols;
+
+    let tr = document.createElement('tr');
+    tr.style.height = "20px";
+    let th = this._createRowTh(); 
+    tr.appendChild(th);
+    let td = document.createElement('td');
+    td.classList.add(blankColClass);
+    tr.appendChild(td);
+    td = document.createElement('td');
+    td.id = titleId;
+    td.classList.add(titleClass);
+    td.colSpan = colSpan;
+    td.innerHTML = title;
+  
+    tr.appendChild(td);
+  return tr;
+  }
+
+  /**
+   * Create the body and add the data
+   */
+  _createBody() {
+
+  }
+
+  /**
+   * Create the footer
+   */
+  _createFooter() {
+
+  }
+
+  /**
+   * Create a blank row in the table
+   */
+  _createBlankRow(){
+
+  }
+
+  /**
+   * Create elements for table row
+   */
+  _createTr() {
+    let tr = document.createElement('tr');
+    tr.style.height = "20px";
+    let th = document.createElement('th');
+    th.classList.add("row-headers-background");
+    th.style.height = "20px";
+    let div = document.createElement('div');
+    div.style.height = "20px";
+    div.classList.add("row-header-wrapper");
+    th.appendChild(div);
+    tr.appendChild(th);
+    return tr;
+  }
+
+  /**
+   * Create the row for the table header.
+   * 
+   * @return {element} Return the th element created with default parms
+   */
+  _createRowTh() {
+    let th = document.createElement('th');
+    th.style.height = "20px";
+    th.classList.add("row-header-background");
+    let div = document.createElement('div');
+    div.style.lineHeight = "20px";
+    div.classList.add("row-header-wrapper");
+    th.appendChild(div);
+    return th;
+  }
+
+  /**
+   * Create table header td element
+   */
+  _createHeaderTd(headClass, label) {
+    let td = document.createElement('td');
+    if (headClass != "") {
+      td.classList.add(headClass);
+    }
+    td.innerHTML = label;
+    return td;
+  }
+
+  /**
+   * Load up the table body with the data 
+   */
+  loadData(data) {
+    const evenRowClasses = ["p3", "p2", "p2"]; // White
+    const oddRowClasses =  ["p5", "p4", "p4"]; // light blue
+    //let table = document.getElementById("statsbody");
+    let row;
+    let td;
+
+    [...data.statsData].forEach((r,i) => {
+      // Create a blank column (previous code)
+      row = this._createTr(); 
+      /*
+      td = document.createElement('tr');
+      td.classList.add('p0');
+      row.appendChild(td);
+      */
+
+      // Loop for each item in the row
+      r.forEach((c,j) => {
+        td = document.createElement('td');
+        if (i%2 == 0) {
+          td.classList.add(evenRowClasses[j]);
+        } else {
+          td.classList.add(oddRowClasses[j]);
+        }
+        td.innerHTML = c;
+        row.appendChild(td);
+      });
+      this._table.appendChild(row);
+    });
+  }
+}
+
+/**
  * This loads the image from Drive via apps script function
  * background-image: url(http://drive.google.com/uc?export=view&id=1rMWsn5-6VXxUzYtu7XbK3u7e6ODAuTcC)
  * 
@@ -76,6 +309,24 @@ function pointsSelect() {
 }
 
 /**
+ *  Called when a menu button is pressed
+ */
+function buttonSelect(option) {
+  const validOptions = ["pointsboard","stats"];
+  let selectedOption = validOptions.indexOf(option);
+  if (selectedOption > 0) {
+    /** Build the request object */
+    let request = {"request":validOptions[selectedOption]};
+
+    /** Show loading screen */
+    show("loading");
+
+    /** Request the data from the server */
+    loadData(request);
+  }
+}
+
+/**
  * Update the table with the data from the spreadsheet
  * 
  * @param {object} data is an object that contains the data as specified in the "request"
@@ -92,6 +343,7 @@ function pointsSelect() {
  *                                   "course" - Course to return data for
  */
 function updateTable(data) {
+  console.log(data);
   // Check the request 
   switch(data.options.request) {
     case 'leaderboard':
@@ -101,6 +353,7 @@ function updateTable(data) {
       buildPointsboard(data);
       break;
     case 'stats':
+      buildStatsPage(data);
       break;
     default:
       console.log(`Request not found: data.options.request = ${data.options.request} `);
@@ -364,34 +617,34 @@ function loadTableData(data){
 /**
  * Build the stats page
  * 
- * @param {object} data object with the point leaderboard table data
+ * @param {object} data object with the stats data
  */
 function buildStatsPage(data) {
   // Get the div for the table and make sure we remove any children to recreate the table
-  let pointsDiv = document.getElementById("statsDiv");
-  let pointsInnerDiv = document.getElementById("statsInnerDiv");
-  if (pointsInnerDiv) {
-    let plbtable = document.getElementById("statsInnerDiv");
-    pointsDiv.removeChild(plbtable);
+  let statsDiv = document.getElementById("statsDiv");
+  let statsInnerDiv = document.getElementById("statsInnerDiv");
+  if (statsInnerDiv) {
+    let statstable = document.getElementById("statsInnerDiv");
+    statsDiv.removeChild(statstable);
   }
 
   // Create the table for adding the data
-  createTable("statsPage");
+  //createTable("statsPage");
+  let options = {
+    "name": "stats",
+    "cols": 3,
+    "colWidths": ["180px", "100px", "113px"],
+    "title": "Courses Played",
+    "labels": ["Course", "Times Played", "Last Played"],
+    "classes": ["p3", "p2", "p2"]
+    };
+  let statsTable = new Table(options, data, statsInnerDiv);
 
   // Now load up the data
-  loadStatsData(data);
+  statsTable.loadData(data);
 
   // Show the screen
-  show("statsPage");
-}
-
-/**
- * Load the stats page
- * 
- * @param {object} Data object for the stats
- */
-function loadStatsData(data) {
-
+  show("statspage");
 }
 
 /**
