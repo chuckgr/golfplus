@@ -29,6 +29,13 @@ class Stats {
   }
 
   /**
+   * Get the stats for the rounds played
+   */
+  _getRoundsPlayed() {
+    
+  }
+
+  /**
    * Create a array of the courses played and when
    */
   _getCoursesPlayed() {
@@ -58,7 +65,7 @@ class Stats {
     for (const [key, value] of coursesPlayed) {
       courseAry.push([key, value.count, new Date(value.date).toLocaleDateString()]);
       /** Print the array */
-      console.log(`${key} ${value.count} ${new Date(value.date).toLocaleDateString()}`);
+      //console.log(`${key} ${value.count} ${new Date(value.date).toLocaleDateString()}`);
     }
 
     /**

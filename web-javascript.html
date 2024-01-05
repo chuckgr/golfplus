@@ -22,7 +22,8 @@
  *                 - colWidths: Array of css style widths for each column, one per column
  *                 - title: Title for the table
  *                 - labels: Array containing the labels for the columns
- *                 - classes: Array conrtaining the css styles for each columns
+ *                 - classes: Array containing the css styles for each columns
+ *                 - headerClasses: 2D Array containing the css styles for each column of the headers, even/odd
  * @param {array} Data for the body of the table. 2D array with each element having the me number of elements 
  *                as the numo of cols
  * @param {string} Element name to anchor this table to.
@@ -36,6 +37,7 @@ class Table {
     this._title = options.title;
     this._labels = options.labels;
     this._classes = options.classes;
+    this._headerClasses = options.headerClasses;
     this._data = data;
     this._anchor = anchor;
     this._tableDivId = `${this._name}Div`;
@@ -77,7 +79,7 @@ class Table {
     tbody.id = this._bodyId;
     tbody.appendChild(this._createTitle(this._title, this._cols, this._name)); 
     //tbody.appendChild(this._createTitle())           /** We don't need two lines now but we need to have ability */
-    tbody.appendChild(this._createHeader(this._labels, this._classes));           
+    tbody.appendChild(this._createHeader(this._labels, this._headerClasses));           
     this._table.appendChild(tbody);
   
     let tableDiv = document.getElementById(this._tableDivId);
@@ -92,18 +94,6 @@ class Table {
    * 
    */
   _createHeader(labels, classes) {
-    /*
-    let arrayIdx = 0;
-    if (type=="pointsboard") {
-      arrayIdx = 1;
-    } 
-    */
-    //let labels  = [["Pos", "Name", "Round 1", "Round 2", "Round 3", "Round 4", "Total", "+/-"],
-    //             ["", "Rank", "Name", "Points", "Events", "# Wins", "Top Three"]];
-    //let classes = [["s2", "s2", "s3", "s3", "s3", "s3", "s3", "s3"],
-    //             ["p2", "p1", "p1", "p1", "p1", "p1", "p1"]];
-
-
     let tr = document.createElement('tr');
     tr.style.height = "20px";
     let th = this._createRowTh();
@@ -119,18 +109,21 @@ class Table {
    * Create the title of the table
    */
   _createTitle(title, cols, name) {
+    let td;
     let titleId = `${name}TitleLine1`;
     let blankColClass = "s1";
-    let titleClass = "s1";
+    let titleClass = "p1";
     let colSpan = cols;
 
     let tr = document.createElement('tr');
     tr.style.height = "20px";
     let th = this._createRowTh(); 
     tr.appendChild(th);
+/*
     let td = document.createElement('td');
     td.classList.add(blankColClass);
     tr.appendChild(td);
+*/
     td = document.createElement('td');
     td.id = titleId;
     td.classList.add(titleClass);
@@ -210,7 +203,7 @@ class Table {
   /**
    * Load up the table body with the data 
    */
-  loadData(data) {
+  loadData(data, classes) {
     const evenRowClasses = ["p3", "p2", "p2"]; // White
     const oddRowClasses =  ["p5", "p4", "p4"]; // light blue
     //let table = document.getElementById("statsbody");
@@ -230,9 +223,11 @@ class Table {
       r.forEach((c,j) => {
         td = document.createElement('td');
         if (i%2 == 0) {
-          td.classList.add(evenRowClasses[j]);
+          //td.classList.add(evenRowClasses[j]);
+          td.classList.add(classes[0][j]);
         } else {
-          td.classList.add(oddRowClasses[j]);
+          //td.classList.add(oddRowClasses[j]);
+          td.classList.add(classes[1][j]);
         }
         td.innerHTML = c;
         row.appendChild(td);
@@ -622,26 +617,26 @@ function loadTableData(data){
 function buildStatsPage(data) {
   // Get the div for the table and make sure we remove any children to recreate the table
   let statsDiv = document.getElementById("statsDiv");
-  let statsInnerDiv = document.getElementById("statsInnerDiv");
+  let statsInnerDiv = document.getElementById("statsinnerDiv");
   if (statsInnerDiv) {
-    let statstable = document.getElementById("statsInnerDiv");
+    let statstable = document.getElementById("statsinnerDiv");
     statsDiv.removeChild(statstable);
   }
 
-  // Create the table for adding the data
-  //createTable("statsPage");
+  /** Create the table for adding the data */
   let options = {
     "name": "stats",
     "cols": 3,
     "colWidths": ["180px", "100px", "113px"],
     "title": "Courses Played",
     "labels": ["Course", "Times Played", "Last Played"],
-    "classes": ["p3", "p2", "p2"]
+    "headerClasses": ["p1", "p1", "p1"],
+    "classes": [["p3", "p2", "p2"],["p5", "p4", "p4"]]
     };
-  let statsTable = new Table(options, data, statsInnerDiv);
+  let coursesTable = new Table(options, data, statsInnerDiv);
 
   // Now load up the data
-  statsTable.loadData(data);
+  coursesTable.loadData(data, options.classes);
 
   // Show the screen
   show("statspage");
