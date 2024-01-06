@@ -2,9 +2,12 @@
  * Test player stats
  */
 function test_playerStats() {
+  let pi = [];
   let stats = new Stats();
   console.log(`Rounds played: ${stats._getRoundsPlayed()}`);
   console.log(`Tournaments played: ${stats._getTournamentsPlayed()}`);
+  pi = stats._playersSummary();
+  console.log(pi.length);
   //let pr = new PlayerRounds();
   //console.log(`${pr.getNumRounds()}`);
 }

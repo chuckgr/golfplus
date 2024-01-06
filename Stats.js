@@ -19,7 +19,7 @@ class Stats {
     this._tournaments = new Tournaments();
     this._playerRnds = new PlayerRounds();
     this._roundsByPlayer = [];
-    //let results = [];
+    this._playersSummary();
   }
 
   /**
@@ -40,14 +40,15 @@ class Stats {
    * Get the number of players
    */
   _getNumOfPlayers() {
-
+    return this._getRoundsByPlayer().size;
   }
 
   /**
    * Create a summary table
    */
   getSummary() {
-    return [["Rounds Played", this._getRoundsPlayed()], ["Tournaments Played", this._getTournamentsPlayed()]];
+    return [["Rounds Played", this._getRoundsPlayed()], ["Tournaments Played", this._getTournamentsPlayed()], 
+    ["Number of Players", this._getNumOfPlayers()]];
   }
 
   /**
@@ -86,9 +87,8 @@ class Stats {
     let coursesPlayed = new Map();
     let ta = t.getTournaments();
     let rounds = [];
-    let rData = {};
     let tmpData = {};
-    //console.log(`Course.  Times Played.  last Played`);
+
     ta.forEach(t => {
       rounds = t.rounds;
       rounds.forEach(r => {
@@ -107,24 +107,51 @@ class Stats {
     let courseAry = [];
     for (const [key, value] of coursesPlayed) {
       courseAry.push([key, value.count, new Date(value.date).toLocaleDateString()]);
-      /** Print the array */
-      //console.log(`${key} ${value.count} ${new Date(value.date).toLocaleDateString()}`);
     }
 
-    /**
-    * Sort the array
-    */
+    /** Sort the array of courses by date, oldest first */
     //courseAry.sort((a,b) => a[1] - b[1]); // Sorts on times played, low -> high
     courseAry.sort((a,b) => new Date(a[2]).getTime() - new Date(b[2]).getTime()); // Sorts on date, old to new
-    courseAry.forEach(c => console.log(`${c[0]} ${c[1]} ${c[2]}`));
+    //courseAry.forEach(c => console.log(`${c[0]} ${c[1]} ${c[2]}`));
 
     return courseAry;
   }
 
   /**
+   * Create the data for the player table
+   */
+  _playersSummary() {
+    let playersData = [];
+    let playerInfo = [];
+    let prds = this._getRoundsByPlayer();
+    prds.forEach( (k,v) => {
+      //console.log(`Player:${v} Rounds:${k}`); 
+      playersData.push(v); /** Player name */
+      playersData.push(k.length); /** Number of rounds */
+      /** Loop through all of the player scores to get best score */
+      let bestScore = 999;
+      k.forEach(r => {
+        bestScore = Math.min(bestScore, r.getScore());
+        //console.log(` ${new Date(r.getTimeStamp()).toLocaleDateString()} \t${tournaments.getTournamentNameById(r.getNumber())}  \t${r.getScore()}`)});
+      });
+      playersData.push(bestScore); /** Best score */
+      playersData.push(tournaments.getTournamentNameById(k[k.length-1].getNumber())); /** Name of last tournament */
+      playersData.push(k[k.length-1].getTimeStamp().toLocaleDateString()); /** Date of last tournament */
+      playerInfo.push(playersData);
+      playersData = [];
+    });
+
+    /** Sort on last tournament played */
+    playerInfo.sort((a,b) => new Date(b[4]).getTime() - new Date(a[4]).getTime()); // Sorts on date, old to new
+    return playerInfo;
+  }
+
+  /**
+   * Return all of the stats tables
    * 
+   * @return {object} Object with a key for each table to be added to the stats page
    */
   getStats() {
-    return {"coursesPlayed":this._getCoursesPlayed(), "summary":this.getSummary()};
+    return {"coursesPlayed":this._getCoursesPlayed(), "summary":this.getSummary(), "playersSum": this._playersSummary()};
   }
 }

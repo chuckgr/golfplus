@@ -30,7 +30,7 @@
  */
 class Table {
   constructor(options, anchor) {
-    console.log(options);
+    //console.log(options);
     this._name = options.name;
     this._cols = options.cols;
     this._colWidths = options.colWidths;
@@ -83,7 +83,6 @@ class Table {
     this._table.appendChild(tbody);
   
     let tableDiv = document.getElementById(this._tableDivId);
-    console.log(`${tableDiv}`);
     let innerDiv = document.createElement('div');
     innerDiv.id = this._innerDivId;
     innerDiv.appendChild(this._table);
@@ -113,7 +112,7 @@ class Table {
     let td;
     let titleId = `${name}TitleLine1`;
     let blankColClass = "s1";
-    let titleClass = "p1";
+    let titleClass = "p0";
     let colSpan = cols;
 
     let tr = document.createElement('tr');
@@ -323,7 +322,7 @@ function buttonSelect(option) {
  *                                   "course" - Course to return data for
  */
 function updateTable(data) {
-  console.log(data);
+  //console.log(data);
   // Check the request 
   switch(data.options.request) {
     case 'leaderboard':
@@ -632,9 +631,20 @@ function buildStatsPage(data) {
     "classes": [["p3", "p2", "p2"],["p5", "p4", "p4"]]
     };
   let coursesTable = new Table(courseOptions, statsInnerDiv);
-
-  // Now load up the data
   coursesTable.loadData(data.statsData.coursesPlayed);
+
+  /** Create a table with all Players with a round logged */
+  let playerOptions = {
+    "name": "stats",
+    "cols": 5,
+    "colWidths": ["180px", "100px", "100px", "300px", "120px"],
+    "title": "Player Summary",
+    "labels": ["Player", "# Rounds", "Best Score", "Last Tourney", "Date"],
+    "headerClasses": ["p1", "p1", "p1", "p1", "p1"],
+    "classes": [["p3", "p2", "p2", "p2", "p2"],["p5", "p4", "p4", "p4", "p4"]]
+    };
+  let playersTable = new Table(playerOptions, statsInnerDiv);
+  playersTable.loadData(data.statsData.playersSum);
 
   // Show the screen
   show("statspage");
