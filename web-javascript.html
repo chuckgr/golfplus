@@ -29,7 +29,7 @@
  * @param {string} Element name to anchor this table to.
  */
 class Table {
-  constructor(options, data, anchor) {
+  constructor(options, anchor) {
     console.log(options);
     this._name = options.name;
     this._cols = options.cols;
@@ -38,7 +38,7 @@ class Table {
     this._labels = options.labels;
     this._classes = options.classes;
     this._headerClasses = options.headerClasses;
-    this._data = data;
+    this._data;
     this._anchor = anchor;
     this._tableDivId = `${this._name}Div`;
     this._innerDivId = `${this._name}innerDiv`;
@@ -79,10 +79,11 @@ class Table {
     tbody.id = this._bodyId;
     tbody.appendChild(this._createTitle(this._title, this._cols, this._name)); 
     //tbody.appendChild(this._createTitle())           /** We don't need two lines now but we need to have ability */
-    tbody.appendChild(this._createHeader(this._labels, this._headerClasses));           
+    tbody.appendChild(this._createHeader(this._labels, this._headerClasses));          
     this._table.appendChild(tbody);
   
     let tableDiv = document.getElementById(this._tableDivId);
+    console.log(`${tableDiv}`);
     let innerDiv = document.createElement('div');
     innerDiv.id = this._innerDivId;
     innerDiv.appendChild(this._table);
@@ -98,7 +99,7 @@ class Table {
     tr.style.height = "20px";
     let th = this._createRowTh();
     tr.appendChild(th);
-    // Add the labels
+    /** Add the labels */
     [...Array(labels.length).keys()].forEach( (n,i) => {
       tr.appendChild(this._createHeaderTd(classes[n], labels[n]))
     });
@@ -119,11 +120,6 @@ class Table {
     tr.style.height = "20px";
     let th = this._createRowTh(); 
     tr.appendChild(th);
-/*
-    let td = document.createElement('td');
-    td.classList.add(blankColClass);
-    tr.appendChild(td);
-*/
     td = document.createElement('td');
     td.id = titleId;
     td.classList.add(titleClass);
@@ -203,31 +199,20 @@ class Table {
   /**
    * Load up the table body with the data 
    */
-  loadData(data, classes) {
-    const evenRowClasses = ["p3", "p2", "p2"]; // White
-    const oddRowClasses =  ["p5", "p4", "p4"]; // light blue
-    //let table = document.getElementById("statsbody");
+  loadData(data) {
     let row;
     let td;
 
-    [...data.statsData].forEach((r,i) => {
-      // Create a blank column (previous code)
+    [...data].forEach((r,i) => {
       row = this._createTr(); 
-      /*
-      td = document.createElement('tr');
-      td.classList.add('p0');
-      row.appendChild(td);
-      */
 
-      // Loop for each item in the row
+      /** Loop for each item in the row */
       r.forEach((c,j) => {
         td = document.createElement('td');
         if (i%2 == 0) {
-          //td.classList.add(evenRowClasses[j]);
-          td.classList.add(classes[0][j]);
+          td.classList.add(this._classes[0][j]);
         } else {
-          //td.classList.add(oddRowClasses[j]);
-          td.classList.add(classes[1][j]);
+          td.classList.add(this._classes[1][j]);
         }
         td.innerHTML = c;
         row.appendChild(td);
@@ -623,8 +608,21 @@ function buildStatsPage(data) {
     statsDiv.removeChild(statstable);
   }
 
-  /** Create the table for adding the data */
-  let options = {
+  /** Create a summary table */
+  let summOptions = {
+    "name": "stats",
+    "cols": 2,
+    "colWidths": ["180px", "100px"],
+    "title": "Summary",
+    "labels": ["Stat", "Value"],
+    "headerClasses": ["p1", "p1"],
+    "classes": [["p3", "p2"],["p5", "p4"]]
+  };
+  let summaryTable = new Table(summOptions, statsInnerDiv);
+  summaryTable.loadData(data.statsData.summary);
+
+  /** Create the table for adding the courses played data */
+  let courseOptions = {
     "name": "stats",
     "cols": 3,
     "colWidths": ["180px", "100px", "113px"],
@@ -633,10 +631,10 @@ function buildStatsPage(data) {
     "headerClasses": ["p1", "p1", "p1"],
     "classes": [["p3", "p2", "p2"],["p5", "p4", "p4"]]
     };
-  let coursesTable = new Table(options, data, statsInnerDiv);
+  let coursesTable = new Table(courseOptions, statsInnerDiv);
 
   // Now load up the data
-  coursesTable.loadData(data, options.classes);
+  coursesTable.loadData(data.statsData.coursesPlayed);
 
   // Show the screen
   show("statspage");

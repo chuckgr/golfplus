@@ -1,4 +1,16 @@
 /**
+ * Test player stats
+ */
+function test_playerStats() {
+  let stats = new Stats();
+  console.log(`Rounds played: ${stats._getRoundsPlayed()}`);
+  console.log(`Tournaments played: ${stats._getTournamentsPlayed()}`);
+  //let pr = new PlayerRounds();
+  //console.log(`${pr.getNumRounds()}`);
+}
+
+
+/**
  * Test sourting a multi-dimentioned array (courses played)
  */
 function test_sortMultiArray() {

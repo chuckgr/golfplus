@@ -16,23 +16,66 @@
  */
 class Stats {
   constructor() {
-    //let playerRnds = new PlayerRounds();
+    this._tournaments = new Tournaments();
+    this._playerRnds = new PlayerRounds();
+    this._roundsByPlayer = [];
     //let results = [];
-  }
-
-  /**
-   * Build the results by parsing the data records for each player that has a round
-   * posted.
-   */
-  _parseRecords() {
-
   }
 
   /**
    * Get the stats for the rounds played
    */
   _getRoundsPlayed() {
-    
+    return this._playerRnds.getNumRounds();
+  }
+
+  /**
+   * Get number of tournaments played
+   */
+  _getTournamentsPlayed() {
+    return this._tournaments.getTournaments().length;
+  }
+
+  /**
+   * Get the number of players
+   */
+  _getNumOfPlayers() {
+
+  }
+
+  /**
+   * Create a summary table
+   */
+  getSummary() {
+    return [["Rounds Played", this._getRoundsPlayed()], ["Tournaments Played", this._getTournamentsPlayed()]];
+  }
+
+  /**
+   * Get the player stats
+   * 
+   * @return {Map} A map with the play name as key, rounds in array as the value
+   */
+  _getRoundsByPlayer() {
+    let plyers = new Map();
+
+    /**  Loop for all of the rounds and save rounds per player */
+    for (const r of this._playerRnds) {
+      if (plyers.has(r.getName())) {
+        this._roundsByPlayer = plyers.get(r.getName());
+        this._roundsByPlayer.push(r);
+      } else {
+        this._roundsByPlayer.push(r);
+      }
+      plyers.set(r.getName(), this._roundsByPlayer);
+      this._roundsByPlayer = [];
+    }
+
+    /** Sort each player rounds by date */
+    plyers.forEach( (k,v) => { 
+      k.sort((a,b) => a.getTimeStamp() - b.getTimeStamp());
+    });
+
+    return plyers;
   }
 
   /**
@@ -82,6 +125,6 @@ class Stats {
    * 
    */
   getStats() {
-    return this._getCoursesPlayed();
+    return {"coursesPlayed":this._getCoursesPlayed(), "summary":this.getSummary()};
   }
 }
