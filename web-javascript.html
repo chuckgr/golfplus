@@ -29,8 +29,7 @@
  * @param {string} Element name to anchor this table to.
  */
 class Table {
-  constructor(options, anchor) {
-    //console.log(options);
+  constructor(options) {
     this._name = options.name;
     this._cols = options.cols;
     this._colWidths = options.colWidths;
@@ -39,7 +38,6 @@ class Table {
     this._classes = options.classes;
     this._headerClasses = options.headerClasses;
     this._data;
-    this._anchor = anchor;
     this._tableDivId = `${this._name}Div`;
     this._innerDivId = `${this._name}innerDiv`;
     this._bodyId = `${this._name}body`;
@@ -81,14 +79,15 @@ class Table {
     //tbody.appendChild(this._createTitle())           /** We don't need two lines now but we need to have ability */
     tbody.appendChild(this._createHeader(this._labels, this._headerClasses));          
     this._table.appendChild(tbody);
-  
-    let tableDiv = document.getElementById(this._tableDivId);
-    let innerDiv = document.createElement('div');
-    innerDiv.id = this._innerDivId;
-    innerDiv.appendChild(this._table);
-    tableDiv.appendChild(innerDiv);
   }
 
+  /**
+   * Get the table element 
+   */
+  getTable() {
+    return this._table;
+  }
+  
   /**
    * Create the header element
    * 
@@ -126,7 +125,7 @@ class Table {
     td.innerHTML = title;
   
     tr.appendChild(td);
-  return tr;
+    return tr;
   }
 
   /**
@@ -204,7 +203,6 @@ class Table {
 
     [...data].forEach((r,i) => {
       row = this._createTr(); 
-
       /** Loop for each item in the row */
       r.forEach((c,j) => {
         td = document.createElement('td');
@@ -599,12 +597,16 @@ function loadTableData(data){
  * @param {object} data object with the stats data
  */
 function buildStatsPage(data) {
-  // Get the div for the table and make sure we remove any children to recreate the table
+  // Get the div for the stats page and make sure we remove any children to recreate the page
   let statsDiv = document.getElementById("statsDiv");
+  //let innerDivAry = document.querySelectorAll("statsinnerDiv")
   let statsInnerDiv = document.getElementById("statsinnerDiv");
   if (statsInnerDiv) {
     let statstable = document.getElementById("statsinnerDiv");
     statsDiv.removeChild(statstable);
+  } else {
+    statsInnerDiv = document.createElement('div');
+    statsInnerDiv.id = "statsinnerDiv";
   }
 
   /** Create a summary table */
@@ -617,8 +619,9 @@ function buildStatsPage(data) {
     "headerClasses": ["p1", "p1"],
     "classes": [["p3", "p2"],["p5", "p4"]]
   };
-  let summaryTable = new Table(summOptions, statsInnerDiv);
+  let summaryTable = new Table(summOptions);
   summaryTable.loadData(data.statsData.summary);
+  statsInnerDiv.appendChild(summaryTable.getTable());
 
   /** Create the table for adding the courses played data */
   let courseOptions = {
@@ -630,8 +633,9 @@ function buildStatsPage(data) {
     "headerClasses": ["p1", "p1", "p1"],
     "classes": [["p3", "p2", "p2"],["p5", "p4", "p4"]]
     };
-  let coursesTable = new Table(courseOptions, statsInnerDiv);
+  let coursesTable = new Table(courseOptions);
   coursesTable.loadData(data.statsData.coursesPlayed);
+  statsInnerDiv.appendChild(coursesTable.getTable());
 
   /** Create a table with all Players with a round logged */
   let playerOptions = {
@@ -643,8 +647,12 @@ function buildStatsPage(data) {
     "headerClasses": ["p1", "p1", "p1", "p1", "p1"],
     "classes": [["p3", "p2", "p2", "p2", "p2"],["p5", "p4", "p4", "p4", "p4"]]
     };
-  let playersTable = new Table(playerOptions, statsInnerDiv);
+  let playersTable = new Table(playerOptions);
   playersTable.loadData(data.statsData.playersSum);
+  statsInnerDiv.appendChild(playersTable.getTable());
+
+  /** Add the table to the stats div */
+  statsDiv.appendChild(statsInnerDiv);
 
   // Show the screen
   show("statspage");
