@@ -211,7 +211,7 @@ class Leaderboard {
     // TODO - update the list to be consistent witht the game order/words
     tournaments.getTournamentById(this._tournyNumber).rounds.forEach((r) => {
       this._footerValues[0].push(r.course);
-      this._footerValues[1].push(Courses.getPar(r.course));
+      this._footerValues[1].push(courses.getPar(r.course));
       this._footerValues[2].push(r.date);
       this._footerValues[3].push(r.level);
       this._footerValues[4].push(r.tees);

@@ -128,7 +128,7 @@ class Tournaments {
     let retAry = [["Course"],["Par"],["Date"],["Difficulty"],["Tees"], ["Pins"],["Wind"],["Green Speed"]];
     this.getTournamentById(tournament).rounds.forEach((r) => {
       retAry[0].push(r.course);
-      retAry[1].push(Courses.getPar(r.course));
+      retAry[1].push(courses.getPar(r.course));
       retAry[2].push(r.date);
       retAry[4].push(r.tees);
       retAry[5].push(r.pins);

@@ -1,4 +1,36 @@
 /**
+ * Test new NameValue setting with Courses
+ */
+function test_nameValueCourses() {
+  let courses = new Courses();
+  let course = "Valhalla";
+  //console.log(`${courses.getPar("Old Course")}`);
+  //let cs = courses.getCourses();
+  //let rc = cs.find(c => c[0] == course)[1];
+  //console.log(rc);
+  console.log(`${courses.getPar(course)}`);
+  course = "Rivera";
+  console.log(`${courses.getPar(course)}`);
+}
+
+/**
+ * Test map geocoder
+ */
+function test_geocodeMap() {
+  var response = Maps.newGeocoder().reverseGeocode(42.41772056, -73.62738666);
+  response.results.forEach(m => {
+    console.log(`${m.formatted_address}`);
+  });
+//
+//for (var i = 0; i < response.results.length; i++) {
+//  var result = response.results[i];
+//  Logger.log('%s: %s, %s', result.formatted_address, result.geometry.location.lat,
+//      result.geometry.location.lng);
+//}
+//
+}
+
+/**
  * Test player stats
  */
 function test_playerStats() {

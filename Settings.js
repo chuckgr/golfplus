@@ -36,20 +36,25 @@ class Settings {
 
     let name, displayName, type, required;
     let data = [];
-    // Loop for all setting data and create classes
+    /** Loop for all setting data and create classes  */
     this._data[0].forEach((s,i) => {
 
-      // Skip the title column
+      /** Skip the title column */
       if (i!=0) {
         displayName = s.trim();
         name = s.trim().toUpperCase().replace(/ /g, '');
-        type = this._data[this._typeIndex][i];
+        type = this._data[this._typeIndex][i].trim();
         required = this._data[this._requiredIndex][i];
         
         if (this._data[this._valueIndex][i] != ""){
           let e=this._valueIndex;
           while (e < this._data.length && this._data[e][i] != "") {
-            data.push(this._data[e][i]);
+            /** NameValue and NumericPair use two columns for the data */
+            if (type == "NameValue") {
+              data.push([this._data[e][i], this._data[e][i+1]])
+            } else {
+              data.push(this._data[e][i]);
+            }
             e++;
           }
         } 
@@ -66,6 +71,9 @@ class Settings {
               break;
             case 'mm/dd/yyyy':
               this._settings.set(name, new DateSetting(options));
+              break;
+            case 'NameValue':
+              this._settings.set(name, new NameValueSetting(options));
               break;
             default:
               console.log(`No provider for "${type}" type yet`);
