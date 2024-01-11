@@ -18,7 +18,7 @@
 /** 
  * Globals
  */ 
-const version = "1.0.21"
+const version = "1.0.22"
 const settings = new Settings();
 const players = new Players();
 const courses = new Courses();

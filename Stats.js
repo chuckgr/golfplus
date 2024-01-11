@@ -47,8 +47,8 @@ class Stats {
    * Create a summary table
    */
   getSummary() {
-    return [["Rounds Played", this._getRoundsPlayed()], ["Tournaments Played", this._getTournamentsPlayed()], 
-    ["Number of Players", this._getNumOfPlayers()]];
+    let rndsByLevel = this._getNumberOfRoundsByLevel();
+    return [["Rounds Played", this._getRoundsPlayed()],["Amatuer Rounds", rndsByLevel.amatuer], ["Pro Rounds", rndsByLevel.pro], ["Tournaments Played", this._getTournamentsPlayed()], ["Number of Players", this._getNumOfPlayers()]];
   }
 
   /**
@@ -144,6 +144,32 @@ class Stats {
     /** Sort on last tournament played */
     playerInfo.sort((a,b) => new Date(b[4]).getTime() - new Date(a[4]).getTime()); // Sorts on date, old to new
     return playerInfo;
+  }
+
+  /**
+   * Get the number of tourny rounds "Pro" and "Amateur"
+   * 
+   * @return {object} Keys Pro and Amateur with number of rounds for each
+   */
+  _getNumberOfRoundsByLevel() {
+    let tournys = this._tournaments.getTournaments();
+    let tRnds = []
+    let proRnds = 0;
+    let amRnds = 0;
+    let novRnds = 0;
+    tournys.forEach(t => {
+      tRnds = t.rounds;
+      tRnds.forEach(r => {
+        if (r.level == "Pro") {
+          proRnds += 1;
+        } else if (r.level == "Amateur") {
+          amRnds += 1;
+        } else {
+          novRnds += 1;
+        }
+      });
+    });
+    return {"amatuer": amRnds, "pro": proRnds, "novice": novRnds};
   }
 
   /**

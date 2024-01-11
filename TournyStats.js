@@ -16,8 +16,6 @@
  */
 class TournyStats {
   constructor() {
-    //let playerRnds = new PlayerRounds();
-    //let results = [];
     this._t = new Tournaments();
     this._ta = this._t.getTournaments();
   }
@@ -44,7 +42,6 @@ class TournyStats {
       });
     });
 
-    //let courseAry = [["Course", "Times Played", "Last played"]];
     /**
      * Convert the Map to an Array
      */
@@ -58,8 +55,30 @@ class TournyStats {
      */
     //courseAry.sort((a,b) => new Date(a[2]).getTime() - new Date(b[2]).getTime());
     //courseAry.sort((a,b) => parseInt(b[1]) - parseInt(a[2]));
-
     return courseAry.sort((a,b) => new Date(a[2]).getTime() - new Date(b[2]).getTime());
   }
   
+  /**
+   * Get the number of tourny rounds "Pro" and "Amateur"
+   * 
+   * @return {object} Keys Pro and Amateur with number of rounds for each
+   */
+  _getNumberOfRoundsByLevel() {
+    let tary = tournys.getTournaments();
+    let tRnds = []
+    let proRnds = 0;
+    let amRnds = 0;
+    tary.forEach(t => {
+      tRnds = t.rounds;
+      tRnds.forEach(r => {
+        if (r.level == "Pro") {
+          proRnds += 1;
+        } else {
+          amRnds += 1;
+        }
+      });
+    });
+    return {"Amateur": amRnds, "Pro": proRnds};
+  }
+    
 }

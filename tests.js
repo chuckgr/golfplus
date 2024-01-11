@@ -1,4 +1,28 @@
 /**
+ * Test getting all rounds that were Pro rounds
+ */
+function test_getProRounds() {
+  let tournys = new Tournaments();
+  let tary = tournys.getTournaments();
+  let tRnds = []
+  let proRnds = 0;
+  let amRnds = 0;
+  tary.forEach(t => {
+    tRnds = t.rounds;
+    tRnds.forEach(r => {
+      if (r.level == "Pro") {
+        proRnds += 1;
+        console.log(`${new Date(r.date).toLocaleDateString()} ${r.name} \t\t${r.course} \t${r.tees} \t${r.pins} \t${r.wind} \t${r.greens}`);
+      } else {
+        amRnds += 1;
+      }
+    });
+  });
+  console.log(`Number of pro rounds = ${proRnds}`);
+  console.log(`Number of amature rounds = ${amRnds}`);
+}
+
+/**
  * Test new NameValue setting with Courses
  */
 function test_nameValueCourses() {
@@ -42,6 +66,8 @@ function test_playerStats() {
   console.log(pi.length);
   //let pr = new PlayerRounds();
   //console.log(`${pr.getNumRounds()}`);
+  pi = stats.getSummary()
+  console.log();
 }
 
 

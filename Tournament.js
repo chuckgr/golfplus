@@ -9,6 +9,9 @@
  * all code used and the code is not used in a commercial product.                              
  */
 class Tournament {
+  /**
+   * @param {number} Number of this tournament
+   */
   constructor(tournyNumber) {
     this._number = tournyNumber;
     this._name = "";
@@ -30,6 +33,8 @@ class Tournament {
 
   /**
    * Get the settings for all the rounds defined in the tournament
+   * 
+   * @return {array} Array of all of the rounds for this tournament
    */
   get rounds() {
     return this._rounds;
@@ -55,6 +60,8 @@ class Tournament {
 
   /**
    * Return the status of the tournament 
+   * 
+   * @return {string} Status as "Complete", "In-progress", or "Open"
    */
   get status() {
     return this._status;
@@ -62,6 +69,8 @@ class Tournament {
 
   /**
    * Get the number of rounds defined for this tournament
+   * 
+   * @return {number} Number of rounds for this tournament
    */
   get definedRounds() {
     return this._rounds.length;
@@ -87,12 +96,12 @@ class Tournament {
     let leaderboard = [];
     const pr = new PlayerRounds();
 
-    // Get the records for each of the tournament rounds and the course data for the footer
+    /** Get the records for each of the tournament rounds and the course data for the footer  */
     this._rounds.forEach((r) => {
       rounds = [...rounds, ...pr.getRoundsByNumber(r.number)];
     });
 
-    // Loop for all of the rounds logged for this tournament
+    /** Loop for all of the rounds logged for this tournament */
     let tmpPlr = [];
     rounds.forEach(r => {
       if (playerMap.has(r.getName())) {
@@ -104,7 +113,7 @@ class Tournament {
       playerMap.set(r.getName(), tmpPlr);
     });
 
-    // Convert from a map to array for leaderboard and add username
+    /** Convert from a map to array for leaderboard and add username */
     let playerData = [];
     let newName = "";
     for (const [name, scores] of playerMap) {
