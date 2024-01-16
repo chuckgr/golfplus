@@ -19,6 +19,7 @@ class Player {
     this._name = data[0].trim();
     this._username = data[1].trim() || "";
     this._handicap = data[2] || -1;
+    this._inTourny = data[3] || 0;
     //console.log(`Player: name- ${this._name} username- ${this._username} handicap- ${this._handicap}`);
   }
   
@@ -28,6 +29,7 @@ class Player {
   static get NAME()      { return 0;}
   static get USERNAME()  { return 1;}
   static get HANDICAP()  { return 2;}
+  static get INTOURNEY() { return 3;}
 
   /**
    * Get the value of the field as specified by the passed enum
@@ -42,6 +44,10 @@ class Player {
         break;
       case 2:
         return this._handicap;  
+        break;
+      case 3:
+        return this._inTourny;
+        break;
     }
     return this._data[field];
   }
@@ -71,6 +77,6 @@ class Player {
    * Print the record out
    */
   toString() {
-    return `${this._name} ${this._username} ${this._handicap}`
+    return `${this._name} ${this._username} ${this._handicap} ${this._inTourny}`
   }
 }

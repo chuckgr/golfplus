@@ -147,9 +147,9 @@ class Stats {
   }
 
   /**
-   * Get the number of tourny rounds "Pro" and "Amateur"
+   * Get the number of tourny rounds by level
    * 
-   * @return {object} Keys Pro and Amateur with number of rounds for each
+   * @return {object} Keys Pro, Amatuer, and Novice with number of rounds for each
    */
   _getNumberOfRoundsByLevel() {
     let tournys = this._tournaments.getTournaments();

@@ -1,4 +1,28 @@
 /**
+ * Test getting the players in tournament and their player tags
+ */
+function test_playerTourny() {
+  let count = 0;
+  let tournyNames = [];
+  let tournyString = ""
+  let plyrs = new Players();
+  for (p of plyrs){
+    if (p.getField(Player.INTOURNEY)>0) {
+      count++;
+      if (p.getField(Player.USERNAME).trim() == "") {
+        console.log(`Player ${p.getField(Player.NAME)} has no player tag`);
+      }
+      //console.log(`${p.toString()}`);
+      console.log(`${p.getField(Player.NAME)}-${p.getField(Player.HANDICAP)}`);
+      tournyNames.push(`@${p.getField(Player.NAME)}`);
+      tournyString += `, @${p.getField(Player.NAME)}`;
+    }
+  }
+  console.log(`${count} players in match play`);
+  console.log(tournyString);
+}
+
+/**
  * Test getting all rounds that were Pro rounds
  */
 function test_getProRounds() {
