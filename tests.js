@@ -1,9 +1,30 @@
 /**
+ * Test putting players that are in the match play tournament into the bracket file
+ */
+function test_matchPlayFile() {
+  let ssid = "1eDAuQ-EUdypcYaKAu7mYWxQ0N63x5NZIy7PfgttY6Do";
+  let ssifS = settings.getSetting('MATCHPLAYFILE').value;
+  
+  //console.log(`${settings.getSetting('MATCHPLAYFILE').value}`);
+  //console.log(`${ssid}`);
+  let mpf = SpreadsheetApp.openById(settings.getSetting('MATCHPLAYFILE').value);
+  //let mpf = SpreadsheetApp.openById(ssid);
+  let playerSheet = mpf.getSheetByName("Players");
+  //let plyers = playerSheet.getRange(2,1,100).getValues();
+  let plyers = playerSheet
+    .getDataRange()
+    .getValues();
+  console.log(`${JSON.stringify(plyers)}`);
+  console.log(`${plyers.length}`);
+}
+
+/**
  * Test getting the players in tournament and their player tags
  */
 function test_playerTourny() {
   let count = 0;
   let tournyNames = [];
+  let doubleTourneyNames = [];
   let tournyString = ""
   let plyrs = new Players();
   for (p of plyrs){
@@ -13,13 +34,54 @@ function test_playerTourny() {
         console.log(`Player ${p.getField(Player.NAME)} has no player tag`);
       }
       //console.log(`${p.toString()}`);
-      console.log(`${p.getField(Player.NAME)}-${p.getField(Player.HANDICAP)}`);
+      //console.log(`${p.getField(Player.NAME)}-${p.getField(Player.HANDICAP)}`);
       tournyNames.push(`@${p.getField(Player.NAME)}`);
-      tournyString += `, @${p.getField(Player.NAME)}`;
+      doubleTourneyNames.push({"name":p.getField(Player.NAME), "handicap":p.getField(Player.HANDICAP)});
+      if (count == 1) {
+        tournyString += `@${p.getField(Player.NAME)}`;
+      } else {
+        tournyString += `, @${p.getField(Player.NAME)}`;
+      }
     }
   }
-  console.log(`${count} players in match play`);
-  console.log(tournyString);
+  //console.log(`${count} players in match play`);
+  //console.log(tournyString);
+  //console.log(`${JSON.stringify(doubleTourneyNames)}`);
+  //doubleTourneyNames.sort((a,b) => a.handicap - b.handicap); // Sorts on handicap, low -> high
+
+  doubleTourneyNames.sort((a,b) => b.handicap - a.handicap); // Sorts on handicap, high -> low 
+  //console.log(`${JSON.stringify(doubleTourneyNames)}`);
+
+  function getRandom(ary) {
+    let itemsLeft = ary.length; /** Total number left from start or after item removed */ 
+    let usedIndex = [];
+    let returnAry = [];
+    let whosNext = 0;
+    for (let i=0; i<ary.length; i++) {
+      whosNext = Math.ceil(Math.random()*itemsLeft)-1;
+      while (usedIndex.includes(whosNext) == true) {
+        whosNext = Math.ceil(Math.random()*itemsLeft)-1;
+        //console.log(`WhosNext: ${whosNext} usedIndex: ${usedIndex}`)
+      } 
+      usedIndex.push(whosNext);
+      returnAry.push(ary[whosNext]);
+    }
+    return returnAry;
+  }
+
+  /** Get two lists of equal length from the sorted list of players */
+  let high = getRandom(doubleTourneyNames.slice(0,doubleTourneyNames.length/2));
+  let low  = getRandom(doubleTourneyNames.slice(doubleTourneyNames.length/2));
+  //console.log(`High: ${high.length} - ${JSON.stringify(high)}`);
+  //console.log(`Low: ${low.length} - ${JSON.stringify(low)}`);
+  let twoManTeams = [];
+  for (let j=0; j<high.length; j++) {
+    twoManTeams.push(`${high[j].name}(${high[j].handicap})/${low[j].name}(${low[j].handicap}) \tEst:${Math.ceil(high[j].handicap+low[j].handicap)}`)
+  }
+  //twoManTeams.push(`${high[whosNext].name}(${high[whosNext].handicap}) - ${low[whosNext].name}(${low[whosNext].handicap})`);
+  //console.log(`outside loop wn:${whosNext} ui:${usedIndex} \ntm.len: ${twoManTeams.length} tm: ${twoManTeams}`);
+  console.log(`tm.len: ${twoManTeams.length}`);
+  twoManTeams.forEach(t => console.log(`${t}`));
 }
 
 /**
