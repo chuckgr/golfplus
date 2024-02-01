@@ -255,16 +255,20 @@ async function loadData(options) {
  * @param {string} The selected option from the dropdown tournament selection list 
  */
 function tournySelect(sel) {
-  // Build the request object
-  let request = {"request":"leaderboard", "number": sel};
+  /** Check to see if handicaps were requested */
+  let handicap = document.getElementById("handicap").checked;
+  let type = (handicap==false) ? "net" : "handicap";
+  /** Build the request object */
+  let request = {"request":"leaderboard", "number": sel, "type": type};
+  //console.log(`handicap=${handicap} checked=${handicap} request=${JSON.stringify(request)}`);
 
-  // Reset the tournament selection to the "Select tournament" option
+  /** Reset the tournament selection to the "Select tournament" option */
   document.getElementById("tournaments").selectedIndex = 0;
 
-  // Show loading screen 
+  /** Show loading screen */
   show("loading");
 
-  // Request the data from server
+  /** Request the data from server */
   loadData(request);
 }
 
@@ -272,16 +276,16 @@ function tournySelect(sel) {
  *  Called when the point board button is pressed
  */
 function pointsSelect() {
-  // Build the request object
+  /** Build the request object */
   let request = {"request":"pointsboard"};
 
-  // Reset the tournament selection to the "Select tournament" option
+  /** Reset the tournament selection to the "Select tournament" option */
   document.getElementById("tournaments").selectedIndex = 0;
 
-  // Show loading screen
+  /** Show loading screen */
   show("loading");
 
-  // Request the data from the server
+  /** Request the data from the server */
   loadData(request);
 }
 
@@ -321,7 +325,7 @@ function buttonSelect(option) {
  */
 function updateTable(data) {
   //console.log(data);
-  // Check the request 
+  /** Check the request */ 
   switch(data.options.request) {
     case 'leaderboard':
       buildLeaderboard(data);

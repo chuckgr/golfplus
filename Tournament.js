@@ -89,8 +89,10 @@ class Tournament {
 
   /**
    * Create the tournament leaderboard data (table of players and scores with totals and score to par)
+   * 
+   * @param {string} Type of leaderboard to return; net or handicap
    */
-  get leaderboardData() {
+  leaderboardData(type) {
     let rounds = [];
     let playerMap = new Map();  // key=name, value=[r1,r2,r3,r4]
     let leaderboard = [];

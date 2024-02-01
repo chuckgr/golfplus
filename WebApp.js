@@ -103,8 +103,12 @@ function getLeaderboardData(options) {
       break;
   }
   
-  // Using the tournament number get that tournament object
-  let data = currTourny.leaderboardData;
+  /** Using the tournament number get that tournament object and type */
+  let type = "net";
+  if (options.hasOwnProperty("type")) {
+    type = options.type;
+  }
+  let data = currTourny.leaderboardData(type);
 
   /**
    * Calculate the total score (with bumpers for sorting) and score to par

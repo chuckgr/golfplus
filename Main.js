@@ -18,7 +18,7 @@
 /** 
  * Globals
  */ 
-const version = "1.0.22"
+const version = "1.1.23"
 const settings = new Settings();
 const players = new Players();
 const courses = new Courses();
@@ -53,27 +53,31 @@ if (!triggers.find(triggers._getTriggerID())) {
 */
 
 /**
- * On form submit we will build the leaderboard for the tournament that the score was
+ * There are three forms (so far) that get submitted to gather data
+ * - Player score form - build the leaderboard for the tournament that the score was
  * submitted to
+ * - Handicap form - Used to submit the handicap for a player for a tournament
+ * - Tournament settings form - (currently not used) to get the tournament settings
  *
  * @param {Event} e - Event from the form submission 
  */
 function postFormSubmit(e) {
-  let tournyNumber = e.values[2];
   console.log(`Form Submitted: values: ${JSON.stringify(e.values)}`);
-
   /** Make a backup of the form responses */
   let backup = new Backup();
   let backupSS = backup.open();
-  //if (!backupSS) {
-    let formRespSheet = SpreadsheetApp.getActive().getSheetByName('Form Responses');
-    //backupSS = backup.createFile(backup.fileName);
-    //backup.fullBackup(formRespSheet);
-  //}
+  let formRespSheet = SpreadsheetApp.getActive().getSheetByName('Form Responses');
   backup.add(e.values);
 
-  /** Recreate the leaderboard on form submit */
-  tournamentByNumber(tournyNumber); 
+  let sheet = e.range.getSheet();
+  console.log(sheet.getName());
+  if (sheet.getName() == "HandicapForm Responses") {
+    console.log("Handicap logged");
+  } else {
+    let tournyNumber = e.values[2];
+    /** Recreate the leaderboard on form submit */
+    tournamentByNumber(tournyNumber); 
+  }
 }
 
 /** 
