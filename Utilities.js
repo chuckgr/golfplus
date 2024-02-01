@@ -13,6 +13,7 @@
  * Add a new player to the player database. This is call by pressing the button on the admin screen.
  */
 function adminAddPlayer() {
+  return;
   let result;
   const nameField = "E5";
   let ss = SpreadsheetApp.getActiveSpreadsheet();

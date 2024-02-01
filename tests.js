@@ -1,4 +1,20 @@
 /**
+ * test creating the handicap form
+ */
+function test_createHandicapForm() {
+  let hf = new HandicapForm(players.getPlayerNames());
+  hf.create();
+}
+
+/**
+ * Test getting the player names from the Players class
+ */
+function test_playerNames() {
+  let pa = players.getPlayerNames();
+  console.log(`${JSON.stringify(pa)}`);
+}
+
+/**
  * Test putting players that are in the match play tournament into the bracket file
  */
 function test_matchPlayFile() {
@@ -36,7 +52,7 @@ function test_playerTourny() {
       //console.log(`${p.toString()}`);
       //console.log(`${p.getField(Player.NAME)}-${p.getField(Player.HANDICAP)}`);
       tournyNames.push(`@${p.getField(Player.NAME)}`);
-      doubleTourneyNames.push({"name":p.getField(Player.NAME), "handicap":p.getField(Player.HANDICAP)});
+      doubleTourneyNames.push({"name":p.getField(Player.NAME), "handicap":p.getField(Player.HANDICAPAM)});
       if (count == 1) {
         tournyString += `@${p.getField(Player.NAME)}`;
       } else {

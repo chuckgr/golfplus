@@ -62,9 +62,8 @@ function postFormSubmit(e) {
   let tournyNumber = e.values[2];
   console.log(`Form Submitted: values: ${JSON.stringify(e.values)}`);
 
-  // Make a backup of the form responses 
+  /** Make a backup of the form responses */
   let backup = new Backup();
-  //let backupSS = backup.findFile(backup.fileName);
   let backupSS = backup.open();
   //if (!backupSS) {
     let formRespSheet = SpreadsheetApp.getActive().getSheetByName('Form Responses');
@@ -73,7 +72,7 @@ function postFormSubmit(e) {
   //}
   backup.add(e.values);
 
-  // Recreate the leaderboard on form submit
+  /** Recreate the leaderboard on form submit */
   tournamentByNumber(tournyNumber); 
 }
 
@@ -81,7 +80,7 @@ function postFormSubmit(e) {
  * Create/update the form to enter the scores
  */ 
 function createForm() {
-  const form = new Form(players.getPlayers());
+  const form = new Form(players.getPlayerNames());
   let url = form.getUrl();
   // Log URL incase we want to send it out to peoples
   console.log(url);
@@ -91,7 +90,7 @@ function createForm() {
  * Create/update the form to enter the scores
  */ 
 function updateForm() {
-  const form = new Form(players.getPlayers());
+  const form = new Form(players.getPlayerNames());
   form.update();
   // Log URL incase we want to send it out to peoples
   console.log(form.getUrl());
@@ -101,7 +100,7 @@ function updateForm() {
  * Create/update the form to enter the scores
  */ 
 function recreateForm() {
-  const form = new Form(players.getPlayers());
+  const form = new Form(players.getPlayerNames());
   form.recreate();
 }
 
@@ -110,7 +109,7 @@ function recreateForm() {
  * 
  * @return {array} Contains all of the valid tournament numbers
  * 
- * TODO - Move this to the Utilities class
+ * TODO - Move this to the Tournaments class
  */
 function getTournamentNumbers(){
   let numbers = [];

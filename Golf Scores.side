@@ -1,0 +1,211 @@
+{
+  "id": "640a70ed-a9ba-43de-9dc9-97aee8a13458",
+  "version": "2.0",
+  "name": "Golf+ Scores",
+  "url": "https://www.golfplusvr.com",
+  "tests": [{
+    "id": "a408a778-56d1-480d-8065-619cfe97d02f",
+    "name": "Navigate to weekly round",
+    "commands": [{
+      "id": "62ae201d-5422-4b5c-882f-be75d7203f1d",
+      "comment": "",
+      "command": "open",
+      "target": "/login?post_login_url=%2Frounds",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f5bdc709-4595-4591-8a14-078fd5d6a5f2",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "550x691",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "4b2deb1f-8bc8-4225-ac22-d25eef44f916",
+      "comment": "",
+      "command": "type",
+      "target": "name=email",
+      "targets": [
+        ["name=email", "name"],
+        ["css=.\\_filledInput_135ip_103", "css:finder"],
+        ["xpath=//input[@name='email']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[4]/div/form/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "chuckgr@gmail.com"
+    }, {
+      "id": "273609a0-98a3-4caf-87da-17abbf811e61",
+      "comment": "",
+      "command": "type",
+      "target": "name=password",
+      "targets": [
+        ["name=password", "name"],
+        ["css=.\\_input_135ip_59:nth-child(4)", "css:finder"],
+        ["xpath=//input[@name='password']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[4]/div/form/input[2]", "xpath:idRelative"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": "V1rtualChuck!"
+    }, {
+      "id": "37dbeeb6-182b-430d-b4ba-94954373acb8",
+      "comment": "",
+      "command": "click",
+      "target": "css=.\\_signupButton_135ip_128",
+      "targets": [
+        ["css=.\\_signupButton_135ip_128", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[4]/div/form/button", "xpath:idRelative"],
+        ["xpath=//form/button", "xpath:position"],
+        ["xpath=//button[contains(.,'LOG IN')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "da928493-3fca-48b8-934d-d8f8f50e74c9",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.\\_iconButton_epy00_280",
+      "targets": [
+        ["css=.\\_iconButton_epy00_280", "css:finder"],
+        ["xpath=//div[@id='root']/div[4]/div/div[2]/div/div[2]/div/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div[2]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "972242a5-df1e-4828-95a0-f5e99becca39",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.\\_iconButton_epy00_280",
+      "targets": [
+        ["css=.\\_iconButton_epy00_280", "css:finder"],
+        ["xpath=//div[@id='root']/div[4]/div/div[2]/div/div[2]/div/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div[2]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "73c9fc23-493b-4a47-b814-dccf5b7cd13c",
+      "comment": "",
+      "command": "click",
+      "target": "css=.\\_iconButton_epy00_280 path",
+      "targets": [
+        ["css=.\\_iconButton_epy00_280 path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "f8b433d8-846b-4c8e-812e-ea74c7b1336a",
+      "comment": "",
+      "command": "click",
+      "target": "css=.\\_selectCourseContainer_5yh5i_20 .\\_dropdownButton_kuabv_1",
+      "targets": [
+        ["css=.\\_selectCourseContainer_5yh5i_20 .\\_dropdownButton_kuabv_1", "css:finder"],
+        ["xpath=//div/div[2]/div/div/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b0df9533-8d85-4009-9ef5-b506c4d51224",
+      "comment": "",
+      "command": "click",
+      "target": "css=.\\_option_kuabv_48:nth-child(15)",
+      "targets": [
+        ["css=.\\_option_kuabv_48:nth-child(15)", "css:finder"],
+        ["xpath=//div[15]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b403167e-cb31-470d-8528-5dd655d0403c",
+      "comment": "",
+      "command": "click",
+      "target": "css=.\\_dropdownButtonWrapper_kuabv_1:nth-child(2) > .\\_dropdownButton_kuabv_1",
+      "targets": [
+        ["css=.\\_dropdownButtonWrapper_kuabv_1:nth-child(2) > .\\_dropdownButton_kuabv_1", "css:finder"],
+        ["xpath=//div[2]/div[2]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "1db4830d-3587-4ecc-9e5c-153e28edb051",
+      "comment": "",
+      "command": "click",
+      "target": "css=.\\_option_kuabv_48:nth-child(3)",
+      "targets": [
+        ["css=.\\_option_kuabv_48:nth-child(3)", "css:finder"],
+        ["xpath=//div[2]/div[2]/div/div[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "2b82b4c9-f5fc-4d53-a890-8a9fe9879e8d",
+      "comment": "",
+      "command": "click",
+      "target": "css=.\\_modalSettingRow_p9ycp_70:nth-child(3) .\\_whiteIcon_5yh5i_61 > .\\_settingButtonText_5yh5i_116",
+      "targets": [
+        ["css=.\\_modalSettingRow_p9ycp_70:nth-child(3) .\\_whiteIcon_5yh5i_61 > .\\_settingButtonText_5yh5i_116", "css:finder"],
+        ["xpath=//button[2]/span", "xpath:position"],
+        ["xpath=//span[contains(.,'MIDDLE')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "bb55f21b-06f1-4cf5-985b-e9ac591d6ade",
+      "comment": "",
+      "command": "click",
+      "target": "css=.\\_modalSettingRow_p9ycp_70:nth-child(4) .\\_settingButton_5yh5i_1:nth-child(1)",
+      "targets": [
+        ["css=.\\_modalSettingRow_p9ycp_70:nth-child(4) .\\_settingButton_5yh5i_1:nth-child(1)", "css:finder"],
+        ["xpath=//div[4]/div[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'EASY')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "d4252ac2-ac97-472b-b132-3090ecc1b0c5",
+      "comment": "",
+      "command": "click",
+      "target": "css=.\\_settingButtonSmall_5yh5i_72:nth-child(4)",
+      "targets": [
+        ["css=.\\_settingButtonSmall_5yh5i_72:nth-child(4)", "css:finder"],
+        ["xpath=//button[4]", "xpath:position"],
+        ["xpath=//button[contains(.,'PRO')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "623f8e42-7b71-4edc-866e-dc30300e8c20",
+      "comment": "",
+      "command": "click",
+      "target": "css=.\\_modalSettingRow_p9ycp_70:nth-child(6) .\\_settingButton_5yh5i_1:nth-child(2)",
+      "targets": [
+        ["css=.\\_modalSettingRow_p9ycp_70:nth-child(6) .\\_settingButton_5yh5i_1:nth-child(2)", "css:finder"],
+        ["xpath=//div[6]/div[2]/button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Moderate')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "a8d516e2-5024-4933-9c62-a09616e067bd",
+      "comment": "",
+      "command": "click",
+      "target": "css=.\\_applyButton_5yh5i_167",
+      "targets": [
+        ["css=.\\_applyButton_5yh5i_167", "css:finder"],
+        ["xpath=//div[3]/div/div/div/div/div[3]/div[2]/button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'APPLY')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "a57bf4a1-3067-42d5-ae57-bfbe957e5f65",
+      "comment": "",
+      "command": "click",
+      "target": "css=.\\_tableRow_1e7r8_28:nth-child(1) > .\\_tableCell_1e7r8_44:nth-child(3) > div",
+      "targets": [
+        ["css=.\\_tableRow_1e7r8_28:nth-child(1) > .\\_tableCell_1e7r8_44:nth-child(3) > div", "css:finder"],
+        ["xpath=//div[@id='root']/div[4]/div/div[2]/div/div[2]/div/div/table/tbody/tr/td[3]/div", "xpath:idRelative"],
+        ["xpath=//td[3]/div", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "2c193af3-faf7-4f67-8fbf-3a335f821baa",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["a408a778-56d1-480d-8065-619cfe97d02f"]
+  }],
+  "urls": ["https://www.golfplusvr.com/"],
+  "plugins": []
+}

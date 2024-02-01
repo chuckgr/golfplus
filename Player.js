@@ -18,18 +18,20 @@ class Player {
     this._data = data;
     this._name = data[0].trim();
     this._username = data[1].trim() || "";
-    this._handicap = data[2] || -1;
-    this._inTourny = data[3] || 0;
+    this._handicapam = data[2] || -1;
+    this._handicappro = data[3] || -1;
+    this._inTourny = data[4] || 0;
     //console.log(`Player: name- ${this._name} username- ${this._username} handicap- ${this._handicap}`);
   }
   
   /**
    * Define the static status fields
    */
-  static get NAME()      { return 0;}
-  static get USERNAME()  { return 1;}
-  static get HANDICAP()  { return 2;}
-  static get INTOURNEY() { return 3;}
+  static get NAME()         { return 0;}
+  static get USERNAME()     { return 1;}
+  static get HANDICAPAM()   { return 2;}
+  static get HANDICAPPRO()  { return 3;}
+  static get INTOURNEY()    { return 4;}
 
   /**
    * Get the value of the field as specified by the passed enum
@@ -43,9 +45,12 @@ class Player {
         return this._username;
         break;
       case 2:
-        return this._handicap;  
+        return this._handicapam;  
         break;
       case 3:
+        return this._handicappro;  
+        break;  
+      case 4:
         return this._inTourny;
         break;
     }
@@ -67,16 +72,23 @@ class Player {
   }
 
   /**
-   * Get the score
+   * Get the amatuer handicap
    */
-  get handicap() {
-    return this._handicap;
+  get handicapam() {
+    return this._handicapam;
+  }
+  
+  /**
+   * Get the pro handicap
+   */
+  get handicappro() {
+    return this._handicappro;
   }
   
   /**
    * Print the record out
    */
   toString() {
-    return `${this._name} ${this._username} ${this._handicap} ${this._inTourny}`
+    return `${this._name} ${this._username} ${this._handicapam} ${this._handicappro} ${this._inTourny}`
   }
 }

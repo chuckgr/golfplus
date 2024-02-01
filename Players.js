@@ -28,6 +28,17 @@ class Players {
   }
 
   /**
+   * Return all of the player names in an array
+   * 
+   * @return {array} All of the player names
+   */
+  getPlayerNames() {
+    let plyrAry = [];
+    this._data.forEach(p => plyrAry.push(p.name));
+    return plyrAry;
+  }
+
+  /**
    * Add a new player to the database of players
    * 
    * @param {string} player to add to the player list
@@ -46,7 +57,7 @@ class Players {
   }
 
   /**
-   * Get the player data (name, username, handicap) for the passed player name
+   * Get the player data (name, username, am handicap, pro handicap) for the passed player name
    * 
    * @param {string} Name of the player to get the data for
    * @return {object} Object with the player data: name, username, handicap
