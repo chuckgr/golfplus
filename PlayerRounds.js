@@ -31,7 +31,7 @@ class PlayerRounds {
     // Remove the header row
     this._data = this._data.slice(1);
 
-    // Rip through the rows and create a TournamentRound object for each tournament
+    /** Rip through the rows and create a PlayerRound object for each player record */
     let playerRec;
     this._data.forEach((t,i) => { 
       playerRec = new PlayerRound(t);
@@ -65,7 +65,6 @@ class PlayerRounds {
    * @return {array} - Array of selected PlayerRound object
    */
   getRoundsByNumber(number) {
-    let roundWeekNumber;
     let playerRecords = new Array();
     this._rounds.forEach((r) => {
       if (r.getNumber() == number) {

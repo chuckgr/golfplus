@@ -9,6 +9,7 @@
  */
 class Tournaments {
   constructor() {
+    this._handicaps = new Handicaps();
     this._tournaments = new Map();
     this._loadData();
   }
@@ -38,6 +39,7 @@ class Tournaments {
         } else {
           tourny = new Tournament(tr.number);
           tourny.add(tr);
+          tourny.addHandicaps(this._handicaps.getHandicapsById(tr.number));
           this._tournaments.set(tr.number, tourny);
         }
       }

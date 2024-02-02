@@ -32,6 +32,15 @@ class Tournament {
   }
 
   /**
+   * Add in handicaps for this round 
+   * 
+   * @param {array} Array of Handicap objects for this tournament
+   */
+  addHandicaps(handicaps) {
+    this._handicaps = new TournamentHandicaps(handicaps);
+  }
+
+  /**
    * Get the settings for all the rounds defined in the tournament
    * 
    * @return {array} Array of all of the rounds for this tournament
@@ -105,13 +114,16 @@ class Tournament {
 
     /** Loop for all of the rounds logged for this tournament */
     let tmpPlr = [];
+    let tmpStrokes = 0;
     rounds.forEach(r => {
       if (playerMap.has(r.getName())) {
         tmpPlr = playerMap.get(r.getName());
       } else {
         tmpPlr = [999,999,999,999];
       }
-      tmpPlr[r.getRound()-1] = r.getScore();
+      /** Get the strokes based on handicap */
+      tmpStrokes = (type=='handicap') ? this._handicaps.getStrokes(r.getName()) : 0;
+      tmpPlr[r.getRound()-1] = Math.ceil(r.getScore() - tmpStrokes);
       playerMap.set(r.getName(), tmpPlr);
     });
 

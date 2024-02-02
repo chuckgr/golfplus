@@ -1,4 +1,23 @@
 /**
+ * Test Handicaps class
+ */
+function test_handicapClass() {
+  let ho = new Handicaps();
+  let hd = ho.getHandicaps();
+  //hd.forEach(h => console.log(`${h}`));
+  //let hcbid = ho.getHandicapsById(24.02);
+  let hct = new TournamentHandicaps(ho.getHandicapsById(24.02));
+  //let proHc = hct.getBaseHandicap('pro');
+  //let amHc = hct.getBaseHandicap('amateur');
+  //console.log(`${proHc.getField(Handicap.NAME)} ${proHc.getField(Handicap.HANDICAPPRO)}`);
+  //console.log(`${amHc.getField(Handicap.NAME)} ${amHc.getField(Handicap.HANDICAPPRO)}`);
+  let plyrs = new Players();
+  for (p of plyrs) {
+    console.log(`${p.name} ${hct.getStrokes(p.name, "amateur")}`);
+  }
+}
+
+/**
  * test creating the handicap form
  */
 function test_createHandicapForm() {
