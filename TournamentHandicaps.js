@@ -16,10 +16,12 @@ class TournamentHandicaps {
 
   /**
    * Get the base Handicap (highest) object to base all other strokes given for a level.
+   * 
+   * @param {string} Type of handicap; amateur | pro
    */
   getBaseHandicap(level) {
     let highest = null;
-    //let score = 0
+    if (this._data.length >1) {
     this._data.forEach(h => {
       if (highest == null) { highest = h;}
       if (level == 'amateur') {
@@ -32,6 +34,7 @@ class TournamentHandicaps {
         }
       }
     });
+    }
     return highest;
   }
 
@@ -44,28 +47,34 @@ class TournamentHandicaps {
   getStrokes(player, level) {
     let playerHandicap;
     let returnHandicap = 0
-    if (level == 'amateur') {
-      if (this._baseAm.name != player) {
-        playerHandicap = this._data.filter(h => h.name == player)[0];
-        if (this._data.find(h => h.name == player)) {
-          returnHandicap = this._baseAm.getField(Handicap.HANDICAPAM) - playerHandicap.getField(Handicap.HANDICAPAM);
+    /** Handicaps are only for 24.02 forward */
+    if (this._data.length > 0) {
+      if (level == 'amateur') {
+        if (this._baseAm.name != player) {
+          playerHandicap = this._data.filter(h => h.name == player)[0];
+          if (this._data.find(h => h.name == player)) {
+            returnHandicap = this._baseAm.getField(Handicap.HANDICAPAM) - playerHandicap.getField(Handicap.HANDICAPAM);
+          }
+        }
+      } else {
+        if (this._basePro.name != player) {
+          playerHandicap = this._data.filter(h => h.name == player)[0];
+          if (this._data.find(h => h.name == player)) {
+            returnHandicap = this._basePro.getField(Handicap.HANDICAPPRO) - playerHandicap.getField(Handicap.HANDICAPPRO);
+          }
         }
       }
+      //return Math.floor((returnHandicap * 10))/10;
+      return Number(returnHandicap.toPrecision(3));
     } else {
-      if (this._basePro.name != player) {
-        playerHandicap = this._data.filter(h => h.name == player)[0];
-        if (this._data.find(h => h.name == player)) {
-          returnHandicap = this._basePro.getField(Handicap.HANDICAPPRO) - playerHandicap.getField(Handicap.HANDICAPPRO);
-        }
-      }
+      return 0;
     }
-    return Math.floor((returnHandicap * 100))/100;
   }
 
   /**
    * Print the settings out
    */
   toString() {
-    return `${this._number} ${this._date} ${this._course} ${this._tees} ${this._pins} ${this._greens} ${this._wind} ${this._level}` 
+    return `${this._baseAm} ${this._basePro}` 
   }
 }

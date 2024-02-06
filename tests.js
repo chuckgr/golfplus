@@ -1,4 +1,22 @@
 /**
+ * Test getting one digit after the integer
+ */
+function test_onedigit() {
+  let number = 23.11111;
+  let numbers = [23.11111, 23.22222, 23.33333, 23.44444,23.55555,23.66666,23.77777,23.88888,23.99999];
+  //console.log(`${number*10}`);
+  //console.log(`${Math.floor(number*10)/10}`);
+  //console.log(`${Math.ceil(number*10)/10}`);
+  //console.log(`${Math.round(number*10)/10}`);
+
+  numbers.forEach(n => {
+    console.log(`Floor:${Math.floor(n*10)/10} ceil:${Math.ceil(n*10)/10} round:${Math.round(n*10)/10}`);
+    //console.log(`${Math.ceil(n*10)/10}`);
+    //console.log(`${Math.round(n*10)/10}`);
+  });
+}
+
+/**
  * Test Handicaps class
  */
 function test_handicapClass() {

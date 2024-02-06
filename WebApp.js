@@ -95,7 +95,6 @@ function getLeaderboardData(options) {
         tnum = Number(options.number);
       } 
       currTourny = tournaments.getTournamentById(tnum);
-      //console.log(`switch on leaderboard get currTourny`);
       break;
     case 'pointsboard':
       break;
@@ -121,17 +120,20 @@ function getLeaderboardData(options) {
       if (j>0 && j<5) {
         totalScore += s;
         if (parseInt(s) != 999) {
-          diffToPar = diffToPar + (parseInt(s) - courseData[1][j]);
+          //diffToPar = diffToPar + (parseInt(s) - courseData[1][j]);
+          //console.log(`Total score calc=${s}`);
+          diffToPar = diffToPar + (s - courseData[1][j]);
         }
       }
     });
-    data[i].push(totalScore);
-    data[i].push(diffToPar);
+
+    data[i].push(Number(totalScore.toPrecision(4)));
+    data[i].push(Number(diffToPar.toPrecision(3)));
     diffToPar = 0;
     totalScore = 0;
   });
 
-  // Sort the array
+  /** Sort the array by the total score */
   data.sort((a,b) => a[5]-b[5]);
 
   /**
@@ -148,6 +150,7 @@ function getLeaderboardData(options) {
 
   /**
    * Turn date obj to date string, can't send Date obj
+   * TODO - remove all of the course date info?
    */
   let courseDates = courseData[2].map(d => {
     if (d != 'Date') {
@@ -157,7 +160,7 @@ function getLeaderboardData(options) {
     }
   });
   courseData[2] = courseDates;
-  // Remove the dates 
+  /** Remove the dates from courses table */ 
   courseData.splice(2,1);
 
   /**
@@ -177,7 +180,6 @@ function getLeaderboardData(options) {
   let oneDay = (24 * 60 * 60 * 1000);
   let dateString = `${new Date(dates[0]).toLocaleDateString()} - ${new Date(new Date(dates[dates.length-1]).getTime()+(7*oneDay)).toLocaleDateString()}`;
 
-  //console.log(`package up the data`);
   /**
    * Package up the data to return to the web client
    */

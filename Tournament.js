@@ -122,8 +122,12 @@ class Tournament {
         tmpPlr = [999,999,999,999];
       }
       /** Get the strokes based on handicap */
-      tmpStrokes = (type=='handicap') ? this._handicaps.getStrokes(r.getName()) : 0;
-      tmpPlr[r.getRound()-1] = Math.ceil(r.getScore() - tmpStrokes);
+      let strokeType = "amateur";
+      if (r.getRound()==3) { strokeType = "pro"}
+      tmpStrokes = (type=='handicap') ? this._handicaps.getStrokes(r.getName(), strokeType) : 0;
+      console.log(`Player=${r.getName()} strokes=${tmpStrokes} level=${this._rounds[r.getRound()-1].level} score=${r.getScore()}`);
+      //tmpPlr[r.getRound()-1] = Math.floor((r.getScore() - tmpStrokes)*10)/10;
+      tmpPlr[r.getRound()-1] = Number((r.getScore() - tmpStrokes).toPrecision(3));
       playerMap.set(r.getName(), tmpPlr);
     });
 

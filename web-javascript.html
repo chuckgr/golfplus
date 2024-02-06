@@ -427,10 +427,10 @@ function addPointsDescription() {
  *                        tournyData - 2d array with the relavent tournament data
  */
 function buildLeaderboard(data) {  
-  // Load up the tournaments that can be selected
+  /** Load up the tournaments that can be selected */
   loadTournySelection(data.tournyData.nameValues);
 
-  // Get the div for the table and make sure we remove any children to recreate the table
+  /** Get the div for the table and make sure we remove any children to recreate the table */
   let tableDiv = document.getElementById("tableDiv");
   let innerDiv = document.getElementById("innerDiv");
   if (innerDiv) {
@@ -438,25 +438,31 @@ function buildLeaderboard(data) {
     tableDiv.removeChild(lbtable);
   }
 
-  // Create the table for adding the data
+  /** Create the table for adding the data */
   createTable("leaderboard");
 
-  // Load up the table with the returned data
+  /** Load up the table with the returned data */
   loadTableData(data);
 
-  // Show the leaderboard
+  /** Show the leaderboard */
   show('leaderboard');
 }
 
 /**
  * Load the data in the leaderboard table, creating elements as needed
+ * 
+ * @param {object} Object containg arrays of the leaderboard data, courses and settings,
+ *                 tourny data, and options for request.
  */
 function loadTableData(data){
+  console.log(`${JSON.stringify(data)}`);
   let tableData = data.data;
   let courseData = data.courseData;
   //let courseData = formatCourseData(data.courseData);
-  let tournyData = data.tournyData
+  let tournyData = data.tournyData;
+  let tournyNumber = tournyData.nameValues[0][0];
   let requestObj = data.options;
+  const handicap = requestObj.type == "handicap";
 
   const evenRowClasses = [ ["s4", "s6", "s6", "s6", "s7r", "s5", "s6"], // below par - red
                            ["s4", "s5", "s5", "s5", "s7b", "s5", "s5"]  // above par - black 
@@ -496,10 +502,12 @@ function loadTableData(data){
      */
     row = createTr();
     td = document.createElement('td');
+    /** Everything below th limit is player data */
     if (i<limit) {
       i%2==0 ? td.classList.add('s4') : td.classList.add('s8');
+      /** Add a number for each row in the table */
       td.innerHTML = i+1;
-      // Bottom row of player data gets a bottom border
+      /** Bottom row of player data gets a bottom border */
       if (i==limit-1) {
         i%2==0 ? td.classList.add('s13wb-r') : td.classList.add('s2ybbb');
       }
@@ -518,13 +526,15 @@ function loadTableData(data){
        * Below we are still working on the player data rows
        */ 
       if (i < limit) { 
-        // Check the each player score to par to pick the correct class
+        /** Check the each player score to par to pick the correct class */
         if ((j>0 && j<5) || j==scoreToParCol) {
           if (c != 0) {
             if (j==scoreToParCol) {
-              parseInt(c) < 0 ? classSelect = red : classSelect = black;
+              // TODO parseInt(c) < 0 ? classSelect = red : classSelect = black;
+              c < 0 ? classSelect = red : classSelect = black;
             } else {
-              parseInt(c) < parseInt(courseData[parIndex][j]) ? 
+              // TODO parseInt(c) < parseInt(courseData[parIndex][j]) ?
+              c < courseData[parIndex][j] ? 
                 classSelect = red : 
                 classSelect = black;
             }
@@ -564,10 +574,26 @@ function loadTableData(data){
          */
         if (j>0 && j<5 && c!=0) {
           let tmp;
+          let handiDig;
+          (handicap) ? handiDig = 0 : handiDig =1;
+          /**
           parseInt(c) < parseInt(courseData[parIndex][j]) ? 
           tmp =`-${parseInt(courseData[parIndex][j])-parseInt(c)} (${c})` : 
           tmp =`+${parseInt(c)-parseInt(courseData[parIndex][j])} (${c})`;
           if (parseInt(c) == parseInt(courseData[parIndex][j])) tmp = `E (${c})`;
+          */
+          let pre = 2 - handiDig;
+          if (c < courseData[parIndex][j]) {
+            if (courseData[parIndex][j]-c > 10) {
+              pre =  3 - handiDig;
+            }
+            tmp =`-${Number(courseData[parIndex][j]-c).toPrecision(pre)} (${c})`
+          } else {
+            if (c-courseData[parIndex][j] > 10) {
+              pre = 3 - handiDig;
+            }
+            tmp =`+${Number(c-courseData[parIndex][j]).toPrecision(pre)} (${c})`;
+          }
           c = tmp;
         }
 
@@ -591,7 +617,7 @@ function loadTableData(data){
   let tournyDateElem = document.getElementById("tournyDates").innerHTML = data.tournyData.tournyDates;
 
   // Add the last updated to the bottom of the table
-  let lastUp = createLastUpdated(data.tournyData.lastUpdate);
+  let lastUp = createLastUpdated(data.tournyData.lastUpdate, tournyNumber);
   table.appendChild(lastUp);
 }
 
@@ -843,7 +869,7 @@ function createDateTitle(type, text) {
  * @param  {number} Date in milliseconds
  * @return {Element} tr element with the label
  */
-function createLastUpdated(date) {
+function createLastUpdated(date, number) {
   let tr = document.createElement('tr');
   tr.style.height = "20px";
   let th = createRowTh();
@@ -856,7 +882,7 @@ function createLastUpdated(date) {
   td.classList.add("s8lu");
   td.colSpan = "7";
   td.style.textAlign = "left";
-  td.innerHTML = `Last Updated: ${new Date(date).toLocaleString('en-US')}`;
+  td.innerHTML = `Last Updated: ${new Date(date).toLocaleString('en-US')}, Tournament number: ${number}`;
   tr.appendChild(td);
   return tr;
 }

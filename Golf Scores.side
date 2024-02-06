@@ -45,7 +45,7 @@
         ["xpath=//div[@id='root']/div[4]/div/form/input[2]", "xpath:idRelative"],
         ["xpath=//input[2]", "xpath:position"]
       ],
-      "value": "V1rtualChuck!"
+      "value": "************"
     }, {
       "id": "37dbeeb6-182b-430d-b4ba-94954373acb8",
       "comment": "",
