@@ -574,23 +574,18 @@ function loadTableData(data){
          */
         if (j>0 && j<5 && c!=0) {
           let tmp;
-          let handiDig;
-          (handicap) ? handiDig = 0 : handiDig =1;
-          /**
-          parseInt(c) < parseInt(courseData[parIndex][j]) ? 
-          tmp =`-${parseInt(courseData[parIndex][j])-parseInt(c)} (${c})` : 
-          tmp =`+${parseInt(c)-parseInt(courseData[parIndex][j])} (${c})`;
-          if (parseInt(c) == parseInt(courseData[parIndex][j])) tmp = `E (${c})`;
-          */
-          let pre = 2 - handiDig;
+          let handiDigits;
+          (handicap) ? handiDigits = 0 : handiDigits = 1;
+ 
+          let pre = 2 - handiDigits;
           if (c < courseData[parIndex][j]) {
-            if (courseData[parIndex][j]-c > 10) {
-              pre =  3 - handiDig;
+            if (courseData[parIndex][j]-c > 9) {
+              pre =  3 - handiDigits;
             }
             tmp =`-${Number(courseData[parIndex][j]-c).toPrecision(pre)} (${c})`
           } else {
-            if (c-courseData[parIndex][j] > 10) {
-              pre = 3 - handiDig;
+            if (c-courseData[parIndex][j] > 9) {
+              pre = 3 - handiDigits;
             }
             tmp =`+${Number(c-courseData[parIndex][j]).toPrecision(pre)} (${c})`;
           }

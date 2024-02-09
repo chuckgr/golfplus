@@ -32,12 +32,12 @@ class Tournament {
   }
 
   /**
-   * Add in handicaps for this round 
+   * Add in handicaps for this tournament 
    * 
    * @param {array} Array of Handicap objects for this tournament
    */
   addHandicaps(handicaps) {
-    this._handicaps = new TournamentHandicaps(handicaps);
+    this._handicaps = new TournamentHandicap(handicaps);
   }
 
   /**
@@ -123,11 +123,12 @@ class Tournament {
       }
       /** Get the strokes based on handicap */
       let strokeType = "amateur";
+      /** TODO - Fix this, not always going to be round 3, duh! */
       if (r.getRound()==3) { strokeType = "pro"}
       tmpStrokes = (type=='handicap') ? this._handicaps.getStrokes(r.getName(), strokeType) : 0;
-      console.log(`Player=${r.getName()} strokes=${tmpStrokes} level=${this._rounds[r.getRound()-1].level} score=${r.getScore()}`);
+      //console.log(`Player=${r.getName()} strokes=${tmpStrokes} level=${this._rounds[r.getRound()-1].level} score=${r.getScore()}`);
       //tmpPlr[r.getRound()-1] = Math.floor((r.getScore() - tmpStrokes)*10)/10;
-      tmpPlr[r.getRound()-1] = Number((r.getScore() - tmpStrokes).toPrecision(3));
+      tmpPlr[r.getRound()-1] = Number((r.getScore() - tmpStrokes).toPrecision(4));
       playerMap.set(r.getName(), tmpPlr);
     });
 
@@ -149,7 +150,6 @@ class Tournament {
   get latestRoundDate() {
     let latestDate = 0;
     let prs = new PlayerRounds().filter(PlayerRound.NUMBER, this._number);
-    //let rounds = pr.filter(PlayerRound.NUMBER, 23.07);
     for (let r of prs) {
       latestDate = Math.max(latestDate, new Date(r.getTimeStamp()).getTime());
     }

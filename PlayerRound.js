@@ -22,6 +22,7 @@ class PlayerRound {
     this._round = data[3];
     this._name = data[4];
     this._score = data[5];
+    this._handicap = data[6];
   }
   
   /**
@@ -80,6 +81,13 @@ class PlayerRound {
    */
   getRound() {
     return this._round;
+  }
+
+  /**
+   * Get the handicap for this round
+   */
+  getHandicap() {
+    return this._handicap;
   }
   
   /**

@@ -8,9 +8,23 @@ function test_onedigit() {
   //console.log(`${Math.floor(number*10)/10}`);
   //console.log(`${Math.ceil(number*10)/10}`);
   //console.log(`${Math.round(number*10)/10}`);
+  /** Code from stackoverflow */
+  /**
+  * Rounds a value to a given number of significant figures
+  * @param value The number to round
+  * @param significanFigures The number of significant figures
+  * @returns The value rounded to the given number of significant figures
+  */
+  const round = (value, significantFigures) => {
+    const exponent = Math.floor(Math.log10(value))
+    const nIntegers = exponent + 1
+    const precision = 10 ** (nIntegers - significantFigures)
+    return Math.round(value / precision) * precision  
+  }
 
   numbers.forEach(n => {
-    console.log(`Floor:${Math.floor(n*10)/10} ceil:${Math.ceil(n*10)/10} round:${Math.round(n*10)/10}`);
+    //console.log(`Floor:${Math.floor(n*10)/10} ceil:${Math.ceil(n*10)/10} round:${Math.round(n*10)/10}`);
+    console.log(`${round(n,2)}`);
     //console.log(`${Math.ceil(n*10)/10}`);
     //console.log(`${Math.round(n*10)/10}`);
   });
@@ -20,19 +34,76 @@ function test_onedigit() {
  * Test Handicaps class
  */
 function test_handicapClass() {
-  let ho = new Handicaps();
-  let hd = ho.getHandicaps();
+  //let ho = new Handicaps();
+  //let hd = ho.getHandicaps();
   //hd.forEach(h => console.log(`${h}`));
   //let hcbid = ho.getHandicapsById(24.02);
-  let hct = new TournamentHandicaps(ho.getHandicapsById(24.02));
+  //let hct = new TournamentHandicaps(ho.getHandicapsById(24.02));
   //let proHc = hct.getBaseHandicap('pro');
   //let amHc = hct.getBaseHandicap('amateur');
   //console.log(`${proHc.getField(Handicap.NAME)} ${proHc.getField(Handicap.HANDICAPPRO)}`);
   //console.log(`${amHc.getField(Handicap.NAME)} ${amHc.getField(Handicap.HANDICAPPRO)}`);
-  let plyrs = new Players();
-  for (p of plyrs) {
-    console.log(`${p.name} ${hct.getStrokes(p.name, "amateur")}`);
+  //console.log(`${p.name} ${hct.getStrokes(p.name, "amateur")} ${hct.getStrokes(p.name, "pro")}`);
+
+  /** See about creating handicap data from rounds that now have handicaps */
+  /** tournaments is a global containing all tournament data  */
+  /** playerRounds is a global of all player rounds  */
+  let courseSettings;
+  let handiCourseLevel;
+  let handicapMap = new Map();
+  let plyrsAry = [];
+  let binAry = [];
+  let plrIndex = -1;
+  let nameIndex = 2;
+  let levelLoc = new Map();
+  levelLoc.set("Amateur",3);
+  levelLoc.set("Pro", 4);
+  let tmpAry = [];
+  for (const p of playerRounds) {
+    if (p.getNumber() > 24.01) {
+      courseSettings = tournaments.getTournamentById(p.getNumber()).rounds;
+      handiCourseLevel = courseSettings[p.getRound()-1].level;
+      if (handicapMap.has(p.getNumber())) {
+        plyrsAry = handicapMap.get(p.getNumber());
+        plrIndex = plyrsAry.findIndex(pi => pi[nameIndex] == p.getName());
+        if (plrIndex>-1){
+          binAry = plyrsAry[plrIndex];
+          if (p.getHandicap()>=0) {
+            binAry[levelLoc.get(handiCourseLevel)] = Math.max(binAry[levelLoc.get(handiCourseLevel)], p.getHandicap());
+          } else {
+            //console.log(`<0 ${p.getName()} ${p.getHandicap()}`);
+            binAry[levelLoc.get(handiCourseLevel)] = Math.min(binAry[levelLoc.get(handiCourseLevel)], p.getHandicap());
+          }
+          plyrsAry[plrIndex] = binAry;
+          handicapMap.set(p.getNumber(), plyrsAry);
+        } else {
+          tmpAry = [0, p.getNumber(),p.getName(), 0, 0];
+          tmpAry[levelLoc.get(handiCourseLevel)] = p.getHandicap();
+          plyrsAry.push(tmpAry);
+          handicapMap.set(p.getNumber(), plyrsAry);
+        }
+      } else {
+        tmpAry = [0, p.getNumber(), p.getName(), 0, 0];
+        tmpAry[levelLoc.get(handiCourseLevel)] = p.getHandicap();
+        handicapMap.set(p.getNumber(), [tmpAry]);
+      }
+    }
   }
+
+  /** Package all tournament handicaps in one array */
+  let retary = [];
+  for (const [key,value] of handicapMap) {
+    //console.log(`${key} ${value}`);
+    retary = [...retary, ...value];
+  }
+
+  /** Test that it is correct */
+  //console.log(`${JSON.stringify(retary)}`);
+  retary.forEach(r => console.log(`${JSON.stringify(r)}`));
+
+  /** Test creating the handicap objects */
+  let hdcs = new Handicaps(retary);
+  console.log(); 
 }
 
 /**
@@ -141,8 +212,8 @@ function test_playerTourny() {
  * Test getting all rounds that were Pro rounds
  */
 function test_getProRounds() {
-  let tournys = new Tournaments();
-  let tary = tournys.getTournaments();
+  //let tournys = new Tournaments();
+  let tary = tournaments.getTournaments();
   let tRnds = []
   let proRnds = 0;
   let amRnds = 0;

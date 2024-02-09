@@ -9,7 +9,6 @@
  */
 class Tournaments {
   constructor() {
-    this._handicaps = new Handicaps();
     this._tournaments = new Map();
     this._loadData();
   }
@@ -39,11 +38,24 @@ class Tournaments {
         } else {
           tourny = new Tournament(tr.number);
           tourny.add(tr);
-          tourny.addHandicaps(this._handicaps.getHandicapsById(tr.number));
           this._tournaments.set(tr.number, tourny);
         }
       }
     });
+  }
+
+  /**
+   * Add the handicaps to each tournament
+   * 
+   * @param {Handicaps} Handicaps object 
+   */
+  addHandicaps(handicapObj) {
+    for (const [tNum, tourny] of this._tournaments) {
+      /** Handicaps came into being after 24.01 */
+      if (tNum > 24.01) {
+        tourny.addHandicaps(handicapObj.getHandicapsById(tNum));
+      }
+    } 
   }
 
   /**

@@ -22,7 +22,9 @@ const version = "1.1.24"
 const settings = new Settings();
 const players = new Players();
 const courses = new Courses();
+const playerRounds = new PlayerRounds();
 const tournaments = new Tournaments();
+tournaments.addHandicaps(new Handicaps());
 
 /**
  * Add our own menu items
