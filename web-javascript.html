@@ -258,9 +258,12 @@ function tournySelect(sel) {
   /** Check to see if handicaps were requested */
   let handicap = document.getElementById("handicap").checked;
   let type = (handicap==false) ? "net" : "handicap";
+
   /** Build the request object */
   let request = {"request":"leaderboard", "number": sel, "type": type};
-  //console.log(`handicap=${handicap} checked=${handicap} request=${JSON.stringify(request)}`);
+
+  /** Save the tournament selected and if the handicap was selected */
+  setStorage("leaderboard", JSON.stringify(request));
 
   /** Reset the tournament selection to the "Select tournament" option */
   document.getElementById("tournaments").selectedIndex = 0;
@@ -291,6 +294,8 @@ function pointsSelect() {
 
 /**
  *  Called when a menu button is pressed
+ * 
+ * @param {string} Button option to direct the request
  */
 function buttonSelect(option) {
   const validOptions = ["pointsboard","stats"];
@@ -305,6 +310,26 @@ function buttonSelect(option) {
     /** Request the data from the server */
     loadData(request);
   }
+}
+
+/**
+ * Handle the apply handicap checkbox
+ * 
+ * @param (optoin) The checkbox element
+ */
+function handicapSelect(option) {
+  /** Pull in the last (current) request */
+  const savedItem = getStorage("leaderboard");
+  if (savedItem) {
+    request = JSON.parse(savedItem);
+    (option.checked) ? request.type = "handicap" : request.type = "net";
+  }
+  
+  /** Show loading screen */
+  show("loading");
+
+  /** Request the data from the server */
+  loadData(request);
 }
 
 /**
@@ -337,7 +362,7 @@ function updateTable(data) {
       buildStatsPage(data);
       break;
     default:
-      console.log(`Request not found: data.options.request = ${data.options.request} `);
+      console.error(`Request not found: data.options.request = ${data.options.request} `);
   }
 }
 
@@ -455,7 +480,7 @@ function buildLeaderboard(data) {
  *                 tourny data, and options for request.
  */
 function loadTableData(data){
-  console.log(`${JSON.stringify(data)}`);
+  //console.log(`${JSON.stringify(data)}`);
   let tableData = data.data;
   let courseData = data.courseData;
   //let courseData = formatCourseData(data.courseData);
@@ -1075,6 +1100,13 @@ function show(name) {
  */
 async function getGeoLocation() {
   let request = {'request':'leaderboard', 'number':'current'};
+
+  /** Grab the stored local storage if there is one */
+  const savedItem = getStorage("leaderboard");
+  if (savedItem) {
+    request = JSON.parse(savedItem);
+  }
+
   let result = {"location": [0, 0], "code":-99, "browserInfo":navigator.userAgent};
 
   try {
@@ -1082,7 +1114,7 @@ async function getGeoLocation() {
     result.location = [position.coords.latitude, position.coords.longitude];
     result.code = 0;
   } catch(err) {
-    console.log(err);
+    console.error(err);
     result.code = -1;
   }
 
@@ -1102,6 +1134,27 @@ async function getGeoLocation() {
   }
 
   //return result;
+}
+
+/**
+ * Use localstorage to save session data
+ * 
+ * @param {string} Name for the item
+ * @param {any} Value that is stored in the item 
+ */
+function setStorage(name, value) {
+  localStorage.setItem(name, value);
+}
+
+/**
+ * Retrieve value from localstorage
+ *  
+ * @param {string} Name of data item to retrieve
+ * @return {string} Item contents or null if not found
+ */
+function getStorage(name) {
+  const value = localStorage.getItem(name);
+  return value;
 }
 
 /**

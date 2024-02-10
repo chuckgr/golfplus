@@ -122,11 +122,8 @@ class Tournament {
         tmpPlr = [999,999,999,999];
       }
       /** Get the strokes based on handicap */
-      let strokeType = "amateur";
-      /** TODO - Fix this, not always going to be round 3, duh! */
-      if (r.getRound()==3) { strokeType = "pro"}
-      tmpStrokes = (type=='handicap') ? this._handicaps.getStrokes(r.getName(), strokeType) : 0;
-      //console.log(`Player=${r.getName()} strokes=${tmpStrokes} level=${this._rounds[r.getRound()-1].level} score=${r.getScore()}`);
+      tmpStrokes = (type=='handicap') ? this._handicaps.getStrokes(r.getName(), this._rounds[r.getRound()-1].level) : 0;
+
       //tmpPlr[r.getRound()-1] = Math.floor((r.getScore() - tmpStrokes)*10)/10;
       tmpPlr[r.getRound()-1] = Number((r.getScore() - tmpStrokes).toPrecision(4));
       playerMap.set(r.getName(), tmpPlr);

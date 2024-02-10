@@ -10,6 +10,20 @@
  * ---------------------------------------------------------
  */
 /**
+ * Save away a cookie for state
+ * 
+ * @param {string} Name for the cookie
+ * @param {any} Value that is stored in the cookie
+ * @param {number} Number of days the cookie is valid 
+ */
+function setCookie(cname, cvalue, exdays) {
+  var d = new Date();
+  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+  var expires = "expires=" + d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/" + ";SameSite=Lax";
+}
+
+/**
  * Add a new player to the player database. This is call by pressing the button on the admin screen.
  */
 function adminAddPlayer() {

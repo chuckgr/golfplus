@@ -158,7 +158,7 @@ function test_playerTourny() {
         console.log(`Player ${p.getField(Player.NAME)} has no player tag`);
       }
       //console.log(`${p.toString()}`);
-      //console.log(`${p.getField(Player.NAME)}-${p.getField(Player.HANDICAP)}`);
+      console.log(`${p.getField(Player.NAME)}-${p.getField(Player.HANDICAPAM)}`);
       tournyNames.push(`@${p.getField(Player.NAME)}`);
       doubleTourneyNames.push({"name":p.getField(Player.NAME), "handicap":p.getField(Player.HANDICAPAM)});
       if (count == 1) {
@@ -168,9 +168,9 @@ function test_playerTourny() {
       }
     }
   }
-  //console.log(`${count} players in match play`);
-  //console.log(tournyString);
-  //console.log(`${JSON.stringify(doubleTourneyNames)}`);
+  console.log(`${count} players in match play`);
+  console.log(tournyString);
+  console.log(`${JSON.stringify(doubleTourneyNames)}`);
   //doubleTourneyNames.sort((a,b) => a.handicap - b.handicap); // Sorts on handicap, low -> high
 
   doubleTourneyNames.sort((a,b) => b.handicap - a.handicap); // Sorts on handicap, high -> low 
@@ -656,8 +656,8 @@ function test_multiArray() {
  * Test getLeaderboardData in Tournament class
  */
 function test_getLeaderboardData() {
-  let res = tournaments.getTournamentById(23.10);
-  let data = res.leaderboardData;
+  let res = tournaments.getTournamentById(24.02);
+  let data = res.leaderboardData("amateur");
   data.forEach(r => console.log(`${r}`));
 }
 
