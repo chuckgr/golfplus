@@ -313,7 +313,7 @@ function buttonSelect(option) {
 }
 
 /**
- * Handle the apply handicap checkbox
+ * Handle the apply handicap checkbox. Pass the saved request over with the new value of the checkbox
  * 
  * @param (optoin) The checkbox element
  */
@@ -1105,6 +1105,7 @@ async function getGeoLocation() {
   const savedItem = getStorage("leaderboard");
   if (savedItem) {
     request = JSON.parse(savedItem);
+    (request.type == "net") ? document.getElementById("handicap").checked = false : document.getElementById("handicap").checked = true;
   }
 
   let result = {"location": [0, 0], "code":-99, "browserInfo":navigator.userAgent};

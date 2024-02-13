@@ -121,11 +121,16 @@ class Tournament {
       } else {
         tmpPlr = [999,999,999,999];
       }
-      /** Get the strokes based on handicap */
-      tmpStrokes = (type=='handicap') ? this._handicaps.getStrokes(r.getName(), this._rounds[r.getRound()-1].level) : 0;
+      /** Get the strokes based on handicap if torunament is 24.01 or higher */
+      if (r.getNumber() > 24.01) {
+        console.log(`number > 24.01? ${r.getNumber()}`);
+        tmpStrokes=(type=='handicap') ? this._handicaps.getStrokes(r.getName(), this._rounds[r.getRound()-1].level) : 0;
+        tmpPlr[r.getRound()-1] = Number((r.getScore() - tmpStrokes).toPrecision(4));
+      } else {
+        console.log(`number < 24.02? ${r.getNumber()}`);
+        tmpPlr[r.getRound()-1] = r.getScore();
+      }
 
-      //tmpPlr[r.getRound()-1] = Math.floor((r.getScore() - tmpStrokes)*10)/10;
-      tmpPlr[r.getRound()-1] = Number((r.getScore() - tmpStrokes).toPrecision(4));
       playerMap.set(r.getName(), tmpPlr);
     });
 

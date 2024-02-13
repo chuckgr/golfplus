@@ -126,8 +126,8 @@ function test_playerNames() {
  * Test putting players that are in the match play tournament into the bracket file
  */
 function test_matchPlayFile() {
-  let ssid = "1eDAuQ-EUdypcYaKAu7mYWxQ0N63x5NZIy7PfgttY6Do";
-  let ssifS = settings.getSetting('MATCHPLAYFILE').value;
+  //let ssid = "1eDAuQ-EUdypcYaKAu7mYWxQ0N63x5NZIy7PfgttY6Do";
+  //let ssifS = settings.getSetting('MATCHPLAYFILE').value;
   
   //console.log(`${settings.getSetting('MATCHPLAYFILE').value}`);
   //console.log(`${ssid}`);
@@ -170,11 +170,11 @@ function test_playerTourny() {
   }
   console.log(`${count} players in match play`);
   console.log(tournyString);
-  console.log(`${JSON.stringify(doubleTourneyNames)}`);
+  //console.log(`${JSON.stringify(doubleTourneyNames)}`);
   //doubleTourneyNames.sort((a,b) => a.handicap - b.handicap); // Sorts on handicap, low -> high
 
   doubleTourneyNames.sort((a,b) => b.handicap - a.handicap); // Sorts on handicap, high -> low 
-  //console.log(`${JSON.stringify(doubleTourneyNames)}`);
+  console.log(`${JSON.stringify(doubleTourneyNames)}`);
 
   function getRandom(ary) {
     let itemsLeft = ary.length; /** Total number left from start or after item removed */ 

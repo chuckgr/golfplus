@@ -10,17 +10,57 @@
  * ---------------------------------------------------------
  */
 /**
- * Save away a cookie for state
- * 
- * @param {string} Name for the cookie
- * @param {any} Value that is stored in the cookie
- * @param {number} Number of days the cookie is valid 
+ * Create the list of players for the match play tournament and place them in the 
+ * match play bracket sheet 'Players' Called from a menu item on the spreadsheet UI
  */
-function setCookie(cname, cvalue, exdays) {
-  var d = new Date();
-  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-  var expires = "expires=" + d.toUTCString();
-  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/" + ";SameSite=Lax";
+function getMatchPlayPlayers() {
+  let count = 0;
+  let tournyNames = [];
+  let matchPlayNames = [];
+  let doubleTourneyNames = [];
+  let tournyString = ""
+  let plyrs = new Players();
+  for (p of plyrs){
+    if (p.getField(Player.INTOURNEY)>0) {
+      count++;
+      if (p.getField(Player.USERNAME).trim() == "") {
+        console.log(`Player ${p.getField(Player.NAME)} has no player tag`);
+      }
+      //console.log(`${p.toString()}`);
+      //matchPlayNames.push([`${p.getField(Player.NAME)}-${p.getField(Player.HANDICAPAM)}`]);
+      matchPlayNames.push([`${p.getField(Player.NAME)}\n@${p.getField(Player.USERNAME)}`]);
+      //matchPlayNames.push([`${p.getField(Player.NAME)}`]);
+      tournyNames.push(`@${p.getField(Player.NAME)}`);
+      doubleTourneyNames.push({"name":p.getField(Player.NAME), "handicap":p.getField(Player.HANDICAPAM)});
+      if (count == 1) {
+        tournyString += `@${p.getField(Player.NAME)}`;
+      } else {
+        tournyString += `, @${p.getField(Player.NAME)}`;
+      }
+    }
+  }
+  console.log(`${count} players in match play`);
+  console.log(tournyString);
+  //console.log(`${JSON.stringify(doubleTourneyNames)}`);
+
+  /** Write out the players to the match play spreadsheet */
+  let mpf = SpreadsheetApp.openById(settings.getSetting('MATCHPLAYFILE').value);
+  let playerSheet = mpf.getSheetByName("Players");
+  playerSheet
+    .getDataRange()
+    .clearContent();
+
+  playerSheet
+    .getRange(2,1,matchPlayNames.length,1)
+    .setValues(matchPlayNames);
+
+  var htmlApp = HtmlService
+    .createHtmlOutput(`<p>${count} players in matchplay tournament:</p><br><p>${tournyString}</p>`)
+    .setTitle('Match Play Players Added')
+    .setWidth(400)
+    .setHeight(450);
+
+SpreadsheetApp.getActiveSpreadsheet().show(htmlApp);
 }
 
 /**

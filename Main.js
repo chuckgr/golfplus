@@ -32,6 +32,7 @@ tournaments.addHandicaps(new Handicaps());
 function onOpen() {
   var ui = SpreadsheetApp.getUi();
   ui.createMenu('Golf+ fun tournaments')
+      .addItem('Add players to Match Play Sheet', 'getMatchPlayPlayers')
       .addItem('Create Leaderboard by Tournament Number', 'selectTournament')
       .addItem('Create Points Leaderboard', 'buildPointsBoard')
       // TODO .addItem('Recreate All Leaderboards', 'allLeaderBoards')
