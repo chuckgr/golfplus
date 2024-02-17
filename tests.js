@@ -1,3 +1,13 @@
+
+/**
+ * Test getting handicaps...again ans it broke :(
+ */
+function test_brokeHandicaps() {
+  let ct = tournaments.getTournamentById(24.04);
+  let ctData = ct.leaderboardData("handicap");
+  console.log();
+}
+
 /**
  * Test getting one digit after the integer
  */

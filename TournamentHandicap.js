@@ -44,10 +44,10 @@ class TournamentHandicap {
     let playerHandicap;
     let returnHandicap = 0;
     let field;
-    (level == 'amateur') ? field = Handicap.HANDICAPAM : field = Handicap.HANDICAPPRO;
+    (level.toUpperCase() == 'AMATEUR') ? field = Handicap.HANDICAPAM : field = Handicap.HANDICAPPRO;
     /** Handicaps are only for 24.02 forward */
     if (this._data.length > 0) {
-      if (level == 'amateur') {
+      if (level.toUpperCase() == 'AMATEUR') {
         if (this._baseAm.name != player) {
           playerHandicap = this._data.filter(h => h.name == player)[0];
           if (this._data.find(h => h.name == player)) {
